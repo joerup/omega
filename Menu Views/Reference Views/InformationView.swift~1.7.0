@@ -1,0 +1,345 @@
+//
+//  InformationView.swift
+//  OmegaCalculator
+//
+//  Created by Joe Rupertus on 9/30/20.
+//  Copyright © 2020 Rupertus. All rights reserved.
+//
+
+import SwiftUI
+
+struct InformationView: View {
+    
+    @ObservedObject var settings = Settings.settings
+    var information = Information.information
+    var formatting = Formatting.formatting
+    
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State private var displayType: InformationDisplayType = .buttons
+    
+    var inSheet: Bool = false
+    
+    @State private var search: String = ""
+    
+    var body: some View {
+        
+        GeometryReader { geometry in
+            
+            VStack(spacing: 0) {
+            
+//                Picker("Display Type", selection: self.$displayType) {
+//                    Text("Buttons")
+//                        .tag(InformationDisplayType.buttons)
+//                    Text("Constants")
+//                        .tag(InformationDisplayType.constants)
+////                    Text("Formulas")
+////                        .tag(InformationDisplayType.formulas)
+//                }
+//                .pickerStyle(SegmentedPickerStyle())
+//                .padding(.horizontal, 5)
+//                .padding(.vertical, 5)
+                
+                HStack {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                        TextField("Search", text: self.$search)
+                        if !search.isEmpty {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                                .onTapGesture {
+                                    search = ""
+                                }
+                        }
+                    }
+                    .padding(5)
+                    .background(Color.init(white: 0.17))
+                    .cornerRadius(10)
+                    .onChange(of: self.displayType) { _ in
+                        self.search = ""
+                    }
+                    
+                    if displayType == .constants {
+                        Picker("\(self.settings.constantsRoundPlaces+1) SF", selection: self.$settings.constantsRoundPlaces) {
+                            ForEach(0...5, id: \.self) { num in
+                                Text(String(num+1))
+                                    .tag(num)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        .padding(.leading, 5)
+                        .padding(.trailing, 10)
+                    }
+                }
+                .padding(.horizontal, 5)
+                .padding(.bottom, 5)
+                    
+                List {
+                    
+                    if displayType == .buttons {
+                        
+                        if search.isEmpty {
+                        
+                            ForEach(self.information.buttons, id: \.id) { category in
+                                Section(header:
+                                    ZStack {
+                                        Text(LocalizedStringKey(category.name))
+                                                .font(.headline)
+                                                .foregroundColor(Color.init(white: 0.6))
+                                                .textCase(nil)
+                                    }
+                                ) {
+                                    InfoButtonList(buttons: category.buttons, inSheet: inSheet, sourcePresentationMode: presentationMode)
+                                }
+                            }
+                        }
+                        else {
+                            InfoButtonList(buttons: getButtons(), inSheet: inSheet, sourcePresentationMode: presentationMode)
+                        }
+                    }
+                    
+//                    else if displayType == .constants {
+//
+//                        if search.isEmpty {
+//                            Section(header: Text("")) {
+//                                InfoConstantList(constants: getRecentConstants(), inSheet: inSheet, sourcePresentationMode: presentationMode)
+//                            }
+//                            Section(header: Text("")) {
+//                                InfoConstantList(constants: self.information.constants.sorted(by: { $0.name < $1.name }), inSheet: inSheet, sourcePresentationMode: presentationMode)
+//                            }
+//                        }
+//                        else {
+//                            InfoConstantList(constants: getConstants(), inSheet: inSheet, sourcePresentationMode: presentationMode)
+//                        }
+//                    }
+//
+//                    else if displayType == .formulas {
+//
+//                        Text("Coming soon")
+//                    }
+                }
+            }
+        }
+        .navigationBarTitle("Reference")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing: MenuX(sheet: inSheet, presentationMode: self.presentationMode))
+    }
+    
+    
+    func getButtons() -> [InfoButton] {
+        
+        var allButtons: [InfoButton] = []
+        
+        // Add all buttons to array
+        for category in self.information.buttons {
+            for button in category.buttons {
+                if button is InfoButtonCluster {
+                    let cluster = button as! InfoButtonCluster
+                    for button in cluster.buttons {
+                        allButtons += [button]
+                    }
+                }
+                else {
+                    allButtons += [button]
+                }
+            }
+        }
+        
+        // Filter
+        var filteredButtons: [InfoButton] = []
+        
+        // equal
+        for button in allButtons.filter({ $0.fullName.uppercased() == search.uppercased() || $0.name.uppercased() == search.uppercased() }) {
+            filteredButtons += [button]
+        }
+        
+        // starting with
+        for button in allButtons.filter({ $0.fullName.uppercased().starts(with: search.uppercased()) || $0.name.uppercased().starts(with: search.uppercased()) }) {
+            if !filteredButtons.contains(where: { $0.id == button.id }) {
+                filteredButtons += [button]
+            }
+        }
+        
+        // contains
+        for button in allButtons.filter({ $0.fullName.uppercased().contains(search.uppercased()) || $0.name.uppercased().contains(search.uppercased()) }) {
+            if !filteredButtons.contains(where: { $0.id == button.id }) {
+                filteredButtons += [button]
+            }
+        }
+        
+        // same category
+        for button in allButtons.filter({ $0.category.uppercased().contains(search.uppercased()) }) {
+            if !filteredButtons.contains(where: { $0.id == button.id }) {
+                filteredButtons += [button]
+            }
+        }
+        
+        return filteredButtons
+    }
+    
+    
+    func getConstants() -> [InfoConstant] {
+        
+        let allConstants: [InfoConstant] = self.information.constants
+        
+        // Filter
+        var filteredConstants: [InfoConstant] = []
+        
+        // symbol
+        for constant in allConstants.filter({ $0.symbol == search }) {
+            filteredConstants += [constant]
+        }
+        
+        // symbol
+        for constant in allConstants.filter({ $0.symbol.uppercased() == search.uppercased() }) {
+            if !filteredConstants.contains(where: { $0.id == constant.id }) {
+                filteredConstants += [constant]
+            }
+        }
+        
+        // names equal
+        for constant in allConstants.filter({ $0.name.uppercased() == search.uppercased() }) {
+            if !filteredConstants.contains(where: { $0.id == constant.id }) {
+                filteredConstants += [constant]
+            }
+        }
+        
+        // name starts with
+        for constant in allConstants.filter({ $0.name.uppercased().starts(with: search.uppercased()) }) {
+            if !filteredConstants.contains(where: { $0.id == constant.id }) {
+                filteredConstants += [constant]
+            }
+        }
+        
+        // name contains
+        for constant in allConstants.filter({ $0.name.uppercased().contains(search.uppercased()) }) {
+            if !filteredConstants.contains(where: { $0.id == constant.id }) {
+                filteredConstants += [constant]
+            }
+        }
+        
+        // same value
+        for constant in allConstants.filter({ $0.value.contains(where: { $0.contains(search.uppercased()) }) }) {
+            if !filteredConstants.contains(where: { $0.id == constant.id }) {
+                filteredConstants += [constant]
+            }
+        }
+        
+        // same units
+        for constant in allConstants.filter({ formatting.convertToString($0.unit).uppercased().contains(search.uppercased()) }) {
+            if !filteredConstants.contains(where: { $0.id == constant.id }) {
+                filteredConstants += [constant]
+            }
+        }
+        
+        return filteredConstants
+    }
+    
+    
+    func getRecentConstants() -> [InfoConstant] {
+        
+        var constants: [InfoConstant] = []
+            
+        for constant in self.information.constants {
+            if constant is InfoConstantCluster {
+                for value in (constant as! InfoConstantCluster).constants {
+                    if self.settings.recentConstants[0].contains(value.value) && self.settings.recentConstants[1].contains(value.unit) {
+                        constants += [
+                            InfoConstant(name: constant.name,
+                                  symbol: constant.symbol,
+                                  value: value.value,
+                                  unit: value.unit
+                            )
+                        ]
+                    }
+                }
+            }
+            else {
+                if self.settings.recentConstants[0].contains(constant.value) && self.settings.recentConstants[1].contains(constant.unit) {
+                    constants += [constant]
+                }
+            }
+        }
+        
+        return constants
+            .sorted { (self.settings.recentConstants[0].firstIndex(of: $0.value) ?? Int.max < self.settings.recentConstants[0].firstIndex(of: $1.value) ?? Int.max) && (self.settings.recentConstants[1].firstIndex(of: $0.unit) ?? Int.max < self.settings.recentConstants[1].firstIndex(of: $1.unit) ?? Int.max) }
+    }
+}
+
+
+struct InfoButtonList: View {
+    
+    @ObservedObject var settings = Settings.settings
+    
+    var buttons: [InfoButton]
+    
+    var inSheet: Bool = false
+    var sourcePresentationMode: Binding<PresentationMode>
+    
+    var body: some View {
+        
+        ForEach(buttons, id: \.id) { button in
+            
+            if button is InfoButtonCluster {
+                
+                let cluster = button as! InfoButtonCluster
+                
+                NavigationLink(destination: InfoButtonClusterView(cluster: cluster, inSheet: inSheet, sourcePresentationMode: sourcePresentationMode)) {
+                    
+                    HStack {
+                        ButtonView(button: cluster.name, backgroundColor: color(self.settings.theme.color3), width: 30, height: 30, fontSize: 15, active: false)
+                        
+                        Text(cluster.clusterName)
+                            .fontWeight(.bold)
+                    }
+                    .padding(.leading, -5)
+                    .padding(.trailing, 5)
+                }
+            }
+            else {
+            
+                NavigationLink(destination: InfoButtonView(button: button, inSheet: inSheet, sourcePresentationMode: sourcePresentationMode)) {
+                    
+                    HStack {
+                        ButtonView(button: button.name, backgroundColor: color(self.settings.theme.color3), width: 30, height: 30, fontSize: 15, active: false)
+                        
+                        Text(button.fullName)
+                            .fontWeight(.bold)
+                    }
+                    .padding(.leading, -5)
+                    .padding(.trailing, 5)
+                }
+            }
+        }
+    }
+}
+
+
+struct InfoConstantList: View {
+    
+    @ObservedObject var settings = Settings.settings
+    
+    var constants: [InfoConstant]
+    
+    var inSheet: Bool = false
+    var sourcePresentationMode: Binding<PresentationMode>
+    
+    var body: some View {
+        
+        ForEach(constants, id: \.id) { constant in
+            
+            InfoConstantView(constant: constant, inSheet: inSheet, sourcePresentationMode: sourcePresentationMode)
+                .padding(.leading, 15)
+                .padding(.trailing, 5)
+        }
+    }
+}
+
+
+
+enum InformationDisplayType {
+    case buttons
+    case constants
+    case formulas
+}

@@ -1,0 +1,126 @@
+//
+//  InformationView.swift
+//  OmegaCalculator
+//
+//  Created by Joe Rupertus on 9/30/20.
+//  Copyright © 2020 Rupertus. All rights reserved.
+//
+
+import SwiftUI
+
+struct InformationView: View {
+    
+    var settings = Settings.settings
+    @State var information = Information.information
+    
+    @Environment(\.presentationMode) var presentationMode
+    
+    @State private var displayType: InformationDisplayType = .buttons
+    
+    var inSheet: Bool = false
+    
+    var body: some View {
+        
+        GeometryReader { geometry in
+            
+            VStack(spacing: 0) {
+            
+//                Picker("Display Type", selection: self.$displayType) {
+//                    Text("Buttons")
+//                        .tag(InformationDisplayType.buttons)
+//                    Text("Constants")
+//                        .tag(InformationDisplayType.constants)
+//                    Text("Formulas")
+//                        .tag(InformationDisplayType.formulas)
+//                }
+//                .pickerStyle(SegmentedPickerStyle())
+//                .padding(.horizontal, 5)
+//                .padding(.vertical, 5)
+                    
+                List {
+                    
+                    if displayType == .buttons {
+                        
+                        ForEach(self.information.buttons, id: \.id) { category in
+                            
+                            Section(header: Text(LocalizedStringKey(category.name))
+                                                .font(.headline)
+                                                .foregroundColor(Color.init(white: 0.6))
+                                                .textCase(nil)
+                                                .padding(1)
+                            ) {
+                                
+                                ForEach(category.buttons, id: \.id) { button in
+                                    
+                                    if button is InfoButtonCluster {
+                                        
+                                        let cluster = button as! InfoButtonCluster
+                                        
+                                        NavigationLink(destination: InfoButtonClusterView(cluster: cluster, inSheet: inSheet, sourcePresentationMode: presentationMode)) {
+                                            
+                                            HStack {
+                                                ButtonView(button: cluster.name, backgroundColor: color(self.settings.theme.color3), width: 30, height: 30, fontSize: 15, active: false)
+                                                
+                                                Text(cluster.clusterName)
+                                                    .fontWeight(.bold)
+                                            }
+                                            .padding(.leading, -5)
+                                            .padding(.trailing, 5)
+                                        }
+                                    }
+                                    else {
+                                    
+                                        NavigationLink(destination: InfoButtonView(button: button, inSheet: inSheet, sourcePresentationMode: presentationMode)) {
+                                            
+                                            HStack {
+                                                ButtonView(button: button.name, backgroundColor: color(self.settings.theme.color3), width: 30, height: 30, fontSize: 15, active: false)
+                                                
+                                                Text(button.fullName)
+                                                    .fontWeight(.bold)
+                                            }
+                                            .padding(.leading, -5)
+                                            .padding(.trailing, 5)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    else if displayType == .constants {
+                        
+                        Text("Coming soon")
+                        
+//                        ForEach(self.information.constants, id: \.id) { category in
+//
+//                            Section(header: Text(category.name)) {
+//
+//                                ForEach(category.constants, id: \.id) { constant in
+//
+//                                    InfoConstantView(constant: constant, roundPlaces: 3)
+//                                        .padding(.leading, -5)
+//                                        .padding(.trailing, 5)
+//                                }
+//                            }
+//                        }
+                    }
+                    
+                    else if displayType == .formulas {
+                        
+                        Text("Coming soon")
+                    }
+                }
+                .listStyle(InsetGroupedListStyle())
+            }
+        }
+        .navigationBarTitle("Reference")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing: MenuX(sheet: inSheet, presentationMode: self.presentationMode))
+    }
+}
+
+enum InformationDisplayType {
+    case buttons
+    case constants
+    case formulas
+}

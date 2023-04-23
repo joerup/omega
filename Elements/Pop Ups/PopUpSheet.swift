@@ -1,0 +1,76 @@
+//
+//  PopUpSheet.swift
+//  OmegaCalculator
+//
+//  Created by Joe Rupertus on 6/29/22.
+//  Copyright © 2022 Rupertus. All rights reserved.
+//
+
+import SwiftUI
+
+struct PopUpSheet<Content: View>: View {
+    
+    @ObservedObject var settings = Settings.settings
+    
+    var title: String
+    var fullScreen: Bool = false
+    
+    var showCancel: Bool = true
+    var confirmText: String = "Confirm"
+    var confirmAction: () -> Void = {}
+    
+    var content: () -> Content
+    
+    var body: some View {
+        
+        VStack(spacing: 0) {
+            
+            if !fullScreen {
+                Text(LocalizedStringKey(title))
+                    .font(Font.system(.title2, design: .rounded).weight(.bold))
+                    .fontWeight(.bold)
+                    .padding(10)
+            }
+            
+            content()
+            
+            HStack {
+                
+                if showCancel {
+                    Button(action: {
+                        settings.popUp = nil
+                        SoundManager.play(sound: .click2, haptic: .light)
+                    }) {
+                        Text("Cancel")
+                            .font(Font.system(.title2, design: .rounded).weight(.bold))
+                            .foregroundColor(Color.white)
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.5)
+                            .padding(.vertical, 20)
+                            .frame(width: 125)
+                            .background(Color.init(white: 0.5))
+                            .cornerRadius(20)
+                    }
+                }
+                
+                Button(action: {
+                    confirmAction()
+                    SoundManager.play(sound: .click3, haptic: .light)
+                }) {
+                    Text(LocalizedStringKey(confirmText))
+                        .font(Font.system(.title2, design: .rounded).weight(.bold))
+                        .foregroundColor(Color.white)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.5)
+                        .padding(.vertical, 20)
+                        .frame(width: 125)
+                        .background(color(settings.theme.color1))
+                        .cornerRadius(20)
+                }
+            }
+            .padding(5)
+            .padding(.bottom, fullScreen ? 20 : 0)
+        }
+        .frame(maxWidth: fullScreen ? .infinity : 500, maxHeight: fullScreen ? .infinity : 500)
+    }
+}

@@ -1,0 +1,103 @@
+/*
+  Localizable.strings
+  OmegaCalculator
+
+  CHINESE
+ 
+  Updated - 1.6.1
+*/
+
+/* Settings */
+"Calculator" = "计算器";
+"PastCalc" = "过去的计算";
+"Reference" = "参考";
+"Themes" = "主题";
+"Settings" = "选项";
+"About" = "关于";
+
+/* Past Calculations */
+"Calculation" = "计算";
+"Result" = "结果";
+"Expression" = "表达";
+"Recent" = "最近的";
+"Past" = "过去的";
+"Saved" = "已保存";
+"Today" = "今天";
+"Load More" = "装载更多";
+"Set" = "放";
+"Insert" = "插入";
+"Copy" = "复制";
+"Paste" = "粘贴";
+"Save" = "保存";
+"Unsave" = "取消保存";
+"Export" = "出口";
+"Set Result" = "设置结果";
+"Insert Result" = "插入结果";
+"Copy Result" = "复制结果";
+"Set Expression" = "设置表达式";
+"Insert Expression" = "插入表达式";
+"Copy Expression" = "复制表达式";
+"Delete" = "删除";
+"DeleteCalcConfirm" = "您确定要删除此计算吗？";
+"DeleteCalcConfirmSub" = "这不能被撤消。";
+"UnsaveWarning" = "您确定不保存此计算吗？";
+"UnsaveWarningSub%@" = "此计算已超过 %@ 天，这意味着如果未保存，它将被删除。";
+
+/* Reference */
+"Button" = "按钮";
+"Definition" = "定义";
+"Value" = "值";
+"Formula" = "公式";
+"Domain" = "输入";
+"Range" = "输出";
+"Syntax" = "句法";
+"Examples" = "例子";
+"Operations" = "操作";
+"Exponents & Roots" = "指数和根";
+"Logarithms" = "对数";
+"Trigonometry" = "三角学";
+"Probability" = "可能性";
+"Miscellaneous" = "其他";
+
+/* Themes */
+"Unlock" = "开锁";
+"Unlocked" = "解锁";
+"Unlock Themes" = "解锁主题";
+"Theme Set" = "主题集";
+"Restore" = "恢复";
+"BUY" = "买";
+
+/* Settings */
+"Text" = "文本";
+"Font Style" = "字体样式";
+"Font Weight" = "字体粗细";
+"Animations" = "动画";
+"Maximum Shrink" = "最大收缩";
+"Buttons" = "纽扣";
+"Haptic Feedback" = "触觉反馈";
+"Expanded Portrait Layout" = "扩展的纵向布局";
+"Smart DEG/RAD Button" = "智能 DEG/RAD 按钮";
+"Content" = "内容";
+"Exponential Notation" = "指数符号";
+"Auto Parentheses After Trig/Logs" = "三角/对数后的自动括号";
+"Thousands Separators" = "千位分隔符";
+"Thousands Spaces" = "千空间";
+"Trig Function Degrees Symbol" = "三角函数度数符号";
+"Results" = "结果";
+"Round Places" = "四舍五入的地方";
+"Show Alternate Results" = "显示替代结果";
+"Show All Alternate Results" = "显示所有替代结果";
+"Regional" = "区域";
+"Language" = "语";
+"Decimal Point" = "小数点";
+
+/* About */
+"Website" = "网站";
+"Twitter" = "Twitter";
+"Contact Support" = "联系支持";
+"Privacy Policy" = "隐私政策";
+"Rate the App" = "给应用评分";
+"Share the App" = "分享应用";
+"More Apps" = "更多的应用程序";
+"Version" = "版本";
+

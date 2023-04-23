@@ -1,0 +1,62 @@
+//
+//  InfoConstantView.swift
+//  OmegaCalculator
+//
+//  Created by Joe Rupertus on 7/27/21.
+//  Copyright © 2021 Rupertus. All rights reserved.
+//
+
+import SwiftUI
+
+struct InfoConstantView: View {
+    
+    @ObservedObject var settings = Settings.settings
+    var formatting = Formatting.formatting
+    var expression = Expression.expression
+    
+    var constant: InfoConstant
+    
+    var roundPlaces: Int
+    
+    var body: some View {
+        
+        HStack {
+            
+            ZStack {
+                Rectangle()
+                    .fill(color(self.settings.theme.color1, edit: true))
+                    .frame(width: 50, height: 50)
+                    .cornerRadius(10)
+                Text(constant.symbol)
+                    .font(.title)
+                    .fontWeight(.bold)
+            }
+
+            VStack(alignment: .leading) {
+                Text(constant.name)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.init(white: 0.6))
+                    .padding(.bottom, -3)
+                HStack {
+                    TextViews(array: constant.value,
+                              formattingGuide: self.formatting.createFormattingGuide(array: constant.value),
+                              size: 28,
+                              originalSize: 32,
+                              position: .main,
+                              scrollable: false
+                    )
+                    TextViews(array: constant.unit,
+                              formattingGuide: self.formatting.createFormattingGuide(array: constant.unit),
+                              size: 24,
+                              originalSize: 30,
+                              position: .top,
+                              scrollable: false
+                    )
+                }
+            }
+            .padding(5)
+
+            Spacer()
+        }
+    }
+}

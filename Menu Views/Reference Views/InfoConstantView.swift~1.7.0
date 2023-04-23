@@ -1,0 +1,170 @@
+//
+//  InfoConstantView.swift
+//  OmegaCalculator
+//
+//  Created by Joe Rupertus on 7/27/21.
+//  Copyright © 2021 Rupertus. All rights reserved.
+//
+
+import SwiftUI
+
+struct InfoConstantView: View {
+    
+    @ObservedObject var settings = Settings.settings
+    var formatting = Formatting.formatting
+    var expression = Expression.expression
+    var input = Input.input
+    var math = Math.math
+    
+    var constant: InfoConstant
+    
+    var inSheet: Bool = false
+    var sourcePresentationMode: Binding<PresentationMode>? = nil
+    
+    var body: some View {
+        
+        VStack(alignment: .leading) {
+            
+            HStack {
+                
+                createSymbol(constant.symbol)
+                    .padding(.horizontal, 5)
+                
+                Text(constant.name)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color.init(white: 0.6))
+                    .padding(.bottom, -3)
+                    .lineLimit(0)
+            }
+            
+            Spacer()
+                
+            if constant is InfoConstantCluster {
+                let cluster = constant as! InfoConstantCluster
+                ForEach(cluster.constants, id: \.id) { constant in
+                    HStack {
+                        let expression = self.expression.splitExpression(self.expression.createExpression(roundValues(constant.value)))
+                        TextView(array: expression,
+                                  formattingGuide: self.formatting.createFormattingGuide(array: expression),
+                                  size: 24,
+                                  originalSize: 28,
+                                  position: .main,
+                                  scrollable: false
+                        )
+                        TextView(array: constant.unit,
+                                  formattingGuide: self.formatting.createFormattingGuide(array: self.protectUnits(constant.unit)),
+                                  size: 22,
+                                  originalSize: 26,
+                                  position: .top,
+                                  scrollable: false
+                        )
+                        .padding(.leading, -5)
+                    }
+                    .padding(5)
+                    .onTapGesture {
+                        insertConstant(value: constant.value, unit: constant.unit)
+                    }
+                }
+            }
+            else {
+                HStack {
+                    let expression = self.expression.splitExpression(self.expression.createExpression(roundValues(constant.value)))
+                    TextView(array: expression,
+                              formattingGuide: self.formatting.createFormattingGuide(array: expression),
+                              size: 24,
+                              originalSize: 28,
+                              position: .main,
+                              scrollable: false
+                    )
+                    TextView(array: constant.unit,
+                              formattingGuide: self.formatting.createFormattingGuide(array: self.protectUnits(constant.unit)),
+                              size: 22,
+                              originalSize: 26,
+                              position: .top,
+                              scrollable: false
+                    )
+                    .padding(.leading, -5)
+                }
+                .padding(5)
+                .onTapGesture {
+                    insertConstant(value: constant.value, unit: constant.unit)
+                }
+            }
+
+            Spacer()
+        }
+    }
+    
+    func createSymbol(_ symbol: String) -> AnyView {
+        var array = [symbol]
+        var format = [""]
+        if symbol.contains("¬") {
+            array = symbol.split(separator: "¬").map { String($0) }
+            format = ["","¬"]
+        }
+        return AnyView(
+            HStack {
+                ForEach(array.indices, id: \.self) { index in
+                    let subscripted = format[index] == "¬"
+                    Text(array[index])
+                        .font(subscripted ? .caption : .title2)
+                        .baselineOffset(subscripted ? -15 : 0)
+                        .fontWeight(.semibold)
+                        .foregroundColor(color(self.settings.theme.color2, edit: true))
+                        .padding(.leading, subscripted ? -5 : 0)
+                }
+            }
+        )
+    }
+    
+    func insertConstant(value: [String], unit: [String]) {
+        // Insert constant into queue
+        self.input.insertToQueue(roundValues(value))
+        
+        // Set to recent constants
+        if self.settings.recentConstants[0].contains(value) && self.settings.recentConstants[1].contains(unit) {
+            self.settings.recentConstants[0].remove(at: self.settings.recentConstants[0].firstIndex(of: value)!)
+            self.settings.recentConstants[1].remove(at: self.settings.recentConstants[1].firstIndex(of: unit)!)
+        }
+        self.settings.recentConstants[0].insert(value, at: 0)
+        self.settings.recentConstants[1].insert(unit, at: 0)
+        if self.settings.recentConstants[0].count > 3 && self.settings.recentConstants[1].count > 3 {
+            self.settings.recentConstants[0].removeLast()
+            self.settings.recentConstants[1].removeLast()
+        }
+        
+        // Dismiss the sheet
+        if inSheet {
+            sourcePresentationMode?.wrappedValue.dismiss()
+        }
+    }
+    
+    func roundValues(_ array: [String]) -> [String] {
+        
+        var newArray: [String] = []
+        
+        if let value = Double(array[0]) {
+            let formatter = NumberFormatter()
+            formatter.usesSignificantDigits = true
+            formatter.maximumSignificantDigits = self.settings.constantsRoundPlaces+1
+            formatter.minimumSignificantDigits = self.settings.constantsRoundPlaces+1
+            newArray += [formatter.string(from: NSNumber(value: value)) ?? array[0]]
+        }
+        
+        for item in array.dropFirst() {
+            newArray += [item]
+        }
+        
+        return newArray
+    }
+    
+    func protectUnits(_ array: [String]) -> [String] {
+        var newArray = array
+        for index in newArray.indices {
+            if !["“","‘","/","^","v"].contains(newArray[index]) {
+                newArray[index] = "Ø"+newArray[index]
+            }
+        }
+        return newArray
+    }
+}

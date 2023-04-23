@@ -1,0 +1,90 @@
+/*
+  Localizable.strings
+  OmegaCalculator
+
+  PORTUGUESE
+*/
+
+/* Settings */
+"Calculator" = "Calculadora";
+"PastCalc" = "Cálculos anteriores";
+"Reference" = "Referência";
+"Themes" = "Temas";
+"Settings" = "Configurações";
+"About" = "Cerca de";
+
+/* Past Calculations */
+"Calculation" = "Cálculo";
+"Result" = "Resultado";
+"Expression" = "Expressão";
+"Recent" = "Recente";
+"Past" = "Passado";
+"Saved" = "Salvou";
+"Today" = "Hoje";
+"Set" = "Definir";
+"Insert" = "Inserir";
+"Copy" = "Cópia";
+"Paste" = "Colar";
+"Save" = "Salvar";
+"Unsave" = "Não salvar";
+"Export" = "Exportar";
+"Set Result" = "Definir resultado";
+"Insert Result" = "Inserir resultado";
+"Copy Result" = "Copiar o resultado";
+"Set Expression" = "Definir expressão";
+"Insert Expression" = "Inserir expressão";
+"Copy Expression" = "Copiar expressão";
+"Delete" = "Excluir";
+"DeleteCalcConfirm" = "Tem certeza de que deseja excluir este cálculo?";
+"DeleteCalcConfirmSub" = "Isto não pode ser desfeito.";
+"UnsaveWarning" = "Tem certeza de que deseja não salvar este cálculo?";
+"UnsaveWarningSub%@" = "Este cálculo tem mais de %@ dias, o que significa que será excluído se não for salvo.";
+
+/* Reference */
+"Button" = "Botão";
+"Definition" = "Definição";
+"Value" = "Valor";
+"Formula" = "Fórmula";
+"Domain" = "Entrada";
+"Range" = "Saída";
+"Syntax" = "Sintaxe";
+"Examples" = "Exemplos";
+
+/* Themes */
+"Unlock" = "Desbloquear";
+"Unlocked" = "Desbloqueado";
+"Unlock Themes" = "Desbloquear temas";
+"Theme Set" = "Conjunto de temas";
+"Restore" = "Restaurar";
+"BUY" = "COMPRAR";
+
+/* Settings */
+"Text" = "Texto";
+"Font Style" = "Estilo de fonte";
+"Font Weight" = "Espessura da fonte";
+"Animations" = "Animações";
+"Maximum Shrink" = "Encolhimento Máximo";
+"Buttons" = "Botões";
+"Haptic Feedback" = "Feedback tátil";
+"Expanded Portrait Layout" = "Layout de retrato expandido";
+"Smart DEG/RAD Button" = "Botão Smart DEG/RAD";
+"Content" = "Conteúdo";
+"Exponential Notation" = "Notação exponêncial";
+"Auto Parentheses After Trig/Logs" = "Parênteses automáticos após Trig/Logs";
+"Thousands Separators" = "Separadores de milhares";
+"Thousands Spaces" = "Separadores de milhares com espaços";
+"Comma Decimal Point" = "Ponto decimal da vírgula";
+"Trig Function Degrees Symbol" = "Símbolo de graus de função trigonométrica";
+"Results" = "Resultados";
+"Round Places" = "Arredondando";
+"Show Alternate Results" = "Mostrar resultados alternativos";
+"Show All Alternate Results" = "Mostrar todos os resultados alternativos";
+
+/* About */
+"Contact Support" = "Contate o Suporte";
+"Privacy Policy" = "Política de Privacidade";
+"Rate the App" = "Avalie o aplicativo";
+"Share the App" = "Compartilhe o aplicativo";
+"More Apps" = "Mais aplicativos";
+"Version" = "Versão";
+

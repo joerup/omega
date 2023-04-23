@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="PastCalculation" representedClassName="PastCalculation" syncable="YES">
+        <attribute name="backspaceIndexingQueue" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="backspaceNum" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="backspaceQueue" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="bottomFormattingGuide" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="bottomOutput" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="mainFormattingGuide" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="mainOutput" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="prevOutput" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="queue" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="result" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="resultContinues" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="results" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="save" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="stepsExpressions" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="topFormattingGuide" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[[String]]"/>
+        <attribute name="topOutput" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
+    <elements>
+        <element name="PastCalculation" positionX="-63" positionY="-18" width="128" height="314"/>
+    </elements>
+</model>

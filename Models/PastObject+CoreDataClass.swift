@@ -1,0 +1,16 @@
+//
+//  PastObject+CoreDataClass.swift
+//  OmegaCalculator
+//
+//  Created by Joe Rupertus on 1/3/22.
+//  Copyright © 2022 Rupertus. All rights reserved.
+//
+//
+
+import Foundation
+import CoreData
+
+@objc(PastObject)
+public class PastObject: NSManagedObject {
+
+}
