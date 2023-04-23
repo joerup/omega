@@ -9,7 +9,7 @@ The calculator includes basic operations, exponents, roots, fractions, logarithm
 * Intuitive interface with large & colorful buttons
 * Scientific calculator with advanced functions
 
-## BUTTON LIST
+## Button List
 * Operations (+, -, ×, ÷)
 * Percent (%)
 * Fraction (/)
@@ -32,7 +32,7 @@ The calculator includes basic operations, exponents, roots, fractions, logarithm
 * Constants (π, e)
 * Repeating Decimal Bar
 
-## INPUT FEATURES
+## Input Features
 * Entire expression appears on the same input line with text pointer
 * Backspace button to remove the previous input
 * Placeholder squares for easy input of multiple items
@@ -40,23 +40,23 @@ The calculator includes basic operations, exponents, roots, fractions, logarithm
 * Support for really long and complicated expressions with scrolling & shrinking
 * Beautifully & seamlessly formatted - roots, fractions, exponents, etc.
 
-## RESULT FEATURES
+## Result Features
 * Input appears above calculated result after pressing enter
 * Up to 12 decimal places of precision & support for really huge or really tiny numbers
 * Copy & paste directly from input line or after result is calculated
 
-## PAST CALCULATIONS
+## Past Calculations
 * Past calculation history tape
 * Insert, edit, & copy/paste past results
 * Save calculations so they remain in the app forever
 
-## COLOR THEMES
+## Color Themes
 * Settings to change input logistics & display preferences
 * 8 Themes to personalize your calculator 
 * Additional themes can be purchased in the app
 
 
-OMEGA PRO
+## Omega Pro
 Our premium version to take your calculator to the next level. 
 
 * Interactive text pointer to edit input line
