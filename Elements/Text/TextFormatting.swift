@@ -383,14 +383,9 @@ class TextFormatting {
                 
                 elements[index+1].leftPad -= element.size*0.125
 
-                if modes.angleUnit == .deg, settings.degreeSymbol {
-                    if elements[index1-1].text == "#|" {
-                        elements.insert(TextElement("º", copy: element), at: index1-1)
-                        elements[index1-1].leftPad -= element.size*0.2
-                        elements[index1-1].queueIndex = elements[index1].queueIndex
-                    }
-                    else if elements[index1].text == "#)" {
-                        elements.insert(TextElement("º", copy: element), at: index1)
+                if modes.angleUnit == .deg {
+                    if elements[index1].text == "#)", index1+1 <= elements.count {
+                        elements.insert(TextElement("º", copy: element), at: index1+1)
                         elements[index1].leftPad -= element.size*0.2
                         elements[index1].queueIndex = elements[index1-1].queueIndex
                     }
@@ -819,17 +814,7 @@ class TextFormatting {
     
     // Stroke size
     func strokeSize(_ size: CGFloat) -> CGFloat {
-        
-        switch self.settings.textWeight {
-        case 0:
-            return size * 0.07
-        case 1:
-            return size * 0.1
-        case 2:
-            return size * 0.12
-        default:
-            return size * 0.1
-        }
+        return size * 0.1
     }
     
     // Get the font
@@ -840,50 +825,12 @@ class TextFormatting {
         switch style {
         case .helvetica:
             font = "HelveticaNeue"
-            switch Settings.settings.textWeight {
-            case 0:
-                font += "-Light"
-            case 2:
-                font += "-Medium"
-            default:
-                font += ""
-            }
         case .avenir:
-            font = "AvenirNext"
-            switch Settings.settings.textWeight {
-            case 0:
-                font += "-Regular"
-            case 1:
-                font += "-Medium"
-            case 2:
-                font += "-Demibold"
-            default:
-                font += ""
-            }
+            font = "AvenirNext-Medium"
         case .palatino:
-            font = "Palatino"
-            switch Settings.settings.textWeight {
-            case 0:
-                font += " Italic"
-            case 1:
-                font += " Bold Italic"
-            case 2:
-                font += " Bold Italic"
-            default:
-                font += ""
-            }
+            font = "Palatino Bold Italic"
         default:
-            font = "PingFangSC"
-            switch Settings.settings.textWeight {
-            case 0:
-                font += "-Light"
-            case 1:
-                font += "-Medium"
-            case 2:
-                font += "-Semibold"
-            default:
-                font += ""
-            }
+            font = "PingFangSC-Medium"
         }
         
         return font

@@ -30,17 +30,16 @@ struct OmegaView: View {
     
     var buttonHeight: CGFloat {
         if size == .large {
-            return orientation == .portrait ? 1/11.5 : 1/8.5
+            return orientation == .portrait ? 1/11.5 : 1/9
         } else {
-            return orientation == .portrait ? (settings.portraitExpanded ? 1/11 : 1/9.5) : 1/8.3
+            return orientation == .portrait ? 1/9 : 1/8
         }
-       
     }
     var standardSize: CGFloat {
         return size == .small && orientation == .landscape ? size.smallerSmallSize : size.standardSize
     }
     var horizontalPadding: CGFloat {
-        return orientation == .landscape ? 5 : 10
+        return size == .small && orientation == .landscape ? 3 : 10
     }
     var verticalPadding: CGFloat {
         return size == .small ? 5 : 10
@@ -55,22 +54,15 @@ struct OmegaView: View {
     @ViewBuilder var body: some View {
         
         ZStack {
-            
-            if settings.showMenu {
                 
-                MainMenuView(storeManager: storeManager)
+            CalculatorInterface(size: size, orientation: orientation, buttonHeight: buttonHeight, standardSize: standardSize, horizontalPadding: horizontalPadding, verticalPadding: verticalPadding)
                 
-            } else {
+            VStack(spacing: 0) {
                 
-                CalculatorInterface(size: size, orientation: orientation, buttonHeight: buttonHeight, standardSize: standardSize, horizontalPadding: horizontalPadding, verticalPadding: verticalPadding)
-                    
-                VStack(spacing: 0) {
-                    
-                    HeaderButtonRow(size: size, orientation: orientation)
-                        .padding(.horizontal, horizontalPadding)
-                    
-                    Spacer()
-                }
+                HeaderButtonRow(size: size, orientation: orientation)
+                    .padding(.horizontal, horizontalPadding)
+                
+                Spacer()
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -81,12 +73,15 @@ struct OmegaView: View {
         .onAppear {
             open()
         }
+        .sheet(isPresented: self.$settings.showMenu) {
+            MainMenuView(storeManager: storeManager)
+        }
         .sheet(isPresented: self.$welcome) {
             Welcome()
         }
-        .sheet(isPresented: self.$newsUpdate) {
-            OmegaProAd(storeManager: storeManager)
-        }
+//        .sheet(isPresented: self.$newsUpdate) {
+//            OmegaProAd(storeManager: storeManager)
+//        }
         .sheet(isPresented: self.$themePackAd) {
             SuperOmegaThemePackView(storeManager: storeManager)
         }
@@ -98,6 +93,9 @@ struct OmegaView: View {
         }
         .sheet(isPresented: self.$settings.promptProAd) {
             OmegaProAd(storeManager: storeManager, prompted: true)
+        }
+        .sheet(isPresented: self.$settings.showProDescription) {
+            OmegaProView(storeManager: storeManager)
         }
         .sheet(isPresented: self.$settings.purchaseConfirmation) {
             PurchaseConfirmation()

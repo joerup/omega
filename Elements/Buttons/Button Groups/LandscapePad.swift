@@ -24,14 +24,14 @@ struct LandscapePad: View {
     
     var body: some View {
         
-        if settings.buttonDisplayMode == .second {
+        if settings.buttonUppercase {
                 
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 6), spacing: 0) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 0) {
                     
                 ForEach(Input.landscapePad[1].buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/6, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/6)
+                        .padding(.horizontal, width*0.025/7)
                 }
             }
             .animation(nil)
@@ -40,12 +40,12 @@ struct LandscapePad: View {
                 
         } else {
             
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 6), spacing: 0) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 0) {
                 
                 ForEach(Input.landscapePad[0].buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/6, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/6)
+                        .padding(.horizontal, width*0.025/7)
                 }
             }
             .animation(nil)

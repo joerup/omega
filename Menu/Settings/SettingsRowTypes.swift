@@ -127,7 +127,7 @@ struct SettingsBoolMenuPicker: View {
     var trueFirst = false
     
     var body: some View {
-        SettingsRow(desc: displayDescriptions[trueFirst ? (value ? 0 : 1) : (value ? 1 : 0)]) {
+        SettingsRow(desc: displayDescriptions.isEmpty ? nil : displayDescriptions[trueFirst ? (value ? 0 : 1) : (value ? 1 : 0)]) {
             HStack {
                 SettingsText(title: title)
                 Spacer()
@@ -234,7 +234,7 @@ struct SettingsLink: View {
                     }
                     SettingsText(title: title)
                     Spacer()
-                    Image(systemName: "chevron.forward")
+                    Image(systemName: "arrow.forward")
                         .imageScale(.small)
                         .foregroundColor(Color.init(white: 0.4))
                         .padding(.trailing, 5)
@@ -265,7 +265,7 @@ struct SettingsButton: View {
                     }
                     SettingsText(title: title)
                     Spacer()
-                    Image(systemName: "chevron.forward")
+                    Image(systemName: "arrow.forward")
                         .imageScale(.small)
                         .foregroundColor(Color.init(white: 0.4))
                         .padding(.trailing, 5)

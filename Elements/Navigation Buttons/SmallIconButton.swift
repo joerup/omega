@@ -14,7 +14,7 @@ struct SmallIconButton: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
         
     var symbol: String
-    var color: Color = Color.init(white: 0.2)
+    var color: Color = Color.init(white: 0.15)
     var textColor: Color = Color.white
     var smallerLarge: Bool = false
     var smallerSmall: Bool = false

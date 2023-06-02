@@ -114,28 +114,28 @@ class Input {
     
     static var landscapePad = [
         Input([
-            "(", ")", "%", "*", "/", "*/",
-            "abs", "^2", "^3", "^", "^-1", "EXP",
-            "!", "√", "3√", "n√", "π", "e",
-            "rand", "sin", "cos", "tan", "10^", "e^",
-            "randint", "sin⁻¹", "cos⁻¹", "tan⁻¹", "log", "ln"
+            "(", ")", "%", "*", "/", "vinc", "abs",
+            "∑", "!", "^2", "^3", "^", "^-1", "EXP",
+            "∏", "rand", "√", "3√", "n√", "π", "e",
+            "dx", "nPr", "sin", "cos", "tan", "10^", "e^",
+            "∫", "nCr", "sin⁻¹", "cos⁻¹", "tan⁻¹", "log", "ln"
         ]),
         Input([
-            "(", ")", "%", "*", "/", "*/",
-            "abs", "^2", "^3", "^", "^-1", "EXP",
-            "!", "√", "3√", "n√", "π", "e",
-            "rand", "sinh", "cosh", "tanh", "2^", "n^",
-            "randint", "sinh⁻¹", "cosh⁻¹", "tanh⁻¹", "log2", "logn"
+            "(", ")", "%", "*", "/", "vinc", "abs",
+            "∑", "!", "^2", "^3", "^", "^-1", "EXP",
+            "∏", "rand", "√", "3√", "n√", "π", "e",
+            "dx", "nPr", "sinh", "cosh", "tanh", "2^", "n^",
+            "∫", "nCr", "sinh⁻¹", "cosh⁻¹", "tanh⁻¹", "log2", "logn"
         ])
     ]
 
     static var scrollRow = Input([
-        "(", ")", "^2", "√", "%", "EXP", "^", "/", "*", "π", "e", "sin", "cos", "tan", "log", "ln"
+        "(", ")", "%", "^2", "√", "/", "EXP", "^", "π", "e", "sin", "cos", "tan", "log", "ln"
     ])
 
     static var portraitPadATop = Input([
-        "(", ")", "^2", "√", "/",
-        "sin", "EXP", "^", "n√", "%"
+        "(", ")", "^2", "^", "%",
+        "sin", "EXP", "√", "n√", "/"
     ])
     static var portraitPadASide = Input([
         "cos",
@@ -145,15 +145,23 @@ class Input {
     ])
 
     static var portraitPadBTop = Input([
-        "(", ")", "%", "/", "^2", "√", "e",
-        "abs", "^-1", "EXP", "*", "^", "n√", "π"
+        "(", ")", "^2", "^3", "^", "π", "%", "*",
+        "abs", "EXP", "√", "3√", "n√", "e", "^-1", "/",
     ])
-    static var portraitPadBSide = Input([
-        "sin", "cos", "tan",
-        "sin⁻¹", "cos⁻¹", "tan⁻¹",
-        "10^", "e^", "!",
-        "log", "ln", "rand"
-    ])
+    static var portraitPadBSide = [
+        Input([
+            "!", "sin", "cos", "tan",
+            "rand", "sin⁻¹", "cos⁻¹", "tan⁻¹",
+            "∑", "dx", "log", "ln",
+            "∏", "∫", "10^", "e^"
+        ]),
+        Input([
+            "nPr", "sinh", "cosh", "tanh",
+            "nCr", "sinh⁻¹", "cosh⁻¹", "tanh⁻¹",
+            "∑", "dx", "log2", "logn",
+            "∏", "∫", "2^", "n^"
+        ])
+    ]
     
     static var shortNumRow = Input([
         "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
@@ -174,33 +182,34 @@ class Input {
         "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ])
     static var alphaUpper = Input([
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
     ])
-    static var alphaGreek = Input([
+    static var greekLower = Input([
         "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"
+    ])
+    static var greekUpper = Input([
+        "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"
     ])
     
     static var units = Input(InputUnit.allCases.map { $0.name })
     
-    static var mathAlg = Input([
-        "*", "/", "*/", "^2", "^3", "^",
-        "%", "π", "e", "√", "3√", "n√",
-        "^-1", "EXP", "10^", "e^", "2^", "n^",
-        "!", "rand", "log", "ln", "log2", "logn",
-    ])
-    static var mathTrig = Input([
-        "sin", "cos", "tan", "sin⁻¹", "cos⁻¹", "tan⁻¹",
-        "sinh", "cosh", "tanh", "sinh⁻¹", "cosh⁻¹", "tanh⁻¹",
-        "csc", "sec", "cot", "csc⁻¹", "sec⁻¹", "cot⁻¹",
-        "csch", "sech", "coth", "csch⁻¹", "sech⁻¹", "coth⁻¹",
-    ])
-    static var mathCalc = Input([
-        "dx", "∫", "∑", "∏"
-    ])
-    static var mathMisc = Input([
-        "‰", "abs", "!", "vinc",
-        "rand", "randint", "nPr", "nCr",
-        "round", "floor", "ceil", "mod"
-    ])
+    static var funcPad = [
+        Input([
+            "(", ")", "%", "*", "/",
+            "^2", "^3", "^", "^-1", "EXP",
+            "√", "3√", "n√", "π", "e",
+            "sin", "cos", "tan", "10^", "e^",
+            "sin⁻¹", "cos⁻¹", "tan⁻¹", "log", "ln",
+            "∑", "dx", "!", "rand", "abs"
+        ]),
+        Input([
+            "(", ")", "%", "*", "/",
+            "^2", "^3", "^", "^-1", "EXP",
+            "√", "3√", "n√", "π", "e",
+            "sinh", "cosh", "tanh", "2^", "n^",
+            "sinh⁻¹", "cosh⁻¹", "tanh⁻¹", "log2", "logn",
+            "∏", "∫", "nPr", "nCr", "vinc"
+        ])
+    ]
 }
 

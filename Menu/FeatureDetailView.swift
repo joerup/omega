@@ -82,7 +82,7 @@ struct FeatureDetailView: View {
             .padding(.horizontal, 15)
             .padding(.bottom, 15)
             .padding(.top, 5)
-            .background(Color.init(white: 0.1).cornerRadius(20))
+            .background(Color.init(white: 0.17).cornerRadius(10))
             .padding(.horizontal, 10)
             
             Spacer(minLength: 0)

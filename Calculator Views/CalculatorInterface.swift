@@ -31,23 +31,27 @@ struct CalculatorInterface: View {
             
             VStack(spacing: 0) {
                 
-                TextView(size: size, orientation: orientation, standardSize: standardSize)
-                    .padding(.top, orientation == .landscape ? 0 : standardSize)
-                    .border(Color.red, width: settings.guidelines ? 1 : 0)
-                    .overlay(OverlayDismissArea())
+                VStack(spacing: 0) {
+                    Spacer(minLength: size == .large ? standardSize : 0)
+                    TextView(size: size, orientation: orientation, standardSize: standardSize)
+                        .frame(maxHeight: min(geometry.size.height*(size == .large ? 0.2 : orientation == .landscape ? 0.3 : 0.22), geometry.size.width*0.5))
+                        .padding(.top, orientation == .landscape ? 0 : standardSize)
+                        .border(Color.red, width: settings.guidelines ? 1 : 0)
+                }
+                .overlay(OverlayDismissArea())
                 
                 VStack(spacing: 0) {
                     
                     DetailButtonRow(size: size, orientation: orientation)
                         .padding(.horizontal, horizontalPadding)
-                        .padding(.bottom, size == .large ? (orientation == .portrait ? 12.5 : 7.5) : orientation == .portrait ? 10 : 5)
+                        .padding(.bottom, size == .large ? (orientation == .portrait ? 10 : 10) : orientation == .portrait ? 7.5 : 5)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
                         .padding(.top, 2).padding(.horizontal, 2)
-                        .background(Color.init(white: 0.1).cornerRadius(20).edgesIgnoringSafeArea(.bottom))
+                        .background(Color.init(white: 0.1).cornerRadius(0.42*0.98*geometry.size.height*buttonHeight).edgesIgnoringSafeArea(.bottom))
                         .border(Color.blue, width: settings.guidelines ? 1 : 0)
-                        .overlay(DetailOverlay().padding(.trailing, orientation == .landscape ? geometry.size.width*2/5 : 0).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight+5))
+                        .overlay(DetailOverlay().cornerRadius(0.42*0.98*geometry.size.height*buttonHeight).padding(.trailing, orientation == .landscape ? geometry.size.width*(4/11*0.98+0.01) : 0).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight*0.8+(size == .small ? 5 : 15)))
                 }
                 .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay() } else {}})
             }

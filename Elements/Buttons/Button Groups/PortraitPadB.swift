@@ -26,12 +26,12 @@ struct PortraitPadBTop: View {
         
         VStack(spacing:0) {
             
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 0) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 8), spacing: 0) {
                 
                 ForEach(Input.portraitPadBTop.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/8, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/6)
+                        .padding(.horizontal, width*0.025/8)
                 }
             }
         }
@@ -56,19 +56,40 @@ struct PortraitPadBSide: View {
     
     var body: some View {
         
-        VStack(spacing:0) {
+        if settings.buttonUppercase {
             
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
+            VStack(spacing:0) {
                 
-                ForEach(Input.portraitPadBSide.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/3, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
-                        .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/3)
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 4), spacing: 0) {
+                    
+                    ForEach(Input.portraitPadBSide[1].buttons, id: \.id) { button in
+                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/4, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                            .padding(.vertical, buttonHeight*0.025)
+                            .padding(.horizontal, width*0.025/4)
+                    }
                 }
+                .animation(nil)
             }
+            .frame(width: width)
+            .border(Color.pink, width: self.settings.guidelines ? 1 : 0)
         }
-        .frame(width: width)
-        .border(Color.pink, width: self.settings.guidelines ? 1 : 0)
+        else {
+            
+            VStack(spacing:0) {
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 4), spacing: 0) {
+                    
+                    ForEach(Input.portraitPadBSide[0].buttons, id: \.id) { button in
+                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/4, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                            .padding(.vertical, buttonHeight*0.025)
+                            .padding(.horizontal, width*0.025/4)
+                    }
+                }
+                .animation(nil)
+            }
+            .frame(width: width)
+            .border(Color.pink, width: self.settings.guidelines ? 1 : 0)
+        }
     }
 }
 

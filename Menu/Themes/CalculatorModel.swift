@@ -30,7 +30,7 @@ struct CalculatorModel: View {
     }
     
     var buttonHeight: CGFloat {
-        return orientation == .portrait ? (size == .large ? 1/11.5 : settings.portraitExpanded ? 1/11 : 1/9.5) : 1/8.5
+        return orientation == .portrait ? (size == .large ? 1/11.5 : 1/9.5) : 1/8.5
     }
     var standardSize: CGFloat {
         return size == .large ? 60 : 40

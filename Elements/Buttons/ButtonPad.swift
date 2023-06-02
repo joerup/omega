@@ -28,69 +28,70 @@ struct ButtonPad: View {
             
             VStack(spacing:0) {
             
-                if size == .small && !settings.portraitExpanded {
+                if size == .small {
+                    
+                    let width = self.width*0.98
+                    let height = min(buttonHeight, width*0.95/4)
                     
                     VStack(spacing:0) {
-                        ScrollRow(width: width, buttonHeight: buttonHeight, theme: theme, active: active)
-                        NumPad(width: width, buttonHeight: buttonHeight, theme: theme, active: active)
+                        ScrollRow(width: width, buttonHeight: height*0.8, theme: theme, active: active)
+                            .padding(.bottom, self.width*0.005)
+                        NumPad(width: width, buttonHeight: height, theme: theme, active: active)
                     }
-                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: buttonHeight))
+                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height*(4.8/5)))
                     
-                    ControlPad(width: width, buttonHeight: buttonHeight, active: active)
+                    ControlPad(width: width, buttonHeight: height*0.8, active: active)
+                        .padding(.top, self.width*0.005)
                     
                 } else {
-        
-                    if size == .small {
+                    
+                    let width = self.width*0.98
+                    let height = min(buttonHeight, width*0.95/8)
                         
-                        VStack(spacing:0) {
-                            PortraitPadATop(width: width, buttonHeight: buttonHeight, theme: theme, active: active)
-        
-                            HStack(spacing:0) {
-                                PortraitPadASide(width: width*0.2, buttonHeight: buttonHeight, theme: theme, active: active)
-                                NumPad(width: width*0.8, buttonHeight: buttonHeight, theme: theme, active: active)
-                            }
-                        }
-                        .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: buttonHeight))
+                    VStack(spacing:0) {
+                        PortraitPadBTop(width: width, buttonHeight: height, theme: theme, active: active)
     
-                        ControlPad(width: width, buttonHeight: buttonHeight, active: active)
-                    }
-                    else if size == .large {
-                        
-                        VStack(spacing:0) {
-                            PortraitPadBTop(width: width, buttonHeight: buttonHeight, theme: theme, active: active)
-        
-                            HStack(spacing:0) {
-                                PortraitPadBSide(width: width*3/7, buttonHeight: buttonHeight, theme: theme, active: active)
-                                NumPad(width: width*4/7, buttonHeight: buttonHeight, theme: theme, active: active)
-                            }
+                        HStack(spacing:0) {
+                            PortraitPadBSide(width: width*4/8, buttonHeight: height, theme: theme, active: active)
+                            NumPad(width: width*4/8, buttonHeight: height, theme: theme, active: active)
                         }
-                        .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: buttonHeight))
-    
-                        ControlPad(width: width, buttonHeight: buttonHeight, active: active)
                     }
+                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height))
+                    
+                    ControlPad(width: width, buttonHeight: height*0.8, active: active)
+                        .padding(.top, self.width*0.005)
                 }
             }
+            .padding(.horizontal, self.width*0.01)
+            .padding(.top, self.width*0.01)
+            .padding(.bottom, size == .small ? self.width*0.005 : self.width*0.01)
         }
         
         else if orientation == .landscape {
             
+            let width = size == .large ? self.width*0.98 : self.width*0.99
+            let height = min(buttonHeight, width*0.95/11)
+            
             HStack(spacing:0) {
                 
-                LandscapePad(width: width*0.6, buttonHeight: buttonHeight, theme: theme, active: active)
-                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width*0.6, buttonHeight: buttonHeight))
+                LandscapePad(width: width*7/11, buttonHeight: height, theme: theme, active: active)
+                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width*7/11, buttonHeight: height))
                 
                 VStack(spacing:0) {
-                    NumPad(width: width*0.4, buttonHeight: buttonHeight, theme: theme, active: active)
-                    ControlPad(width: width*0.4, buttonHeight: buttonHeight, active: active)
+                    NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active)
+                    ControlPad(width: width*4/11, buttonHeight: height, active: active)
                 }
             }
+            .padding(.horizontal, size == .large ? self.width*0.01 : self.width*0.005)
+            .padding(.top, size == .large ? self.width*0.01 : self.width*0.001)
+            .padding(.bottom, size == .large ? self.width*0.01 : 0)
         }
     }
 }
 
 enum ButtonDisplayMode {
-    case first
-    case second
-    case math
-    case alpha
+    case basic
+    case funcs
+    case vars
+    case units
 }

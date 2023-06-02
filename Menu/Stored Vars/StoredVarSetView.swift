@@ -24,9 +24,15 @@ struct StoredVarSetView: View {
     @State private var letter = ""
     @State private var varSubscript = ""
     
-    @State private var alphabetType: AlphaPadCategory = .vars
-    var alphabet: [InputButton] {
-        return Input.alphaLower.buttons
+    @State private var uppercase: Bool = false
+    @State private var alphabet: Alphabet = .english
+    private var letters: [InputButton] {
+        switch alphabet {
+        case .english:
+            return uppercase ? Input.alphaUpper.buttons : Input.alphaLower.buttons
+        case .greek:
+            return uppercase ? Input.greekUpper.buttons : Input.greekLower.buttons
+        }
     }
     
     init(value: Queue = Queue(), uuid: UUID? = nil) {
@@ -113,17 +119,41 @@ struct StoredVarSetView: View {
                                 .font(Font.system(.body, design: .rounded).weight(.semibold))
                                 .padding(10)
                             
-                            Picker("", selection: self.$alphabetType) {
-                                Text("VARS").tag(AlphaPadCategory.vars)
-                                Text("UNITS").tag(AlphaPadCategory.units)
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            
                             let count = geometry.size.width > 400 ? 10 : 8
+                            
+                            HStack {
+                                SmallTextButton(text: uppercase ? "ABC" : "abc",
+                                                color: alphabet == .english ? color(settings.theme.color3) : Color.init(white: 0.3),
+                                                textColor: alphabet == .english ? Color.white : color(settings.theme.color3, edit: true),
+                                                width: 60,
+                                                smallerSmall: true,
+                                                sound: .click3
+                                ) {
+                                    alphabet = .english
+                                }
+                                SmallTextButton(text: uppercase ? "ΑΒΓ" : "αβγ",
+                                                color: alphabet == .greek ? color(settings.theme.color3) : Color.init(white: 0.3),
+                                                textColor: alphabet == .greek ? Color.white : color(settings.theme.color3, edit: true),
+                                                width: 60,
+                                                smallerSmall: true,
+                                                sound: .click3
+                                ) {
+                                    alphabet = .greek
+                                }
+                                Spacer()
+                                SmallIconButton(symbol: uppercase ? "capslock.fill" : "capslock",
+                                                color: Color.init(white: 0.3),
+                                                textColor: .white,
+                                                smallerSmall: true,
+                                                sound: .click3
+                                ) {
+                                    uppercase.toggle()
+                                }
+                            }
                             
                             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: count), spacing: 0) {
                                 
-                                ForEach(self.alphabet, id: \.id) { button in
+                                ForEach(self.letters, id: \.id) { button in
                                     ButtonView(button: button, backgroundColor: color(button.name == letter ? self.settings.theme.color1 : self.settings.theme.color3), width: geometry.size.width*0.95/CGFloat(count), height: geometry.size.width*0.95/CGFloat(count), relativeSize: 0.45, customAction: {
                                         self.letter = button.name
                                     })
@@ -133,7 +163,6 @@ struct StoredVarSetView: View {
                                 }
                             }
                         }
-                        .id(alphabetType)
                     }
                 }
             }

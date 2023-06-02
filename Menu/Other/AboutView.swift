@@ -41,49 +41,6 @@ struct AboutView: View {
                     SettingsGroup("Premium") {
                         
                         SettingsLabel(title: "Current Tier", label: settings.pro ? "Omega Pro" : "Standard", icon: "list.bullet")
-                        
-                        SettingsButton(title: "Omega Pro", icon: "star.fill") {
-                            self.settings.menuType = .pro
-                        }
-                        
-                        SettingsButton(title: "Restore Purchases", icon: "bag") {
-                            self.storeManager.restoreProducts()
-                        }
-                    }
-                    
-                    if proCheck() {
-                        
-                        SettingsGroup("Calculations") {
-                        
-                            SettingsLabel(title: "Number of Calculations", label: String(PastCalculation.getCalculations().count), icon: "number")
-                        
-                            SettingsButton(title: "Export Calculations", icon: "arrow.up.doc") {
-                                self.showExport.toggle()
-                            }
-                        }
-                    }
-                
-                    SettingsGroup("Links") {
-                        
-                        SettingsLink(title: "Visit our Website",
-                                     url: URL(string: "https://omegacalculator.com")!,
-                                     icon: "contextualmenu.and.cursorarrow"
-                        )
-                        
-                        SettingsLink(title: "Contact Support",
-                                     url: URL(string: "https://omegacalculator.com/support")!,
-                                     icon: "paperplane"
-                        )
-                        
-                        SettingsLink(title: "Privacy Policy",
-                                     url: URL(string: "https://omegacalculator.com/privacy")!,
-                                     icon: "hand.raised"
-                        )
-                        
-                        SettingsLink(title: "Follow us on Twitter",
-                                     url: URL(string: "https://twitter.com/OmegaCalculator")!,
-                                     icon: "bubble.left"
-                        )
                     }
                     
                     SettingsGroup("Help us Grow") {

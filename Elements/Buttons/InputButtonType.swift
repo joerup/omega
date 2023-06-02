@@ -138,6 +138,31 @@ enum InputLetter: String, InputButtonType {
     case ψ = "ψ"
     case ω = "ω"
     
+    case Α = "Α"
+    case Β = "Β"
+    case Γ = "Γ"
+    case Δ = "Δ"
+    case Ε = "Ε"
+    case Ζ = "Ζ"
+    case Η = "Η"
+    case Θ = "Θ"
+    case Ι = "Ι"
+    case Κ = "Κ"
+    case Λ = "Λ"
+    case Μ = "Μ"
+    case Ν = "Ν"
+    case Ξ = "Ξ"
+    case Ο = "Ο"
+    case Π = "Π"
+    case Ρ = "Ρ"
+    case Σ = "Σ"
+    case Τ = "Τ"
+    case Υ = "Υ"
+    case Φ = "Φ"
+    case Χ = "Χ"
+    case Ψ = "Ψ"
+    case Ω = "Ω"
+    
     var name: String {
         return rawValue
     }

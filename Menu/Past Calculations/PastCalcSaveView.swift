@@ -21,8 +21,7 @@ struct PastCalcSaveView: View {
                     message: "You have reached the limit of \(PastObject.savedLimit) saved calculations. You can unsave others to free up space, or upgrade to Omega Pro for unlimited saved calculations.",
                     continueAction: {
                         Settings.settings.popUp = .none
-                        Settings.settings.showMenu = true
-                        Settings.settings.menuType = .savedCalculations
+                        Settings.settings.calculatorOverlay = .saved
                     }
                 )
             } else {
@@ -71,8 +70,7 @@ struct PastCalcMultipleSaveView: View {
                     message: calculations.count == 1 ? "You have reached the limit of \(PastObject.savedLimit) saved calculations. You can delete some to make room, or upgrade to Omega Pro for unlimited saved calculations." : "Saving these calculations exceeds the limit of \(PastObject.savedLimit) saved calculations. You can unsave others to free up space, or upgrade to Omega Pro for unlimited saved calculations.",
                     continueAction: {
                         Settings.settings.popUp = .none
-                        Settings.settings.showMenu = true
-                        Settings.settings.menuType = .savedCalculations
+                        Settings.settings.calculatorOverlay = .saved
                     }
                 )
             } else if calculations.count > 1 {

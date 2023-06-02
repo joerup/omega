@@ -52,8 +52,7 @@ struct ButtonView: View {
                         .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
                         .frame(width: width, height: height, alignment: .center)
                         .background(backgroundColor)
-                        .overlay(Color.init(white: 0.2).opacity(button.disabled ? 0.7 : 0))
-                        .clipShape(RoundedRectangle(cornerRadius: (width+height)/CGFloat(settings.buttonCornerRadius), style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: 0.42*height, style: .continuous))
                         .onTapGesture { self.pressButton(pressType: .tap) }
                         .onLongPressGesture { self.pressButton(pressType: .hold) }
                 }
@@ -65,7 +64,7 @@ struct ButtonView: View {
                 .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
                 .frame(width: width, height: height, alignment: .center)
                 .background(backgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: (width+height)/CGFloat(settings.buttonCornerRadius), style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 0.42*height, style: .continuous))
         }
     }
     
@@ -136,6 +135,5 @@ struct CalculatorButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? 0.7 : 1.0)
-            .animation(.default)
     }
 }

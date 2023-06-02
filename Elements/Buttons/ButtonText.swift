@@ -100,7 +100,7 @@ struct ButtonText: View {
     }
     
     var offset: CGFloat {
-        if Operation.primary.contains(button.name) {
+        if Operation.primary.contains(button.name) || button.name == "enter" {
             return fontSize*0.125
         }
         return 0

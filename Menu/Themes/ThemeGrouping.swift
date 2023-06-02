@@ -45,14 +45,14 @@ struct ThemeGrouping: View {
                     }) {
                         VStack {
 
-                            ThemeIcon(theme: theme, size: 75, locked: theme.locked, selected: self.settings.theme.name == theme.name)
+                            ThemeIcon(theme: theme, size: 70, locked: theme.locked, selected: self.settings.theme.name == theme.name)
 
                             Text(theme.name)
                                 .font(Font.system(.footnote, design: .rounded).weight(.bold))
                                 .lineLimit(0)
                                 .minimumScaleFactor(0.5)
                                 .foregroundColor(Color.init(white: 0.7))
-                                .frame(width: 75, height: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
+                                .frame(width: 70, height: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
                                 .padding(.bottom, 5)
                         }
                     }

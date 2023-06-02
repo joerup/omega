@@ -35,7 +35,7 @@ extension Queue {
         if pressType == .hold && button.button.name == InputOperationA.mlt.name {
             button = InputButton(InputOperationB.con.name)
         }
-        if button.button.name == InputOperationA.div.name {
+        if pressType == .hold && button.button.name == InputOperationA.div.name {
             button = InputButton(InputOperationB.frac.name)
         }
         

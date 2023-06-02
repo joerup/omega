@@ -14,8 +14,6 @@ struct ThemeDescription: View {
     
     var theme: Theme
     
-    @Binding var preview: ThemePreviewItem?
-    
     var body: some View {
         
         HStack {
@@ -25,6 +23,7 @@ struct ThemeDescription: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(theme.name)
                     .font(Font.system(.title2, design: .rounded).weight(.bold))
+                    .foregroundColor(.white)
                 Text("\(theme.category) Series")
                     .font(Font.system(.headline, design: .rounded).weight(.bold))
                     .foregroundColor(Color.init(white: 0.7))
@@ -36,25 +35,6 @@ struct ThemeDescription: View {
             .padding(.leading, 10)
             
             Spacer()
-            
-            VStack {
-                Button(action: {
-                    theme.favorite()
-                }) {
-                    Image(systemName: "star\(theme.isFavorite ? ".fill" : "")")
-                        .imageScale(.large)
-                        .foregroundColor(theme.isFavorite ? color(theme.color1) : Color.init(white: 0.6))
-                }
-                Spacer()
-                Button(action: {
-                    self.preview = ThemePreviewItem(theme, name: "Current Color")
-                }) {
-                    Image(systemName: "rectangle.on.rectangle")
-                        .foregroundColor(Color.init(white: 0.6))
-                }
-                .padding(.bottom, 2)
-            }
-            
         }
         .padding(.horizontal, 5)
         .padding(.vertical, 15)

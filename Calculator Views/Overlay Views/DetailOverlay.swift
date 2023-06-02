@@ -30,7 +30,6 @@ struct DetailOverlay: View {
                     .padding(.top, 7.5)
                 }
                 .background(Color.init(white: 0.1))
-                .cornerRadius(20)
                 .edgesIgnoringSafeArea(.bottom)
             }
         }

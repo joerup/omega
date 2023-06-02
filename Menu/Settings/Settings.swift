@@ -19,7 +19,6 @@ class Settings: ObservableObject {
     @Published var clipboard: [Item] = []
     
     @Published var showMenu = false
-    @Published var menuType: MenuType? = nil
     @Published var menuSheetRefresh = false
     
     @Published var popUp: AnyView? = nil
@@ -29,10 +28,11 @@ class Settings: ObservableObject {
     
     @Published var calculatorOverlay: CalculatorOverlayType = .none
     @Published var detailOverlay: DetailOverlayType = .none
-    @Published var buttonDisplayMode: ButtonDisplayMode = .first
-    @Published var mathPadCategory: MathPadCategory = .alg
-    @Published var alphaPadCategory: AlphaPadCategory = .vars
+    @Published var buttonDisplayMode: ButtonDisplayMode = .basic
+    @Published var selectedAlphabet: Alphabet = .english
+    @Published var buttonUppercase: Bool = false
     
+    @Published var showProDescription: Bool = false
     @Published var purchaseConfirmation: Bool = false
     @Published var restoreConfirmation: Bool = false
     
@@ -54,7 +54,7 @@ class Settings: ObservableObject {
     var pro: Bool {
         return proOverride ?? UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.PRO")
     }
-    @Published var proOverride: Bool? = true//nil
+    @Published var proOverride: Bool? = nil
     @Published var promptProAd: Bool = false
     @Published var clickProAd: Bool = false
     
@@ -104,16 +104,6 @@ class Settings: ObservableObject {
     // MARK: - Settings
     
     // MARK: Buttons
-    @Published var portraitExpanded: Bool = UserDefaults.standard.bool(forKey: "portraitExpanded") {
-        didSet {
-            UserDefaults.standard.set(self.portraitExpanded, forKey: "portraitExpanded")
-        }
-    }
-    @Published var buttonCornerRadius: Int = UserDefaults.standard.integer(forKey: "buttonCornerRadius") {
-        didSet {
-            UserDefaults.standard.set(self.buttonCornerRadius, forKey: "buttonCornerRadius")
-        }
-    }
     @Published var soundEffects: Bool = UserDefaults.standard.bool(forKey: "soundEffects") {
         didSet {
             UserDefaults.standard.set(self.soundEffects, forKey: "soundEffects")
@@ -126,11 +116,6 @@ class Settings: ObservableObject {
     }
     
     // MARK: Text
-    @Published var textWeight: Int = UserDefaults.standard.integer(forKey: "textWeight") {
-        didSet {
-            UserDefaults.standard.set(self.textWeight, forKey: "textWeight")
-        }
-    }
     @Published var textAnimations: Bool = UserDefaults.standard.bool(forKey: "textAnimations") {
         didSet {
             UserDefaults.standard.set(self.textAnimations, forKey: "textAnimations")
@@ -171,12 +156,6 @@ class Settings: ObservableObject {
     @Published var arcInverseTrig: Bool = UserDefaults.standard.bool(forKey: "arcInverseTrig") {
         didSet {
             UserDefaults.standard.set(self.arcInverseTrig, forKey: "arcInverseTrig")
-            Calculation.current.refresh()
-        }
-    }
-    @Published var degreeSymbol: Bool = UserDefaults.standard.bool(forKey: "degreeSymbol") {
-        didSet {
-            UserDefaults.standard.set(self.degreeSymbol, forKey: "degreeSymbol")
             Calculation.current.refresh()
         }
     }
@@ -239,12 +218,6 @@ func defaultSettings() {
     // MARK: Default Settings Values
     
     // Buttons
-    if userDefaults.object(forKey: "portraitExpanded") == nil {
-        settings.portraitExpanded = false
-    }
-    if userDefaults.object(forKey: "buttonCornerRadius") == nil {
-        settings.buttonCornerRadius = 5 // regular
-    }
     if userDefaults.object(forKey: "soundEffects") == nil {
         settings.soundEffects = true
     }
@@ -253,9 +226,6 @@ func defaultSettings() {
     }
     
     // Text
-    if userDefaults.object(forKey: "textWeight") == nil {
-        settings.textWeight = 1 // medium
-    }
     if userDefaults.object(forKey: "textAnimations") == nil {
         settings.textAnimations = false
     }
@@ -280,9 +250,6 @@ func defaultSettings() {
     }
     if userDefaults.object(forKey: "displayX10") == nil {
         settings.displayX10 = false
-    }
-    if userDefaults.object(forKey: "degreeSymbol") == nil {
-        settings.degreeSymbol = false
     }
     
     // Input

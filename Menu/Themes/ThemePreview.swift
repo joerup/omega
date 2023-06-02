@@ -16,6 +16,8 @@ struct ThemePreview: View {
     @Binding var preview: ThemePreviewItem?
     @Binding var showUnlock: Bool
     
+    @Environment(\.presentationMode) var presentationMode
+    
     var theme: Theme {
         return preview?.theme ?? ThemeData.themes[0].themes[0]
     }
@@ -67,7 +69,9 @@ struct ThemePreview: View {
                     
                     Spacer()
                     
-                    XButton{}.opacity(0)
+                    XButton {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }
                 }
                 .frame(height: size.smallerLargeSize+15)
                 .padding(.horizontal, 7.5)

@@ -28,89 +28,153 @@ struct DetailButtonRow: View {
             
             HStack {
                 
-                if orientation == .landscape {
-                    SmallTextButton(text: "2ND",
-                                    color: settings.buttonDisplayMode == .second ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                    textColor: settings.buttonDisplayMode == .second ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .large ? 100 : 60,
+                if orientation == .landscape || size == .large {
+                    SmallTextButton(text: "MAT",
+                                    color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                    textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
+                                    width: size == .small ? 55 : 75,
                                     smallerSmall: orientation == .landscape,
                                     sound: .click3
                     ) {
-                        settings.buttonDisplayMode = settings.buttonDisplayMode == .second ? .first : .second
+                        settings.buttonDisplayMode = .basic
+                        settings.buttonUppercase = false
+                        settings.detailOverlay = .none
+                    }
+                    .padding(.leading, 10)
+                }
+                else {
+                    SmallTextButton(text: "MAT",
+                                    color: settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                    textColor: settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
+                                    width: size == .small ? 55 : 75,
+                                    smallerSmall: orientation == .landscape,
+                                    sound: .click3
+                    ) {
+                        settings.buttonDisplayMode = settings.buttonDisplayMode == .funcs ? .basic : .funcs
+                        settings.buttonUppercase = false
                         settings.detailOverlay = .none
                     }
                 }
                 
-                SmallTextButton(text: "MAT",
-                                color: settings.buttonDisplayMode == .math ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                textColor: settings.buttonDisplayMode == .math ? Color.white : color(settings.theme.color3, edit: true),
-                                width: size == .large ? 100 : 60,
+                SmallTextButton(text: "VAR",
+                                color: settings.buttonDisplayMode == .vars ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
+                                width: size == .small ? 55 : 75,
                                 smallerSmall: orientation == .landscape,
                                 sound: .click3
                 ) {
-                    settings.buttonDisplayMode = settings.buttonDisplayMode == .math ? .first : .math
+                    guard proCheck() else {
+                        settings.promptProAd.toggle()
+                        return
+                    }
+                    settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
+                    settings.buttonUppercase = false
                     settings.detailOverlay = .none
                 }
                 
-                SmallTextButton(text: "ABC",
-                                color: settings.buttonDisplayMode == .alpha ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                textColor: settings.buttonDisplayMode == .alpha ? Color.white : color(settings.theme.color3, edit: true),
-                                width: size == .large ? 100 : 60,
+//                SmallIconButton(symbol: "ruler",
+//                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
+//                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
+//                                smallerSmall: orientation == .landscape,
+//                                sound: .click3
+//                ) {
+//                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
+//                    settings.buttonUppercase = false
+//                    settings.detailOverlay = .none
+//                }
+            }
+            
+            if orientation == .landscape || size == .large {
+                SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
+                                color: Color.init(white: 0.15),
+                                textColor: .white,
                                 smallerSmall: orientation == .landscape,
                                 sound: .click3
                 ) {
-                    settings.buttonDisplayMode = settings.buttonDisplayMode == .alpha ? .first : .alpha
+                    settings.buttonUppercase.toggle()
                     settings.detailOverlay = .none
                 }
+                .padding(.leading, 20)
+            }
+            
+            if settings.buttonDisplayMode == .vars && (orientation == .landscape || size == .large) {
+                AlphabetButton(alphabet: $settings.selectedAlphabet,
+                               uppercase: $settings.buttonUppercase,
+                               width: size == .small ? 60 : 80,
+                               smallerSmall: orientation == .landscape
+                )
+                .padding(.leading, 10)
             }
             
             Spacer()
+            
+            if settings.buttonDisplayMode == .vars && orientation == .portrait && size == .small {
+                AlphabetButton(alphabet: $settings.selectedAlphabet,
+                               uppercase: $settings.buttonUppercase,
+                               width: size == .small ? 55 : 75,
+                               smallerSmall: orientation == .landscape
+                )
+                .padding(.horizontal, 7.5)
+            }
                 
-            HStack {
-                
-                if calculation.queue.editing {
-                    
-                    SmallIconButton(symbol: "chevron.backward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click2, proOnly: true) {
-                        Calculation.current.setUpInput()
-                        Calculation.current.queue.backward()
-                    }
-                    
-                    SmallIconButton(symbol: "chevron.forward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click1, proOnly: !((Calculation.current.queue.queue2.first as? Parentheses)?.type == .hidden)) {
-                        Calculation.current.setUpInput()
-                        Calculation.current.queue.forward()
-                    }
+            if settings.buttonDisplayMode != .basic && orientation == .portrait && size == .small {
+                SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
+                                color: Color.init(white: 0.15),
+                                textColor: .white,
+                                smallerSmall: orientation == .landscape,
+                                sound: .click3
+                ) {
+                    settings.buttonUppercase.toggle()
+                    settings.detailOverlay = .none
                 }
+            } else {
                 
-                if calculation.completed {
+                HStack {
                     
-                    SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
-                        pastCalculation?.copy()
-                    }
-                    SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
-                        pastCalculation?.save()
-                    }
-                    if proCheck() {
-                        SmallIconButton(symbol: "character.textbox", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, proOnly: true) {
-                            pastCalculation?.store()
+                    if calculation.queue.editing {
+                        
+                        SmallIconButton(symbol: "chevron.backward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click2, proOnly: true) {
+                            Calculation.current.setUpInput()
+                            Calculation.current.queue.backward()
+                        }
+                        
+                        SmallIconButton(symbol: "chevron.forward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click1, proOnly: !((Calculation.current.queue.queue2.first as? Parentheses)?.type == .hidden)) {
+                            Calculation.current.setUpInput()
+                            Calculation.current.queue.forward()
                         }
                     }
-                }
-                
-                if calculation.completed {
                     
-                    SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.2), smallerSmall: orientation == .landscape) {
-                        settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
+                    if calculation.completed {
+                        
+                        SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
+                            pastCalculation?.copy()
+                        }
+                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
+                            pastCalculation?.save()
+                        }
+                        if proCheck() {
+                            SmallIconButton(symbol: "character.textbox", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, proOnly: true) {
+                                pastCalculation?.store()
+                            }
+                        }
                     }
-                    .onAppear {
-                        if !calculation.queue.allVariables.isEmpty || !calculation.queue.otherUnits().isEmpty {
-                            settings.detailOverlay = .result
+                    
+                    if calculation.completed {
+                        
+                        SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape) {
+                            settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
+                        }
+                        .onAppear {
+                            if !calculation.queue.allVariables.isEmpty || !calculation.queue.otherUnits().isEmpty {
+                                settings.detailOverlay = .result
+                            }
                         }
                     }
                 }
             }
         }
         .frame(height: size == .large ? 65 : orientation == .landscape ? 35 : 40)
-        .animation(.default)
-        .transition(.move(edge: .trailing))
+        .animation(.default, value: Calculation.current.completed)
+        .animation(.default, value: settings.buttonDisplayMode)
     }
 }

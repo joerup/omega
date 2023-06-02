@@ -88,12 +88,7 @@ struct ExportView: View {
             VStack(spacing: 0) {
                 
                 if fullScreen {
-                    Text("Export")
-                        .font(Font.system(.headline, design: .rounded).weight(.bold))
-                        .frame(height: size.smallerLargeSize+15)
-                    
-                    Divider()
-                        .padding(.horizontal, 10)
+                    NavigationHeader("Export")
                 }
                 
                 ScrollView {
@@ -105,7 +100,7 @@ struct ExportView: View {
                             .foregroundColor(Color.init(white: 0.8))
                             .padding(.top, fullScreen ? 15 : 0)
                         
-                        SettingsGroup(light: fullScreen ? 0.2 : 0.3) {
+                        SettingsGroup(light: fullScreen ? 0.15 : 0.3) {
                            
                             if !calculationsPreset {
                                 
@@ -152,7 +147,7 @@ struct ExportView: View {
                             self.calculations = getCalculations()
                         }
                         
-                        SettingsGroup(light: fullScreen ? 0.2 : 0.3) {
+                        SettingsGroup(light: fullScreen ? 0.15 : 0.3) {
                             SettingsRow {
                                 HStack {
                                     SettingsText(title: "File Type")
@@ -164,7 +159,7 @@ struct ExportView: View {
                             }
                         }
                         
-                        SettingsGroup("Columns", light: fullScreen ? 0.2 : 0.3) {
+                        SettingsGroup("Columns", light: fullScreen ? 0.15 : 0.3) {
                             
                             SettingsToggle(toggle: self.$includeDate, title: "Date")
                             SettingsToggle(toggle: self.$includeTime, title: "Time")

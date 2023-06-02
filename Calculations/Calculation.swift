@@ -191,7 +191,8 @@ class Calculation: ObservableObject, Equatable {
             settings.showMenu = false
             settings.calculatorOverlay = .none
             settings.detailOverlay = .none
-            settings.buttonDisplayMode = .first
+            settings.buttonDisplayMode = .basic
+            settings.buttonUppercase = false
         }
         
         // Create a new current item

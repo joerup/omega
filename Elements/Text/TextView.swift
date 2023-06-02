@@ -21,7 +21,7 @@ struct TextView: View {
     
     var standardSize: CGFloat
     var verticalPadding: CGFloat {
-        return orientation == .landscape && size == .small ? 0 : 10
+        return orientation == .landscape ? 0 : 10
     }
 
 	var body: some View {
@@ -106,16 +106,16 @@ struct TextView: View {
     
     func largeSize(_ geometry: GeometryProxy) -> CGFloat {
         if orientation == .landscape && size == .small {
-            return geometry.size.height-size.smallerSmallSize
+            return min(geometry.size.height-size.smallerSmallSize, 112)
         } else {
-            return geometry.size.height*0.5
+            return min(geometry.size.height*0.5, 135)
         }
     }
     func smallSize(_ geometry: GeometryProxy) -> CGFloat {
         if orientation == .landscape && size == .small {
             return size.smallerSmallSize
         } else {
-            return geometry.size.height*0.25
+            return min(geometry.size.height*0.25, 65)
         }
     }
 }

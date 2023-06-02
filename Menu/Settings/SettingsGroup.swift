@@ -16,7 +16,7 @@ struct SettingsGroup<Content: View>: View {
     
     var content: () -> Content
     
-    init(_ title: String? = nil, columns: Bool = false, light: Double = 0.1, @ViewBuilder content: @escaping () -> Content) {
+    init(_ title: String? = nil, columns: Bool = false, light: Double = 0.15, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.columns = columns
         self.light = light
