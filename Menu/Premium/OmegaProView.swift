@@ -421,6 +421,12 @@ struct OmegaProView: View {
         .sheet(isPresented: self.$showAd) {
             OmegaProAd(storeManager: storeManager)
         }
+        .sheet(isPresented: self.$settings.purchaseConfirmation) {
+            PurchaseConfirmation()
+        }
+        .sheet(isPresented: self.$settings.restoreConfirmation) {
+            PurchaseConfirmation(restore: true)
+        }
     }
 }
 

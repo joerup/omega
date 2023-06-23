@@ -252,8 +252,16 @@ struct TextDisplay: View {
             }
         }
         
-        if shrinkFactor < 1-settings.shrink {
-            shrinkFactor = 1-settings.shrink
+        // Impose the minimum shrink size
+        var minimumShrinkFactor: Double = 0.5
+        switch settings.minimumTextSize {
+        case 0: minimumShrinkFactor = 0.25
+        case 2: minimumShrinkFactor = 0.75
+        default: minimumShrinkFactor = 0.5
+        }
+        
+        if shrinkFactor < minimumShrinkFactor {
+            shrinkFactor = minimumShrinkFactor
         }
         if shrinkFactor < 1 {
             self.textElements.forEach { $0.shrink(shrinkFactor) }

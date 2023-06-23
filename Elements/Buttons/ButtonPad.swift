@@ -69,7 +69,7 @@ struct ButtonPad: View {
         
         else if orientation == .landscape {
             
-            let width = size == .large ? self.width*0.98 : self.width*0.99
+            let width = size == .large ? self.width*0.99 : self.width
             let height = min(buttonHeight, width*0.95/11)
             
             HStack(spacing:0) {
@@ -82,9 +82,9 @@ struct ButtonPad: View {
                     ControlPad(width: width*4/11, buttonHeight: height, active: active)
                 }
             }
-            .padding(.horizontal, size == .large ? self.width*0.01 : self.width*0.005)
-            .padding(.top, size == .large ? self.width*0.01 : self.width*0.001)
-            .padding(.bottom, size == .large ? self.width*0.01 : 0)
+            .padding(.horizontal, size == .large ? self.width*0.005 : 0)
+            .padding(.top, self.width*0.005)
+            .padding(.bottom, size == .large ? self.width*0.005 : 0)
         }
     }
 }

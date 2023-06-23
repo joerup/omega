@@ -191,6 +191,12 @@ struct MainMenuView: View {
             .sheet(isPresented: self.$showShare) {
                 ActivityViewController(activityItems: [URL(string: "https://apps.apple.com/us/app/omega-calculator/id1528068503")!])
             }
+            .sheet(isPresented: self.$settings.purchaseConfirmation) {
+                PurchaseConfirmation()
+            }
+            .sheet(isPresented: self.$settings.restoreConfirmation) {
+                PurchaseConfirmation(restore: true)
+            }
         }
         .contentOverlay()
     }

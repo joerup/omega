@@ -53,8 +53,6 @@ struct ButtonView: View {
                         .frame(width: width, height: height, alignment: .center)
                         .background(backgroundColor)
                         .clipShape(RoundedRectangle(cornerRadius: 0.42*height, style: .continuous))
-                        .onTapGesture { self.pressButton(pressType: .tap) }
-                        .onLongPressGesture { self.pressButton(pressType: .hold) }
                 }
                 .buttonStyle(CalculatorButtonStyle())
             }
@@ -134,6 +132,6 @@ enum PressType {
 struct CalculatorButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 0.7 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.8 : 1.0)
     }
 }

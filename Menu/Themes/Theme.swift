@@ -26,8 +26,18 @@ class Theme: ObservableObject, Codable {
         return Settings.settings.favoriteThemes.contains(self.id)
     }
     
+    // NOTE: Premium themes used to be unlocked via purchase of individual sets. Now they are only included in Omega Pro, but anyone who purchased them pre-2.0.2, when this model changed, will keep access. The Basic series is always available for everyone. The Colorful series was previously available for everyone, so anyone who downloaded pre-2.1.1 will have it, but anyone after will not.
+    
+    // Conditions for a theme to be LOCKED
     var locked: Bool {
-        return !proCheck() && !UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.ThemeSet\(ThemeData.categoryID(for: self.category))") && !["Basic","Colorful"].contains(self.category)
+        // no Pro
+        !proCheck()
+        // not in Basic category
+        && category != "Basic"
+        // not unlocked via individual purchase (only existed pre-2.0.2)
+        && !UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.ThemeSet\(ThemeData.categoryID(for: category))")
+        // not in Colorful category (if downloaded pre-2.1.1)
+        && !(category == "Colorful" && UserDefaults.standard.bool(forKey: "colorfulUnlocked"))
     }
     
     init(id: Int, name: String, category: String, color1: [CGFloat], color2: [CGFloat], color3: [CGFloat]) {

@@ -121,11 +121,6 @@ class Settings: ObservableObject {
             UserDefaults.standard.set(self.textAnimations, forKey: "textAnimations")
         }
     }
-    @Published var shrink: Double = UserDefaults.standard.double(forKey: "shrink") {
-        didSet {
-            UserDefaults.standard.set(self.shrink, forKey: "shrink")
-        }
-    }
     
     // MARK: Display
     
@@ -156,6 +151,12 @@ class Settings: ObservableObject {
     @Published var arcInverseTrig: Bool = UserDefaults.standard.bool(forKey: "arcInverseTrig") {
         didSet {
             UserDefaults.standard.set(self.arcInverseTrig, forKey: "arcInverseTrig")
+            Calculation.current.refresh()
+        }
+    }
+    @Published var minimumTextSize: Int = UserDefaults.standard.integer(forKey: "minimumTextSize") {
+        didSet {
+            UserDefaults.standard.set(self.minimumTextSize, forKey: "minimumTextSize")
             Calculation.current.refresh()
         }
     }
@@ -215,6 +216,13 @@ func defaultSettings() {
         settings.calculatorType = .calculator
     }
     
+    // TRANSFER to new shrink setting, also update colorful unlocked! 2.1.1
+    if let shrink = userDefaults.object(forKey: "shrink") as? Double {
+        userDefaults.set(true, forKey: "colorfulUnlocked")
+        userDefaults.removeObject(forKey: "shrink")
+        settings.minimumTextSize = (shrink > 0.7 ? 2 : shrink > 0.3 ? 1 : 0)
+    }
+    
     // MARK: Default Settings Values
     
     // Buttons
@@ -229,8 +237,8 @@ func defaultSettings() {
     if userDefaults.object(forKey: "textAnimations") == nil {
         settings.textAnimations = false
     }
-    if userDefaults.object(forKey: "shrink") == nil {
-        settings.shrink = 0.5
+    if userDefaults.object(forKey: "minimumTextSize") == nil {
+        settings.minimumTextSize = 1
     }
     
     // Display
@@ -250,6 +258,9 @@ func defaultSettings() {
     }
     if userDefaults.object(forKey: "displayX10") == nil {
         settings.displayX10 = false
+    }
+    if userDefaults.object(forKey: "minimumTextSize") == nil {
+        settings.minimumTextSize = 1
     }
     
     // Input

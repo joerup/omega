@@ -40,7 +40,6 @@ struct DetailButtonRow: View {
                         settings.buttonUppercase = false
                         settings.detailOverlay = .none
                     }
-                    .padding(.leading, 10)
                 }
                 else {
                     SmallTextButton(text: "MAT",
@@ -84,50 +83,32 @@ struct DetailButtonRow: View {
 //                }
             }
             
-            if orientation == .landscape || size == .large {
-                SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
-                                color: Color.init(white: 0.15),
-                                textColor: .white,
-                                smallerSmall: orientation == .landscape,
-                                sound: .click3
-                ) {
-                    settings.buttonUppercase.toggle()
-                    settings.detailOverlay = .none
+            HStack {
+                if orientation == .landscape || size == .large {
+                    if settings.buttonDisplayMode == .basic {
+                        matButtons
+                    }
+                    else if settings.buttonDisplayMode == .vars {
+                        varButtons
+                    }
                 }
-                .padding(.leading, 20)
             }
-            
-            if settings.buttonDisplayMode == .vars && (orientation == .landscape || size == .large) {
-                AlphabetButton(alphabet: $settings.selectedAlphabet,
-                               uppercase: $settings.buttonUppercase,
-                               width: size == .small ? 60 : 80,
-                               smallerSmall: orientation == .landscape
-                )
-                .padding(.leading, 10)
-            }
+            .padding(.leading, 20)
             
             Spacer()
             
-            if settings.buttonDisplayMode == .vars && orientation == .portrait && size == .small {
-                AlphabetButton(alphabet: $settings.selectedAlphabet,
-                               uppercase: $settings.buttonUppercase,
-                               width: size == .small ? 55 : 75,
-                               smallerSmall: orientation == .landscape
-                )
-                .padding(.horizontal, 7.5)
+            HStack {
+                if orientation == .portrait && size == .small {
+                    if settings.buttonDisplayMode == .funcs {
+                        matButtons
+                    }
+                    else if settings.buttonDisplayMode == .vars {
+                        varButtons
+                    }
+                }
             }
                 
-            if settings.buttonDisplayMode != .basic && orientation == .portrait && size == .small {
-                SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
-                                color: Color.init(white: 0.15),
-                                textColor: .white,
-                                smallerSmall: orientation == .landscape,
-                                sound: .click3
-                ) {
-                    settings.buttonUppercase.toggle()
-                    settings.detailOverlay = .none
-                }
-            } else {
+            if settings.buttonDisplayMode == .basic || size == .large || orientation == .landscape {
                 
                 HStack {
                     
@@ -176,5 +157,37 @@ struct DetailButtonRow: View {
         .frame(height: size == .large ? 65 : orientation == .landscape ? 35 : 40)
         .animation(.default, value: Calculation.current.completed)
         .animation(.default, value: settings.buttonDisplayMode)
+    }
+    
+    @ViewBuilder
+    var matButtons: some View {
+        SmallTextButton(text: "2ND",
+                        color: settings.buttonUppercase ? color(settings.theme.color1) : Color.init(white: 0.15),
+                        textColor: settings.buttonUppercase ? Color.white : color(settings.theme.color3, edit: true),
+                        width: size == .small ? 55 : 75,
+                        smallerSmall: orientation == .landscape,
+                        sound: .click3
+        ) {
+            settings.buttonUppercase.toggle()
+            settings.detailOverlay = .none
+        }
+    }
+    
+    @ViewBuilder
+    var varButtons: some View {
+        AlphabetButton(alphabet: $settings.selectedAlphabet,
+                       uppercase: $settings.buttonUppercase,
+                       width: size == .small ? 55 : 75,
+                       smallerSmall: orientation == .landscape
+        )
+        SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
+                        color: Color.init(white: 0.15),
+                        textColor: .white,
+                        smallerSmall: orientation == .landscape,
+                        sound: .click3
+        ) {
+            settings.buttonUppercase.toggle()
+            settings.detailOverlay = .none
+        }
     }
 }

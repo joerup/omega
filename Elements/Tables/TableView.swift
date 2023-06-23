@@ -90,52 +90,51 @@ struct TableView: View {
 
                                 let y = Expression(equation.items).plugIn(Number(x), to: horizontalAxis, using: equation.modes)
 
-                                if let number = Value.setValue(y) {
+                                let number = Value.setValue(y)
+
+                                HStack {
+                                    
+                                    let xString = Number(x).string
 
                                     HStack {
-                                        
-                                        let xString = Number(x).string
-
-                                        HStack {
-                                            Spacer()
-                                            Text(xString)
-                                                .font(Font(UIFont(name: TextFormatting.getFont(), size: fontSize) ?? UIFont()))
-                                                .minimumScaleFactor(0.5)
-                                                .opacity(0.6)
-                                        }
-                                        .frame(maxWidth: geometry.size.width*0.3, maxHeight: fontSize*1.2)
-                                        .padding(.horizontal, 15)
-                                        .background(Color.init(white: !fullTable ? 0.25 : x == centerValue ? 0.3 : 0.2).cornerRadius(20))
-                                        .overlay(color(overlayColor).opacity(0.1).cornerRadius(20))
-
-                                        let yStrings = number is Expression ? (number as! Expression).queue.strings : Queue([number]).strings
-
-                                        HStack {
-                                            TextDisplay(strings: yStrings, size: fontSize)
-                                            Spacer()
-                                        }
-                                        .frame(minWidth: geometry.size.width*0.3)
-                                        .padding(.horizontal, 15)
-                                        .background(Color.init(white: !fullTable ? 0.25 : x == centerValue ? 0.3 : 0.2).cornerRadius(20))
-                                        .overlay(color(overlayColor).opacity(0.1).cornerRadius(20))
-                                        .contextMenu {
-                                            Button(action: {
-                                                guard yStrings != ["ERROR"] else { return }
-                                                UIPasteboard.general.string = Queue([number]).exportString()
-                                                Settings.settings.clipboard = [number]
-                                                Settings.settings.notification = .copy
-                                            }) {
-                                                Image(systemName: "doc.on.clipboard")
-                                                Text("Copy")
-                                            }
-                                        }
-
+                                        Spacer()
+                                        Text(xString)
+                                            .font(Font(UIFont(name: TextFormatting.getFont(), size: fontSize) ?? UIFont()))
+                                            .minimumScaleFactor(0.5)
+                                            .opacity(0.6)
                                     }
-                                    .id(x)
-                                    .frame(height: fontSize*1.2)
-                                    .padding(.horizontal, 5)
-                                    .padding(.vertical, 1)
+                                    .frame(maxWidth: geometry.size.width*0.3, maxHeight: fontSize*1.2)
+                                    .padding(.horizontal, 15)
+                                    .background(Color.init(white: !fullTable ? 0.25 : x == centerValue ? 0.3 : 0.2).cornerRadius(20))
+                                    .overlay(color(overlayColor).opacity(0.1).cornerRadius(20))
+
+                                    let yStrings = number is Expression ? (number as! Expression).queue.strings : Queue([number]).strings
+
+                                    HStack {
+                                        TextDisplay(strings: yStrings, size: fontSize)
+                                        Spacer()
+                                    }
+                                    .frame(minWidth: geometry.size.width*0.3)
+                                    .padding(.horizontal, 15)
+                                    .background(Color.init(white: !fullTable ? 0.25 : x == centerValue ? 0.3 : 0.2).cornerRadius(20))
+                                    .overlay(color(overlayColor).opacity(0.1).cornerRadius(20))
+                                    .contextMenu {
+                                        Button(action: {
+                                            guard yStrings != ["ERROR"] else { return }
+                                            UIPasteboard.general.string = Queue([number]).exportString()
+                                            Settings.settings.clipboard = [number]
+                                            Settings.settings.notification = .copy
+                                        }) {
+                                            Image(systemName: "doc.on.clipboard")
+                                            Text("Copy")
+                                        }
+                                    }
+
                                 }
+                                .id(x)
+                                .frame(height: fontSize*1.2)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 1)
                             }
 
                             if fullTable {

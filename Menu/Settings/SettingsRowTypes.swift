@@ -75,6 +75,7 @@ struct SettingsMenuPicker: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .padding(.trailing, -10)
             }
         }
         .onChange(of: self.value, perform: { _ in
@@ -138,6 +139,7 @@ struct SettingsBoolMenuPicker: View {
                         .tag(!trueFirst)
                 }
                 .pickerStyle(.menu)
+                .padding(.trailing, -10)
             }
         }
         .onChange(of: self.value, perform: { _ in

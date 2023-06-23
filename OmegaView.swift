@@ -61,6 +61,7 @@ struct OmegaView: View {
                 
                 HeaderButtonRow(size: size, orientation: orientation)
                     .padding(.horizontal, horizontalPadding)
+                    .padding(.top, 2)
                 
                 Spacer()
             }
@@ -97,12 +98,6 @@ struct OmegaView: View {
         .sheet(isPresented: self.$settings.showProDescription) {
             OmegaProView(storeManager: storeManager)
         }
-        .sheet(isPresented: self.$settings.purchaseConfirmation) {
-            PurchaseConfirmation()
-        }
-        .sheet(isPresented: self.$settings.restoreConfirmation) {
-            PurchaseConfirmation(restore: true)
-        }
     }                                                 
     
     func open() {
@@ -116,6 +111,11 @@ struct OmegaView: View {
             UserDefaults.standard.set(version, forKey: "version")
             self.welcome.toggle()
         }
+        // Omega Pro Ad
+        else if !UserDefaults.standard.bool(forKey: "seenProAd") && !settings.pro {
+            UserDefaults.standard.set(true, forKey: "seenProAd")
+            self.settings.promptProAd.toggle()
+        }
         // News Update
         else if storedVersion != version {
             if storedVersion?.prefix(3) != version.prefix(3) {
@@ -126,7 +126,7 @@ struct OmegaView: View {
         // Random Pop Up
         else {
             // Omega Pro Pop Up
-            if Int.random(in: 0...34) == 34 && !settings.pro {
+            if Int.random(in: 0...7) == 7 && !settings.pro {
                 self.omegaProAd.toggle()
             }
         }

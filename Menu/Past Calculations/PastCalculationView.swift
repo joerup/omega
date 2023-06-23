@@ -170,8 +170,8 @@ struct PastCalculationView: View {
                         
                         // Extra Results
                             
-                        if let calculation = calculation, let results = calculation.extraResults, !results.isEmpty {
-                            ExtraResultView(calculation: calculation, results: results)
+                        if !calculation.extraResults.isEmpty {
+                            ExtraResultView(calculation: calculation, results: calculation.extraResults)
                                 .background(Color.init(white: 0.2))
                                 .cornerRadius(20)
                                 .id(Calculation.current.update)

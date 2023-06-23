@@ -31,7 +31,7 @@ struct SettingsView: View {
                                    title: "Decimal Point",
                                    displayOptions: ["Period","Comma"]
             )
-            SettingsBoolPicker(value: self.$settings.displayX10,
+            SettingsBoolMenuPicker(value: self.$settings.displayX10,
                                title: "Exponential Notation",
                                displayOptions: ["E","×10^"]
             )
@@ -49,14 +49,19 @@ struct SettingsView: View {
             SettingsToggle(toggle: self.$settings.textAnimations,
                            title: "Animations"
             )
-            SettingsSlider(value: self.$settings.shrink,
-                           title: "Maximum Shrink",
-                           desc: settings.shrink == 0 ? LocalizedStringKey("The text will not shrink before scrolling.") : settings.shrink == 1 ? LocalizedStringKey("The text will continue to shrink as much as it needs to fit the screen.") : LocalizedStringKey("The text will shrink by up to \(Int(settings.shrink*100))% of its original size before scrolling."),
-                           min: 0.0,
-                           max: 1.0,
-                           step: 0.05,
-                           percent: true
+            SettingsIconPicker(value: self.$settings.minimumTextSize,
+                               title: "Minimum Text Size",
+                               displayOptions: ["s.circle", "m.circle", "l.circle"],
+                               alternateOptions: ["1.circle", "2.circle", "3.circle"]
             )
+//            SettingsSlider(value: self.$settings.shrink,
+//                           title: "Maximum Shrink",
+//                           desc: settings.shrink == 0 ? LocalizedStringKey("The text will not shrink before scrolling.") : settings.shrink == 1 ? LocalizedStringKey("The text will continue to shrink as much as it needs to fit the screen.") : LocalizedStringKey("The text will shrink by up to \(Int(settings.shrink*100))% of its original size before scrolling."),
+//                           min: 0.0,
+//                           max: 1.0,
+//                           step: 0.05,
+//                           percent: true
+//            )
         }
         
         SettingsGroup {
