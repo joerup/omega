@@ -239,7 +239,6 @@ struct SettingsLink: View {
                     Image(systemName: "arrow.forward")
                         .imageScale(.small)
                         .foregroundColor(Color.init(white: 0.4))
-                        .padding(.trailing, 5)
                 }
             }
         }
@@ -270,9 +269,29 @@ struct SettingsButton: View {
                     Image(systemName: "arrow.forward")
                         .imageScale(.small)
                         .foregroundColor(Color.init(white: 0.4))
-                        .padding(.trailing, 5)
                 }
             }
         }
     }
 }
+
+struct SettingsButtonContent<Content: View>: View {
+    
+    var action: () -> Void
+    var content: () -> Content
+    
+    var body: some View {
+        SettingsRow {
+            Button(action: action) {
+                HStack {
+                    content()
+                    Spacer()
+                    Image(systemName: "arrow.forward")
+                        .imageScale(.small)
+                        .foregroundColor(Color.init(white: 0.4))
+                }
+            }
+        }
+    }
+}
+

@@ -32,7 +32,7 @@ struct DetailButtonRow: View {
                     SmallTextButton(text: "MAT",
                                     color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
                                     textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .small ? 55 : 75,
+                                    width: size == .small ? 50 : 75,
                                     smallerSmall: orientation == .landscape,
                                     sound: .click3
                     ) {
@@ -45,7 +45,7 @@ struct DetailButtonRow: View {
                     SmallTextButton(text: "MAT",
                                     color: settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
                                     textColor: settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .small ? 55 : 75,
+                                    width: size == .small ? 50 : 75,
                                     smallerSmall: orientation == .landscape,
                                     sound: .click3
                     ) {
@@ -58,7 +58,7 @@ struct DetailButtonRow: View {
                 SmallTextButton(text: "VAR",
                                 color: settings.buttonDisplayMode == .vars ? color(settings.theme.color3) : Color.init(white: 0.15),
                                 textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
-                                width: size == .small ? 55 : 75,
+                                width: size == .small ? 50 : 75,
                                 smallerSmall: orientation == .landscape,
                                 sound: .click3
                 ) {
@@ -71,16 +71,21 @@ struct DetailButtonRow: View {
                     settings.detailOverlay = .none
                 }
                 
-//                SmallIconButton(symbol: "ruler",
-//                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
-//                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
-//                                smallerSmall: orientation == .landscape,
-//                                sound: .click3
-//                ) {
-//                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
-//                    settings.buttonUppercase = false
-//                    settings.detailOverlay = .none
-//                }
+                SmallTextButton(text: "UNIT",
+                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
+                                width: size == .small ? 50 : 75,
+                                smallerSmall: orientation == .landscape,
+                                sound: .click3
+                ) {
+                    guard proCheck() else {
+                        settings.promptProAd.toggle()
+                        return
+                    }
+                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
+                    settings.buttonUppercase = false
+                    settings.detailOverlay = .none
+                }
             }
             
             HStack {

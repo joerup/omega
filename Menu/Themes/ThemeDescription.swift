@@ -21,12 +21,12 @@ struct ThemeDescription: View {
             ThemeIcon(theme: theme, size: 75, selected: true)
             
             VStack(alignment: .leading, spacing: 0) {
+                Text("Theme")
+                    .font(Font.system(.headline, design: .rounded).weight(.bold))
+                    .foregroundColor(Color.init(white: 0.7))
                 Text(theme.name)
                     .font(Font.system(.title2, design: .rounded).weight(.bold))
                     .foregroundColor(.white)
-                Text("\(theme.category) Series")
-                    .font(Font.system(.headline, design: .rounded).weight(.bold))
-                    .foregroundColor(Color.init(white: 0.7))
                     .padding(.vertical, 3)
                 ThemeCircles(theme: theme)
                     .padding(.horizontal, 2)
@@ -36,7 +36,6 @@ struct ThemeDescription: View {
             
             Spacer()
         }
-        .padding(.horizontal, 5)
         .padding(.vertical, 15)
     }
 }

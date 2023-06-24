@@ -40,25 +40,32 @@ struct ButtonView: View {
     var customAction: (() -> Void)? = nil
     var extraAction: (() -> Void)? = nil
     
-    var body: some View {
+    @State private var isPressed = false
     
+    var body: some View {
+        
         if active {
             ZStack {
                 
-                Button(action: {
-                    self.pressButton(pressType: .tap)
-                }) {
+                Button(action: { }) {
                     ButtonText(button: button, fontSize: fontSize)
+                        .foregroundColor(.white)
                         .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
                         .frame(width: width, height: height, alignment: .center)
                         .background(backgroundColor)
                         .clipShape(RoundedRectangle(cornerRadius: 0.42*height, style: .continuous))
+                        .onTapGesture {
+                            pressButton(pressType: .tap)
+                        }
+                        .onLongPressGesture {
+                            pressButton(pressType: .hold)
+                        }
                 }
-                .buttonStyle(CalculatorButtonStyle())
+                .scaleEffect(isPressed ? 0.8 : 1.0)
             }
         } else {
             ButtonText(button: button, fontSize: fontSize)
-                .buttonStyle(CalculatorButtonStyle())
+                .foregroundColor(.white)
                 .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
                 .frame(width: width, height: height, alignment: .center)
                 .background(backgroundColor)
@@ -67,9 +74,16 @@ struct ButtonView: View {
     }
     
     // Button Press
-    func pressButton(pressType: PressType) {
+    private func pressButton(pressType: PressType) {
         
-        // Sound & Haptics
+        // Effects
+        
+        withAnimation(.easeOut(duration: 0.05)) {
+            self.isPressed = true
+        }
+        withAnimation(.easeIn(duration: 0.1).delay(0.05)) {
+            self.isPressed = false
+        }
         
         button.playSound(hold: pressType == .hold)
         

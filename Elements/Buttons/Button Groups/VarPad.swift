@@ -67,7 +67,7 @@ struct VarPad: View {
             .edgesIgnoringSafeArea(.bottom)
             .frame(width: width)
             .border(Color.green, width: self.settings.guidelines ? 1 : 0)
-            .background(Color.init(white: 0.1))
+            .background(Color.init(white: 0.07))
             .cornerRadius(20)
         }
     }

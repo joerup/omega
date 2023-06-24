@@ -37,7 +37,6 @@ struct ShortPadA: View {
                                 .padding(.vertical, buttonHeight*0.025)
                                 .padding(.horizontal, width*0.025/6)
                         }
-                        .animation(nil)
                     }
                     .id(UUID())
                     Spacer()

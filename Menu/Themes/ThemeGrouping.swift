@@ -24,8 +24,7 @@ struct ThemeGrouping: View {
     @Binding var showUnlock: Bool
     
     var columns: Int {
-        let maxColumns = Int(geometry.size.width/90)
-        return themes.count >= maxColumns ? maxColumns : themes.count
+        return Int(geometry.size.width/90)
     }
     
     var body: some View {
@@ -36,15 +35,8 @@ struct ThemeGrouping: View {
                 
                 ForEach(self.themes, id: \.id) { theme in
                     
-                    Button(action: {
-                        if !theme.locked {
-                            theme.setTheme()
-                        } else {
-                            self.showUnlock.toggle()
-                        }
-                    }) {
+                    Button(action: { }) {
                         VStack {
-
                             ThemeIcon(theme: theme, size: 70, locked: theme.locked, selected: self.settings.theme.name == theme.name)
 
                             Text(theme.name)
@@ -55,40 +47,21 @@ struct ThemeGrouping: View {
                                 .frame(width: 70, height: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
                                 .padding(.bottom, 5)
                         }
-                    }
-                    .contextMenu {
-                        
-                        if !theme.locked {
-                        
-                            Button(action: {
+                        .onTapGesture {
+                            if !theme.locked {
                                 theme.setTheme()
-                            }) {
-                                Image(systemName: "arrow.up.right.circle")
-                                Text("Set Color")
-                            }
-                            
-                            Button(action: {
-                                theme.favorite()
-                            }) {
-                                Image(systemName: "star\(theme.isFavorite ? ".fill" : "")")
-                                Text(theme.isFavorite ? "Unfavorite" : "Favorite")
-                            }
-                        }
-                        else {
-                            
-                            Button(action: {
+                                settings.notification = .theme
+                            } else {
                                 self.showUnlock.toggle()
-                            }) {
-                                Image(systemName: "lock.open")
-                                Text("Unlock")
                             }
                         }
-                        
-                        Button(action: {
-                            self.preview = ThemePreviewItem(theme, category: category, name: name)
-                        }) {
-                            Image(systemName: "rectangle.on.rectangle")
-                            Text("Preview")
+                        .onLongPressGesture {
+                            if !theme.locked {
+                                theme.favorite()
+                                settings.notification = theme.isFavorite ? .favorite : .unfavorite
+                            } else {
+                                self.showUnlock.toggle()
+                            }
                         }
                     }
                     .id(theme.id)

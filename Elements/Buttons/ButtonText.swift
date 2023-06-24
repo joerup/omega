@@ -46,6 +46,8 @@ struct ButtonText: View {
                 return ["■"]
             case "/":
                 return ["■","/","■"]
+            case "+/-":
+                return ["+","//","-"]
             case "abs":
                 return ["abs","■"]
             case "√":

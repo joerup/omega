@@ -172,7 +172,7 @@ struct StoredVarList: View {
                                 }
                                 .frame(height: 50)
                                 .padding(.horizontal, 12)
-                                .background(Color.init(white: storedVar == selectedVar ? 0.25 : selectedVars.contains(storedVar) ? 0.2 : 0.1).cornerRadius(20))
+                                .background(Color.init(white: storedVar == selectedVar ? 0.25 : selectedVars.contains(storedVar) ? 0.25 : 0.15).cornerRadius(20))
                                 .padding(.horizontal, 10)
                                 .animation(nil)
                                 .onTapGesture {

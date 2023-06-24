@@ -107,7 +107,7 @@ struct SettingsText: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(LocalizedStringKey(self.title))
-                .font(Font.system(.subheadline, design: .rounded).weight(.semibold))
+                .font(Font.system(.subheadline, design: .default).weight(.semibold))
                 .foregroundColor(Color.init(white: 0.9))
         }
         .frame(minHeight: 3.5*UIFont.preferredFont(forTextStyle: .subheadline).pointSize)

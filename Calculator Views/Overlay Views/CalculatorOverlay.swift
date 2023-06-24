@@ -50,7 +50,7 @@ struct CalculatorOverlay: View {
                     
                 }
                 .edgesIgnoringSafeArea(.bottom)
-                .background(Color.init(white: 0.05)
+                .background(Color.init(white: 0.1)
                     .cornerRadius(20)
                     .edgesIgnoringSafeArea(.bottom)
                 )

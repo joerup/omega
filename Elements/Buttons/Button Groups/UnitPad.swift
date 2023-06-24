@@ -40,7 +40,7 @@ struct UnitPad: View {
                 
             VStack(spacing: 0) {
                 
-                let count = geometry.size.width > geometry.size.height ? 10 : 7
+                let count = orientation == .landscape ? 7 : size == .large ? 8 : 5
                     
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: count), spacing: 0) {
                     
@@ -62,7 +62,7 @@ struct UnitPad: View {
             .edgesIgnoringSafeArea(.bottom)
             .frame(width: width)
             .border(Color.green, width: self.settings.guidelines ? 1 : 0)
-            .background(Color.init(white: 0.1))
+            .background(Color.init(white: 0.07))
             .cornerRadius(20)
         }
     }

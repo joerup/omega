@@ -94,7 +94,7 @@ class TextFormatting {
                 element.display = String(element.text.dropFirst())
                 element.color = Color.init(white: 0.7)
                 element.multiply(0.8)
-                element.textOffset -= element.size*0.05
+                element.textOffset -= element.size*0.1
             }
             
             // MARK: Open Parentheses
@@ -349,6 +349,29 @@ class TextFormatting {
                 }
                 
                 element.size = 0
+                
+                index = index2+1
+            }
+            
+            else if element.text == "//" {
+                
+                let index1 = prevIndex(start: index)
+                let index2 = nextIndex(start: index)
+
+                for e in elements[index1...index2] {
+                    e.multiply(0.85)
+                }
+                element.display = "/"
+                
+                for e in elements[index1..<index] {
+                    e.midline += element.size*0.15
+                }
+                for e in elements[(index+1)...index2] {
+                    e.midline -= element.size*0
+                }
+                
+                element.leftPad -= element.size*0.2
+                element.rightPad -= element.size*0.2
                 
                 index = index2+1
             }

@@ -39,7 +39,7 @@ struct OmegaView: View {
         return size == .small && orientation == .landscape ? size.smallerSmallSize : size.standardSize
     }
     var horizontalPadding: CGFloat {
-        return size == .small && orientation == .landscape ? 3 : 10
+        return size == .small && orientation == .landscape ? 5 : 10
     }
     var verticalPadding: CGFloat {
         return size == .small ? 5 : 10

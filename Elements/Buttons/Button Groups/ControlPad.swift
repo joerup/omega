@@ -24,7 +24,7 @@ struct ControlPad: View {
         
         HStack(spacing:0) {
             
-            let color = Color.init(white: 0.12)
+            let color = Color.init(white: 0.1)
             
             ButtonView(button: InputButton("clear"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
                 .padding(.horizontal, width*0.025/3)

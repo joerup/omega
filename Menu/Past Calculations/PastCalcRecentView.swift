@@ -181,7 +181,7 @@ struct PastCalcRecentView: View {
                         .padding(.top, 3)
                         .padding(.bottom, 15)
                         .accentColor(color(settings.theme.color2))
-                        .background(Color.init(white: 0.1))
+                        .background(Color.init(white: 0.15))
                         .cornerRadius(20)
                         .padding(.horizontal, 10)
                         .padding(.top, 3)
@@ -303,7 +303,7 @@ struct PastCalcRecentView: View {
                                 .frame(minHeight: 90)
                                 .padding(.horizontal, 7)
                                 .padding(5)
-                                .background(Color.init(white: calculation == selectedCalculation ? 0.25 : selectedCalculations.contains(calculation) ? 0.2 : 0.1).cornerRadius(20))
+                                .background(Color.init(white: calculation == selectedCalculation ? 0.25 : selectedCalculations.contains(calculation) ? 0.25 : 0.15).cornerRadius(20))
                                 .animation(nil)
                                 .padding(.horizontal, 10)
                                 .onTapGesture {

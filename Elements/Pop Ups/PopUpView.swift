@@ -121,6 +121,15 @@ struct PopUpView: View {
                         else if settings.notification == .delete {
                             Notification(text: "Deleted", image: "trash", notification: $settings.notification)
                         }
+                        else if settings.notification == .theme {
+                            Notification(text: "Set Theme", image: "paintpalette", notification: $settings.notification)
+                        }
+                        else if settings.notification == .favorite {
+                            Notification(text: "Added to Favorites", image: "star.fill", notification: $settings.notification)
+                        }
+                        else if settings.notification == .unfavorite {
+                            Notification(text: "Removed from Favorites", image: "star.slash", notification: $settings.notification)
+                        }
                     }
                     .padding(50)
                 }

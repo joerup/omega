@@ -44,19 +44,18 @@ struct CalculatorInterface: View {
                     
                     DetailButtonRow(size: size, orientation: orientation)
                         .padding(.horizontal, horizontalPadding)
-//                        .padding(.bottom, size == .large ? (orientation == .portrait ? 10 : 10) : orientation == .portrait ? 7.5 : 5)
+                        .padding(.bottom, size == .small && orientation == .landscape ? 1 : 5)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
-                        .padding(.top, 2).padding(.horizontal, 2)
-//                        .background(Color.init(white: 0.1).cornerRadius(0.42*0.98*geometry.size.height*buttonHeight).edgesIgnoringSafeArea(.bottom))
+                        .padding(.horizontal, 2)
                         .border(Color.blue, width: settings.guidelines ? 1 : 0)
                         .overlay(DetailOverlay().cornerRadius(0.42*0.98*geometry.size.height*buttonHeight).padding(.trailing, orientation == .landscape ? geometry.size.width*(4/11*0.98+0.01) : 0).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight*0.8+(size == .small ? 5 : 15)))
                 }
                 .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay() } else {}})
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
-            .background(LinearGradient(colors: [Color.init(white: 0.1), Color.init(white: 0.1)], startPoint: .top, endPoint: .bottom).edgesIgnoringSafeArea(.all))
+            .background(Color.init(white: 0.07).edgesIgnoringSafeArea(.all))
             .overlay(VStack{ if verticalSizeClass == .compact { CalculatorOverlay().padding(.top, standardSize+7) } else {}})
             .keypadShift()
             .contentOverlay()

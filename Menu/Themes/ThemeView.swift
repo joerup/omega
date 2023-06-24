@@ -38,31 +38,46 @@ struct ThemeView: View {
                     
                     VStack(spacing: 20) {
                         
-                        SettingsGroup("Current Color") {
+                        SettingsGroup {
                             ThemeDescription(theme: settings.theme)
+                                .padding(.horizontal, 5)
                         }
                         
-                        SettingsGroup("Favorite Colors") {
+                        SettingsGroup {
                             
-                            if favorites.isEmpty {
+                            SettingsRow {
                                 
-                                Text("No favorite colors. Press and hold on an icon to favorite it.")
-                                    .font(Font.system(.caption, design: .rounded))
-                                    .foregroundColor(Color.init(white: 0.6))
-                                    .multilineTextAlignment(.center)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(30)
-                                
-                            } else {
-                                
-                                SettingsRow {
-                                    ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: self.$preview, showUnlock: self.$showUnlock)
-                                        .padding(.vertical, 5)
+                                VStack(alignment: .leading, spacing: 0) {
+                                    
+                                    HStack {
+                                        Text("Favorite Colors")
+                                            .font(Font.system(.body, design: .rounded).weight(.bold))
+                                            .animation(nil)
+                                        Spacer()
+                                    }
+                                    .padding(.top, 17)
+                                    .padding(.horizontal, 5)
+                                    
+                                    if favorites.isEmpty {
+                                        Text("No favorite colors. Press and hold on an icon to favorite it.")
+                                            .font(.caption)
+                                            .foregroundColor(Color.init(white: 0.6))
+                                            .multilineTextAlignment(.center)
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.top, 20)
+                                            .padding(.bottom, 30)
+                                            .padding(.horizontal, 5)
+                                    } else {
+                                        SettingsRow {
+                                            ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: self.$preview, showUnlock: self.$showUnlock)
+                                                .padding(.vertical, 5)
+                                        }
+                                    }
                                 }
                             }
                         }
                         
-                        SettingsGroup("All Colors", columns: geometry.size.width > 700) {
+                        SettingsGroup(columns: geometry.size.width > 700) {
                             
                             ForEach(ThemeData.themes, id: \.id) { category in
                                 

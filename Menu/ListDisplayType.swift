@@ -40,6 +40,7 @@ enum ListDisplayType: String, Identifiable, CaseIterable {
     case all = "All Types"
     case numbers = "Numbers"
     case expressions = "Expressions"
+//    case measurements = "Measurements"
     
     var id: String { self.rawValue }
     
@@ -51,6 +52,8 @@ enum ListDisplayType: String, Identifiable, CaseIterable {
             return "number"
         case .expressions:
             return "x.squareroot"
+//        case .measurements:
+//            return "ruler"
         }
     }
 }

@@ -34,7 +34,6 @@ struct LandscapePad: View {
                         .padding(.horizontal, width*0.025/7)
                 }
             }
-            .animation(nil)
             .frame(width: width)
             .border(Color.green, width: self.settings.guidelines ? 1 : 0)
                 
@@ -48,7 +47,6 @@ struct LandscapePad: View {
                         .padding(.horizontal, width*0.025/7)
                 }
             }
-            .animation(nil)
             .frame(width: width)
             .border(Color.green, width: self.settings.guidelines ? 1 : 0)
         }

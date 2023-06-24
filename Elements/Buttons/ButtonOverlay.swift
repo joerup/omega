@@ -33,7 +33,7 @@ struct ButtonOverlay: View {
                 if orientation == .landscape {
                     VarPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active)
                 } else {
-                    VarPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1 : 5/6), size: size, orientation: orientation, active: active)
+                    VarPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active)
                 }
             }
         }
@@ -43,7 +43,7 @@ struct ButtonOverlay: View {
                 if orientation == .landscape {
                     UnitPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active)
                 } else {
-                    UnitPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/8), size: size, orientation: orientation, active: active)
+                    UnitPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active)
                 }
             }
         }

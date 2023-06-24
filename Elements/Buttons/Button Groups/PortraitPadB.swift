@@ -68,7 +68,6 @@ struct PortraitPadBSide: View {
                             .padding(.horizontal, width*0.025/4)
                     }
                 }
-                .animation(nil)
             }
             .frame(width: width)
             .border(Color.pink, width: self.settings.guidelines ? 1 : 0)
@@ -85,7 +84,6 @@ struct PortraitPadBSide: View {
                             .padding(.horizontal, width*0.025/4)
                     }
                 }
-                .animation(nil)
             }
             .frame(width: width)
             .border(Color.pink, width: self.settings.guidelines ? 1 : 0)

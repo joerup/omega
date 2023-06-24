@@ -67,35 +67,22 @@ struct MainMenuView: View {
                                     .frame(maxWidth: .infinity)
                                     .background(RadialGradient(colors: [.green.lighter(by: 0.4), .init(red: 0.2, green: 0.6, blue: 0.6)], center: .center, startRadius: 0, endRadius: 300))
                                     .cornerRadius(10)
-                                    .padding(.top, 10)
-                                }
-                                SettingsRow {
-                                    SettingsButton(title: "Learn More", icon: "star.fill") {
-                                        self.showProView.toggle()
-                                    }
+                                    .padding(.vertical, 10)
                                 }
                             }
                         }
                         
                         SettingsGroup {
-                            SettingsRow {
-                                SettingsButton(title: "TEST SETTINGS", icon: "xmark") {
-                                    self.showTesterView.toggle()
-                                }
+                            SettingsButton(title: "TEST SETTINGS", icon: "xmark") {
+                                self.showTesterView.toggle()
                             }
                         }
                         
                         SettingsGroup {
-                            SettingsRow {
+                            SettingsButtonContent {
+                                self.showThemes.toggle()
+                            } content: {
                                 ThemeDescription(theme: settings.theme)
-                                    .onTapGesture {
-                                        self.showThemes.toggle()
-                                    }
-                            }
-                            SettingsRow {
-                                SettingsButton(title: "Colors", icon: "paintpalette") {
-                                    self.showThemes.toggle()
-                                }
                             }
                         }
                         
@@ -162,9 +149,6 @@ struct MainMenuView: View {
                             }
                         }
                         .padding(10)
-                        
-                        Spacer()
-                            .frame(height: 40)
                     }
                     .animation(nil)
                     .padding(5)
@@ -181,9 +165,11 @@ struct MainMenuView: View {
             }
             .sheet(isPresented: self.$showThemes) {
                 ThemeView(storeManager: storeManager)
+                    .contentOverlay()
             }
             .sheet(isPresented: self.$showExport) {
                 ExportView()
+                    .contentOverlay()
             }
             .sheet(isPresented: self.$showTesterView) {
                 TesterSettingsView()
