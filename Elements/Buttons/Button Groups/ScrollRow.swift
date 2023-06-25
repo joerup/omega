@@ -20,6 +20,7 @@ struct ScrollRow: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -34,7 +35,7 @@ struct ScrollRow: View {
                         
                         let button = Input.scrollRow.buttons[index]
                         
-                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/5, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/5, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                             .padding(.leading, index == 0 ? 0 : width*0.025/5)
                             .padding(.trailing, index == Input.scrollRow.buttons.count-1 ? 0 : width*0.025/5)
                     }

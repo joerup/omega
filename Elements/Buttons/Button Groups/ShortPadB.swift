@@ -20,6 +20,7 @@ struct ShortPadB: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -29,7 +30,7 @@ struct ShortPadB: View {
             HStack(spacing:0) {
                     
                 ForEach(Input.shortNumRow.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/10)
                 }
@@ -37,11 +38,11 @@ struct ShortPadB: View {
             
             HStack(spacing:0) {
                 
-                ButtonView(button: InputButton("clear"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+                ButtonView(button: InputButton("clear"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                     .padding(.vertical, buttonHeight*0.025)
                     .padding(.horizontal, width*0.025/10)
             
-                ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+                ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                     .padding(.vertical, buttonHeight*0.025)
                     .padding(.horizontal, width*0.025/10)
                 
@@ -53,7 +54,7 @@ struct ShortPadB: View {
                             
                             let button = Input.shortScroll.buttons[index]
                             
-                            ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+                            ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                                 .padding(.leading, index == 0 ? 0 : width*0.025/10)
                                 .padding(.trailing, index == Input.shortScroll.buttons.count-1 ? 0 : width*0.025/10)
                         }
@@ -66,7 +67,7 @@ struct ShortPadB: View {
                 .padding(.vertical, buttonHeight*0.025)
                     
                 ForEach(Input.shortFormatRow.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/10)
                 }

@@ -15,6 +15,8 @@ struct CalculatorModel: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
+    var displayType: ModelDisplayType
+    
     var deviceSize: CGSize {
         return UIScreen.main.bounds.size
     }
@@ -30,13 +32,17 @@ struct CalculatorModel: View {
     }
     
     var buttonHeight: CGFloat {
-        return orientation == .portrait ? (size == .large ? 1/11.5 : 1/9.5) : 1/8.5
+        if size == .large {
+            return orientation == .portrait ? 1/11.5 : 1/9
+        } else {
+            return orientation == .portrait ? 1/9 : 1/8
+        }
     }
     var standardSize: CGFloat {
-        return size == .large ? 60 : 40
+        return size == .small && orientation == .landscape ? size.smallerSmallSize : size.standardSize
     }
     var horizontalPadding: CGFloat {
-        return orientation == .landscape ? 5 : 10
+        return size == .small && orientation == .landscape ? 5 : 10
     }
     var verticalPadding: CGFloat {
         return size == .small ? 5 : 10
@@ -90,13 +96,23 @@ struct CalculatorModel: View {
         return CGSize(width: modelSize.width - leftSafeArea - rightSafeArea, height: modelSize.height - topSafeArea - bottomSafeArea)
     }
     
+    var ignoreSafeArea: Bool {
+        if case .graph(_) = displayType {
+            return true
+        } else if case .table(_) = displayType {
+            return true
+        }
+        return false
+    }
+    
     var border: CGFloat {
         return scale * 20
     }
     
     var theme: Theme = Settings.settings.theme
     
-    init(orientation: Orientation? = nil, size: Size? = nil, maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil, theme: Theme? = nil) {
+    init(_ displayType: ModelDisplayType = .buttons, orientation: Orientation? = nil, size: Size? = nil, maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil, theme: Theme? = nil) {
+        self.displayType = displayType
         self.setOrientation = orientation
         self.setSize = size
         self.maxWidth = maxWidth
@@ -110,15 +126,37 @@ struct CalculatorModel: View {
             Rectangle()
                 .fill(Color.init(white: 0.05))
             VStack {
-                Spacer()
-                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false)
-                    .padding(.bottom, bottomSafeArea)
-                    .padding(.top, 2*scale)
-                    .id(theme.id)
+                Spacer(minLength: 0)
+                ZStack {
+                    switch displayType {
+                    case .buttons:
+                        ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: true)
+                            .padding(.bottom, bottomSafeArea)
+                            .padding(.top, 2*scale)
+                    case .shapes:
+                        ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                            .padding(.bottom, bottomSafeArea)
+                            .padding(.top, 2*scale)
+                    case .buttonsText(let text):
+                        VStack {
+                            TextDisplay(strings: text.strings, size: 40)
+                            ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                .padding(.bottom, bottomSafeArea)
+                                .padding(.top, 2*scale)
+                        }
+                    case .graph(let elements):
+                        if (maxWidth ?? 0) > 0, (maxHeight ?? 0) > 0 {
+                            GraphView(elements, gridLines: false, interactive: false, precision: 60)
+                        }
+                    case .table(let function):
+                        TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), fullTable: true)
+                    }
+                }
+                .id(theme.id)
             }
-            .padding(.top, topSafeArea)
-            .padding(.leading, leftSafeArea)
-            .padding(.trailing, rightSafeArea)
+            .padding(.top, ignoreSafeArea ? 0 : topSafeArea)
+            .padding(.leading, ignoreSafeArea ? 0 : leftSafeArea)
+            .padding(.trailing, ignoreSafeArea ? 0 : rightSafeArea)
         }
         .frame(width: modelSize.width, height: modelSize.height)
         .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
@@ -128,5 +166,13 @@ struct CalculatorModel: View {
                 .stroke(.black, lineWidth: border)
                 .frame(width: modelSize.width+border/2, height: modelSize.height+border/2)
         )
+    }
+    
+    enum ModelDisplayType {
+        case shapes
+        case buttons
+        case buttonsText(text: Queue)
+        case graph(elements: [GraphElement])
+        case table(function: Queue)
     }
 }

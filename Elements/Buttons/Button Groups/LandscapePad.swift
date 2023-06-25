@@ -20,6 +20,7 @@ struct LandscapePad: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -29,7 +30,7 @@ struct LandscapePad: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 0) {
                     
                 ForEach(Input.landscapePad[1].buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/7)
                 }
@@ -42,7 +43,7 @@ struct LandscapePad: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 7), spacing: 0) {
                 
                 ForEach(Input.landscapePad[0].buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/7, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/7)
                 }

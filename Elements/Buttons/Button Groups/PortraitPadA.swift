@@ -20,6 +20,7 @@ struct PortraitPadATop: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -29,7 +30,7 @@ struct PortraitPadATop: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 5), spacing: 0) {
                 
                 ForEach(Input.portraitPadATop.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/5, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/5, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/5)
                 }
@@ -52,6 +53,7 @@ struct PortraitPadASide: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -59,7 +61,7 @@ struct PortraitPadASide: View {
         VStack(spacing:0) {
 
             ForEach(Input.portraitPadASide.buttons, id: \.id) { button in
-                ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95, height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                     .padding(.vertical, buttonHeight*0.025)
                     .padding(.horizontal, width*0.025)
             }

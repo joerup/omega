@@ -28,6 +28,7 @@ struct FuncPad: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var buttons: [InputButton] {
@@ -47,7 +48,7 @@ struct FuncPad: View {
                     ForEach(0..<(count*Int(geometry.size.height/buttonHeight)), id: \.self) { index in
                             
                         if index < buttons.count {
-                            ButtonView(button: buttons[index], input: queue, backgroundColor: color(buttons[index].name == "Ω" ? (theme ?? self.settings.theme).color1 : (theme ?? self.settings.theme).color3), width: width*0.95/CGFloat(count), height: buttonHeight, relativeSize: 0.35, active: active, onChange: onChange)
+                            ButtonView(button: buttons[index], input: queue, backgroundColor: color(buttons[index].name == "Ω" ? (theme ?? self.settings.theme).color1 : (theme ?? self.settings.theme).color3), width: width*0.95/CGFloat(count), height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                                 .padding(.vertical, buttonHeight*0.025)
                                 .padding(.horizontal, width*0.025/CGFloat(count))
                         } else {

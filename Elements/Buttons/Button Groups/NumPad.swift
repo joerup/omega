@@ -20,6 +20,7 @@ struct NumPad: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -29,7 +30,7 @@ struct NumPad: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
                 
                 ForEach(Input.numPad.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/4, height: buttonHeight, relativeSize: 0.5, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/4, height: buttonHeight, relativeSize: 0.5, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/4)
                 }
@@ -39,7 +40,7 @@ struct NumPad: View {
             VStack(spacing:0) {
                 
                 ForEach(Input.opPad.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color2), width: width*0.95/4, height: buttonHeight, relativeSize: 0.5, active: active, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color2), width: width*0.95/4, height: buttonHeight, relativeSize: 0.5, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/4)
                 }

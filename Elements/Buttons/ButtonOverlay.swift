@@ -19,21 +19,22 @@ struct ButtonOverlay: View {
     var buttonHeight: CGFloat
     
     var active: Bool = true
+    var showText: Bool = true
     
     var body: some View {
         
         if settings.buttonDisplayMode == .funcs && orientation == .portrait && size == .small {
             VStack(spacing: 0) {
-                FuncPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active)
+                FuncPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active, showText: showText)
             }
         }
         
         else if settings.buttonDisplayMode == .vars {
             VStack(spacing: 0) {
                 if orientation == .landscape {
-                    VarPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active)
+                    VarPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active, showText: showText)
                 } else {
-                    VarPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active)
+                    VarPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active, showText: showText)
                 }
             }
         }
@@ -41,9 +42,9 @@ struct ButtonOverlay: View {
         else if settings.buttonDisplayMode == .units {
             VStack(spacing: 0) {
                 if orientation == .landscape {
-                    UnitPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active)
+                    UnitPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active, showText: showText)
                 } else {
-                    UnitPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active)
+                    UnitPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, active: active, showText: showText)
                 }
             }
         }

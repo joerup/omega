@@ -21,6 +21,7 @@ struct ButtonPad: View {
     var theme: Theme? = nil
     
     var active: Bool = true
+    var showText: Bool = true
 
     var body: some View {
         
@@ -34,13 +35,13 @@ struct ButtonPad: View {
                     let height = min(buttonHeight, width*0.95/4)
                     
                     VStack(spacing:0) {
-                        ScrollRow(width: width, buttonHeight: height*0.8, theme: theme, active: active)
+                        ScrollRow(width: width, buttonHeight: height*0.8, theme: theme, active: active, showText: showText)
                             .padding(.bottom, self.width*0.005)
-                        NumPad(width: width, buttonHeight: height, theme: theme, active: active)
+                        NumPad(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
                     }
-                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height*(4.8/5)))
+                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height*(4.8/5), active: active, showText: showText))
                     
-                    ControlPad(width: width, buttonHeight: height*0.8, active: active)
+                    ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
                         .padding(.top, self.width*0.005)
                     
                 } else {
@@ -49,16 +50,16 @@ struct ButtonPad: View {
                     let height = min(buttonHeight, width*0.95/8)
                         
                     VStack(spacing:0) {
-                        PortraitPadBTop(width: width, buttonHeight: height, theme: theme, active: active)
+                        PortraitPadBTop(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
     
                         HStack(spacing:0) {
-                            PortraitPadBSide(width: width*4/8, buttonHeight: height, theme: theme, active: active)
-                            NumPad(width: width*4/8, buttonHeight: height, theme: theme, active: active)
+                            PortraitPadBSide(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
+                            NumPad(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
                         }
                     }
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height))
                     
-                    ControlPad(width: width, buttonHeight: height*0.8, active: active)
+                    ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
                         .padding(.top, self.width*0.005)
                 }
             }
@@ -74,12 +75,12 @@ struct ButtonPad: View {
             
             HStack(spacing:0) {
                 
-                LandscapePad(width: width*7/11, buttonHeight: height, theme: theme, active: active)
+                LandscapePad(width: width*7/11, buttonHeight: height, theme: theme, active: active, showText: showText)
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width*7/11, buttonHeight: height))
                 
                 VStack(spacing:0) {
-                    NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active)
-                    ControlPad(width: width*4/11, buttonHeight: height, active: active)
+                    NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active, showText: showText)
+                    ControlPad(width: width*4/11, buttonHeight: height, active: active, showText: showText)
                 }
             }
             .padding(.horizontal, size == .large ? self.width*0.005 : 0)

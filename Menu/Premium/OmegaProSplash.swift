@@ -17,9 +17,11 @@ struct OmegaProSplash: View {
     
     @StateObject var storeManager: StoreManager
     
-    @State private var displayType: ProFeatureDisplay = .themes
+    @State private var displayType: ProFeatureDisplay = .variables
     
     @State private var theme: Theme = ThemeData.allThemes[4...].randomElement()!
+    @State private var otherTheme1: Theme = ThemeData.allThemes[4...].randomElement()!
+    @State private var otherTheme2: Theme = ThemeData.allThemes[4...].randomElement()!
     @State private var recentThemeIDs: [Int] = []
     
     @State private var scale: Double = 0.95
@@ -31,6 +33,9 @@ struct OmegaProSplash: View {
     @State private var introSubtitleScale: CGFloat = 1
     @State private var contentOffset: CGFloat = 0
     @State private var contentOpacity: CGFloat = 0
+    
+    private let expression1 = Queue([Number(1),Operation(.fra),Number(20),Operation(.con),Letter("x"),Operation(.pow),Number(3),Operation(.sub),Number(4)])
+    private let expression3 = Queue([Number(7),Operation(.con),Function(.sin),Expression([Number(1),Operation(.fra),Number(3),Operation(.con),Letter("x")])])
     
     var body: some View {
         
@@ -63,15 +68,26 @@ struct OmegaProSplash: View {
                             case .all:
                                 featureList()
                             case .themes:
-                                themeDisplay(size: geometry.size)
+                                themeDisplay()
                             case .variables:
-                                EmptyView()
+                                variableDisplay()
+                            case .calculus:
+                                calculusDisplay()
                             }
                         }
                     }
                     .shadow(color: .init(white: 0.3).opacity(0.5), radius: 20)
                     
                     Spacer(minLength: 0)
+                    
+                    if displayType != .all {
+                        Text(desc)
+                            .font(.callout.weight(.medium))
+                            .foregroundColor(.white.opacity(0.9))
+                            .minimumScaleFactor(0.5)
+                            .shadow(color: .init(white: 0.3), radius: 20)
+                            .padding(.vertical, 5)
+                    }
                     
                     if displayType != .all {
                         Button {
@@ -199,7 +215,7 @@ struct OmegaProSplash: View {
                             .font(.system(size: (50-pow(Double(i), 0.7))))
                             .scaleEffect(starScales[i])
                             .foregroundColor(.white.opacity(0.8*scale))
-                            .opacity((Double(i)/100 + 0.1)*0.5)
+                            .opacity((Double(i)/100 + 0.1)*0.2)
                             .position(starPositions[i])
                     }
                 }
@@ -210,14 +226,15 @@ struct OmegaProSplash: View {
             }
         }
         .onAppear {
+            cycleDisplay()
             recentThemeIDs = [theme.id]
             cycleTheme()
             withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
                 scale = 1.0
             }
             introBottomOffset = 2000
-            contentOffset = 2000
-            contentOpacity = 0
+            contentOffset = 0
+            contentOpacity = 1
             introTitleScale = 0
             introSubtitleScale = 0
             withAnimation(.easeInOut(duration: 1)) {
@@ -232,13 +249,6 @@ struct OmegaProSplash: View {
             withAnimation(.easeOut(duration: 1)) {
                 introBottomOffset = 0
             }
-            if displayType != .all {
-                contentOffset = 0
-            }
-            withAnimation(.easeOut(duration: 1).delay(0.7)) {
-                contentOffset = 0
-                contentOpacity = 1
-            }
         }
     }
     
@@ -249,7 +259,21 @@ struct OmegaProSplash: View {
         case .themes:
             return "Customization to the extreme."
         case .variables:
-            return "More ways to work."
+            return "Crazy capabilities."
+        case .calculus:
+            return "Advanced functions."
+        }
+    }
+    private var desc: String {
+        switch displayType {
+        case .all:
+            return ""
+        case .themes:
+            return "Get access to over 30 premium themes."
+        case .variables:
+            return "Variables, functions, graphs, and tables."
+        case .calculus:
+            return "Summation & product notation. Derivatives & integrals."
         }
     }
     
@@ -304,35 +328,112 @@ struct OmegaProSplash: View {
         }
     }
     
-    private func themeDisplay(size: CGSize) -> some View {
-        CalculatorModel(maxWidth: size.width*0.8, maxHeight: size.height*0.5, theme: theme)
-            .overlay(
+    private func themeDisplay() -> some View {
+        GeometryReader { geometry in
+            ZStack {
+                
                 VStack {
-                    Text(theme.name)
-                        .font(.system(.callout, design: .rounded).weight(.heavy))
-                        .foregroundColor(Color.white)
+                    CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: otherTheme1)
+                    Text(otherTheme1.name)
+                        .font(.system(.caption, design: .rounded).weight(.bold))
+                        .foregroundColor(Color.white.opacity(0.8))
                         .lineLimit(0)
                         .minimumScaleFactor(0.5)
-                        .padding(.top)
-                    
-                    ThemeCircles(theme: theme)
-                        .scaleEffect(0.8)
-                    
-                    Spacer()
+                        .padding(.top, 5)
                 }
-            )
+                .padding(.trailing, geometry.size.width*0.63)
+                
+                VStack {
+                    CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: otherTheme2)
+                    Text(otherTheme2.name)
+                        .font(.system(.caption, design: .rounded).weight(.bold))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .lineLimit(0)
+                        .minimumScaleFactor(0.5)
+                        .padding(.top, 5)
+                }
+                .padding(.leading, geometry.size.width*0.63)
+                
+                VStack {
+                    CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                    Text(theme.name)
+                        .font(.system(.caption, design: .rounded).weight(.bold))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .lineLimit(0)
+                        .minimumScaleFactor(0.5)
+                        .padding(.top, 5)
+                }
+            }
+            .frame(maxWidth: geometry.size.width, maxHeight: geometry.size.height)
+        }
+        .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+    }
+    
+    private func variableDisplay() -> some View {
+        GeometryReader { geometry in
+            ZStack {
+                
+                CalculatorModel(.table(function: expression1), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                    .padding(.trailing, geometry.size.width*0.63)
+                
+                CalculatorModel(.buttonsText(text: expression1), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                    .padding(.leading, geometry.size.width*0.63)
+                
+                CalculatorModel(.graph(elements: [Line(equation: expression1, color: theme.color1)]), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+            }
+            .frame(maxWidth: geometry.size.width, maxHeight: geometry.size.height)
+        }
+        .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+    }
+    
+    private func calculusDisplay() -> some View {
+        GeometryReader { geometry in
+            ZStack {
+                
+                CalculatorModel(.graph(elements: [Line(equation: expression3, color: theme.color1), LineShape(equation: expression3, location: .center, domain: 0...(3*Double.pi), color: theme.color2, opacity: 0.5)]), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                    .padding(.leading, geometry.size.width*0.35)
+                
+                CalculatorModel(.buttonsText(text: Queue([Function(.definteg),Number(0),Expression([Number(3),Operation(.con),Number("π")], grouping: .hidden),Expression(expression3, grouping: .hidden),Letter("x")])), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                    .padding(.trailing, geometry.size.width*0.3)
+                
+            }
+            .frame(maxWidth: geometry.size.width, maxHeight: geometry.size.height)
+        }
+        .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+    }
+    
+    private func cycleDisplay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+            withAnimation(.easeInOut(duration: 1.0)) {
+                switch displayType {
+                case .all:
+                    displayType = .all
+                case .themes:
+                    displayType = .variables
+                case .variables:
+                    displayType = .calculus
+                case .calculus:
+                    displayType = .themes
+                }
+            }
+            cycleDisplay()
+        }
     }
     
     private func cycleTheme() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
-            if ThemeData.allThemes[4...].count == recentThemeIDs.count {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
+            if ThemeData.allThemes[4...].count <= recentThemeIDs.count+3 {
                 recentThemeIDs.removeAll()
             }
-            withAnimation(.easeIn(duration: 0.6)) {
+            withAnimation(.easeIn(duration: 1.0)) {
                 self.theme = ThemeData.allThemes[4...].filter({ !recentThemeIDs.contains($0.id) }).randomElement()!
                 recentThemeIDs.append(theme.id)
+                self.otherTheme1 = ThemeData.allThemes[4...].filter({ !recentThemeIDs.contains($0.id) }).randomElement()!
+                recentThemeIDs.append(otherTheme1.id)
+                self.otherTheme2 = ThemeData.allThemes[4...].filter({ !recentThemeIDs.contains($0.id) }).randomElement()!
+                recentThemeIDs.append(otherTheme2.id)
             }
-            withAnimation(.linear(duration: 5)) {
+            withAnimation(.linear(duration: 7.0)) {
                 for i in starPositions.indices {
                     starPositions[i].x += Double.random(in: -10...10)
                     starPositions[i].y += Double.random(in: -10...10)
@@ -349,6 +450,7 @@ enum ProFeatureDisplay {
     case all
     case themes
     case variables
+    case calculus
 }
 
 struct FeatureBubble<Content: View>: View {

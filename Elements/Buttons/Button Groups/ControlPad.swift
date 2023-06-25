@@ -18,6 +18,7 @@ struct ControlPad: View {
     var buttonHeight: CGFloat
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var body: some View {
@@ -26,14 +27,14 @@ struct ControlPad: View {
             
             let color = Color.init(white: 0.1)
             
-            ButtonView(button: InputButton("clear"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+            ButtonView(button: InputButton("clear"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                 .padding(.horizontal, width*0.025/3)
                 .keyboardShortcut("c")
             
-            ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+            ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                 .padding(.horizontal, width*0.025/3)
             
-            ButtonView(button: InputButton("enter"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, onChange: onChange)
+            ButtonView(button: InputButton("enter"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                 .padding(.horizontal, width*0.025/3)
             
         }

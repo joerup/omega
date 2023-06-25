@@ -35,6 +35,7 @@ struct ButtonView: View {
     }
     
     var active: Bool = true
+    var showText: Bool = true
     var onChange: (Queue) -> Void = { _ in }
     
     var customAction: (() -> Void)? = nil
@@ -46,7 +47,6 @@ struct ButtonView: View {
         
         if active {
             ZStack {
-                
                 Button(action: { }) {
                     ButtonText(button: button, fontSize: fontSize)
                         .foregroundColor(.white)
@@ -63,8 +63,17 @@ struct ButtonView: View {
                 }
                 .scaleEffect(isPressed ? 0.8 : 1.0)
             }
-        } else {
+        }
+        else if showText {
             ButtonText(button: button, fontSize: fontSize)
+                .foregroundColor(.white)
+                .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
+                .frame(width: width, height: height, alignment: .center)
+                .background(backgroundColor)
+                .clipShape(RoundedRectangle(cornerRadius: 0.42*height, style: .continuous))
+        }
+        else {
+            Text("")
                 .foregroundColor(.white)
                 .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
                 .frame(width: width, height: height, alignment: .center)
