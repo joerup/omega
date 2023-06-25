@@ -114,18 +114,19 @@ struct CalculatorModel: View {
                 ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false)
                     .padding(.bottom, bottomSafeArea)
                     .padding(.top, 2*scale)
-                    .background(Color.init(white: 0.1).cornerRadius(scale * 20).edgesIgnoringSafeArea(.bottom))
+                    .id(theme.id)
             }
             .padding(.top, topSafeArea)
             .padding(.leading, leftSafeArea)
             .padding(.trailing, rightSafeArea)
         }
         .frame(width: modelSize.width, height: modelSize.height)
+        .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
+        .cornerRadius(scale*50)
         .overlay(
             RoundedRectangle(cornerRadius: scale*50)
                 .stroke(.black, lineWidth: border)
-                .frame(width: modelSize.width+border, height: modelSize.height+border)
+                .frame(width: modelSize.width+border/2, height: modelSize.height+border/2)
         )
-        .animation(nil)
     }
 }

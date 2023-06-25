@@ -90,7 +90,8 @@ struct OmegaView: View {
             OmegaProAd(storeManager: storeManager)
         }
         .sheet(isPresented: self.$settings.clickProAd) {
-            OmegaProAd(storeManager: storeManager, prompted: false)
+            OmegaProSplash(storeManager: storeManager)
+//            OmegaProAd(storeManager: storeManager, prompted: false)
         }
         .sheet(isPresented: self.$settings.promptProAd) {
             OmegaProAd(storeManager: storeManager, prompted: true)

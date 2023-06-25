@@ -144,4 +144,24 @@ extension Color {
             return self
         }
     }
+
+    func greyed(by darkenPercentage: Double) -> Color {
+        let originalColor = UIColor(self)
+        
+        guard let colorComponents = originalColor.cgColor.components, colorComponents.count >= 3 else {
+            return self
+        }
+        
+        let red = colorComponents[0]
+        let green = colorComponents[1]
+        let blue = colorComponents[2]
+        let alpha = colorComponents[3]
+        
+        let darkenedRed = max(red - CGFloat(darkenPercentage), 0)
+        let darkenedGreen = max(green - CGFloat(darkenPercentage), 0)
+        let darkenedBlue = max(blue - CGFloat(darkenPercentage), 0)
+        
+        return Color(red: Double(darkenedRed), green: Double(darkenedGreen), blue: Double(darkenedBlue), opacity: Double(alpha))
+    }
+
 }

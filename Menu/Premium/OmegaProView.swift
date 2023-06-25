@@ -41,7 +41,6 @@ struct OmegaProView: View {
                             Button(action: {
                                 self.showAd.toggle()
                             }) {
-                                
                                 Text("OMEGA PRO")
                                     .font(.system(size: 50, weight: .heavy, design: .rounded))
                                     .lineLimit(0)

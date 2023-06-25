@@ -158,7 +158,7 @@ struct MainMenuView: View {
             }
             .accentColor(color(settings.theme.color1))
             .sheet(isPresented: self.$showProView) {
-                OmegaProView(storeManager: storeManager)
+                OmegaProSplash(storeManager: self.storeManager)
             }
             .sheet(isPresented: self.$showUnlock) {
                 OmegaProAd(storeManager: self.storeManager)
