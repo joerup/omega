@@ -48,9 +48,6 @@ struct OmegaView: View {
     @State private var welcome = false
     @State private var newsUpdate = false
     
-    @State private var omegaProAd = false
-    @State private var themePackAd = false
-    
     @ViewBuilder var body: some View {
         
         ZStack {
@@ -80,24 +77,8 @@ struct OmegaView: View {
         .sheet(isPresented: self.$welcome) {
             Welcome()
         }
-//        .sheet(isPresented: self.$newsUpdate) {
-//            OmegaProAd(storeManager: storeManager)
-//        }
-        .sheet(isPresented: self.$themePackAd) {
-            SuperOmegaThemePackView(storeManager: storeManager)
-        }
-        .sheet(isPresented: self.$omegaProAd) {
-            OmegaProAd(storeManager: storeManager)
-        }
-        .sheet(isPresented: self.$settings.clickProAd) {
+        .sheet(isPresented: self.$settings.showProPopUp) {
             OmegaProSplash(storeManager: storeManager)
-//            OmegaProAd(storeManager: storeManager, prompted: false)
-        }
-        .sheet(isPresented: self.$settings.promptProAd) {
-            OmegaProAd(storeManager: storeManager, prompted: true)
-        }
-        .sheet(isPresented: self.$settings.showProDescription) {
-            OmegaProView(storeManager: storeManager)
         }
     }                                                 
     
@@ -115,7 +96,7 @@ struct OmegaView: View {
         // Omega Pro Ad
         else if !UserDefaults.standard.bool(forKey: "seenProAd") && !settings.pro {
             UserDefaults.standard.set(true, forKey: "seenProAd")
-            self.settings.promptProAd.toggle()
+            settings.popUp(.cycle)
         }
         // News Update
         else if storedVersion != version {
@@ -128,7 +109,7 @@ struct OmegaView: View {
         else {
             // Omega Pro Pop Up
             if Int.random(in: 0...7) == 7 && !settings.pro {
-                self.omegaProAd.toggle()
+                settings.popUp(.cycle)
             }
         }
         

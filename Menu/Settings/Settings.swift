@@ -32,7 +32,8 @@ class Settings: ObservableObject {
     @Published var selectedAlphabet: Alphabet = .english
     @Published var buttonUppercase: Bool = false
     
-    @Published var showProDescription: Bool = false
+    @Published var showProPopUp: Bool = false
+    @Published var proPopUpType: ProFeatureDisplay? = nil
     @Published var purchaseConfirmation: Bool = false
     @Published var restoreConfirmation: Bool = false
     
@@ -55,8 +56,11 @@ class Settings: ObservableObject {
         return proOverride ?? UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.PRO")
     }
     @Published var proOverride: Bool? = nil
-    @Published var promptProAd: Bool = false
-    @Published var clickProAd: Bool = false
+    
+    func popUp(_ displayType: ProFeatureDisplay) {
+        self.proPopUpType = displayType
+        self.showProPopUp = true
+    }
     
     
     // MARK: - Calculator Type

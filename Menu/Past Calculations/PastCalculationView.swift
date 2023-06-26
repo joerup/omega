@@ -157,7 +157,8 @@ struct PastCalculationView: View {
                         LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")") {
                             calculation.save()
                         }
-                        LargeIconButton(text: "Assign", image: "character.textbox", proOnly: true) {
+                        LargeIconButton(text: "Assign", image: "character.textbox") {
+                            guard proCheckNotice(.variables) else { return }
                             calculation.store()
                         }
                         LargeIconButton(text: "Delete", image: "trash") {

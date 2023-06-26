@@ -63,7 +63,7 @@ struct DetailButtonRow: View {
                                 sound: .click3
                 ) {
                     guard proCheck() else {
-                        settings.promptProAd.toggle()
+                        settings.popUp(.variables)
                         return
                     }
                     settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
@@ -79,7 +79,7 @@ struct DetailButtonRow: View {
                                 sound: .click3
                 ) {
                     guard proCheck() else {
-                        settings.promptProAd.toggle()
+                        settings.popUp(.misc)
                         return
                     }
                     settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
@@ -166,9 +166,9 @@ struct DetailButtonRow: View {
     
     @ViewBuilder
     var matButtons: some View {
-        SmallTextButton(text: "2ND",
+        SmallTextButton(text: "2nd",
                         color: settings.buttonUppercase ? color(settings.theme.color1) : Color.init(white: 0.15),
-                        textColor: settings.buttonUppercase ? Color.white : color(settings.theme.color3, edit: true),
+                        textColor: settings.buttonUppercase ? Color.white : color(settings.theme.color1, edit: true),
                         width: size == .small ? 55 : 75,
                         smallerSmall: orientation == .landscape,
                         sound: .click3
@@ -186,7 +186,7 @@ struct DetailButtonRow: View {
                        smallerSmall: orientation == .landscape
         )
         SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
-                        color: Color.init(white: 0.15),
+                        color: settings.buttonUppercase ? color(settings.theme.color1) : Color.init(white: 0.15),
                         textColor: .white,
                         smallerSmall: orientation == .landscape,
                         sound: .click3

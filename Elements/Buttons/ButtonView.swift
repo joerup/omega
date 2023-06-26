@@ -98,7 +98,7 @@ struct ButtonView: View {
         
         // Disabled
         
-        guard !button.disabled || proCheckNotice() else { return }
+        guard !button.disabled || proCheckNotice(.calculus) else { return }
         
         // Other Actions
         

@@ -52,7 +52,7 @@ struct ThemeGrouping: View {
                                 theme.setTheme()
                                 settings.notification = .theme
                             } else {
-                                self.showUnlock.toggle()
+                                showUnlock.toggle()
                             }
                         }
                         .onLongPressGesture {
@@ -60,7 +60,7 @@ struct ThemeGrouping: View {
                                 theme.favorite()
                                 settings.notification = theme.isFavorite ? .favorite : .unfavorite
                             } else {
-                                self.showUnlock.toggle()
+                                showUnlock.toggle()
                             }
                         }
                     }

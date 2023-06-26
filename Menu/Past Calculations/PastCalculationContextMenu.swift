@@ -36,9 +36,11 @@ struct PastCalculationContextMenu: View {
                     Image(systemName: "folder\(calculation.saved ? ".fill" : "")")
                     Text("Save")
                 }
-                Button(action: calculation.store) {
-                    Image(systemName: "character.textbox")
-                    Text("Assign")
+                if proCheck() {
+                    Button(action: calculation.store) {
+                        Image(systemName: "character.textbox")
+                        Text("Assign")
+                    }
                 }
             }
             

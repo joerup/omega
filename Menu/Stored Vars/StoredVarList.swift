@@ -101,7 +101,7 @@ struct StoredVarList: View {
                     }
                     
                     SmallTextButton(text: self.selectionMode ? "Cancel" : "Edit", color: Color.init(white: 0.15), circle: true, smallerLarge: true) {
-                        guard proCheckNotice() else { return }
+                        guard proCheckNotice(.variables) else { return }
                         self.selectionMode.toggle()
                         self.resetSelected()
                     }
@@ -165,7 +165,7 @@ struct StoredVarList: View {
                                             .imageScale(.large)
                                             .frame(maxHeight: .infinity)
                                             .onTapGesture {
-                                                guard proCheckNotice() else { return }
+                                                guard proCheckNotice(.variables) else { return }
                                                 storedVar.insert()
                                             }
                                     }
@@ -176,7 +176,7 @@ struct StoredVarList: View {
                                 .padding(.horizontal, 10)
                                 .animation(nil)
                                 .onTapGesture {
-                                    guard proCheckNotice() else { return }
+                                    guard proCheckNotice(.variables) else { return }
                                     SoundManager.play(haptic: .light)
                                     if self.selectionMode {
                                         self.selectedVar = nil

@@ -96,7 +96,7 @@ struct OmegaProAd: View {
                             Button(action: {
                                 self.settings.showMenu = false
                                 self.presentationMode.wrappedValue.dismiss()
-                                self.settings.showProDescription = true
+                                self.settings.popUp(.themes)
                             }) {
                                 VStack {
                                     

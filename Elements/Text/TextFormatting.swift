@@ -20,6 +20,7 @@ class TextFormatting {
     var modes: ModeSettings {
         return modeSettings ?? settings.modes
     }
+    var theme: Theme? = nil
     
     init(elements: [TextElement]) {
         self.elements = elements
@@ -133,7 +134,7 @@ class TextFormatting {
                 
                 element.display = "■"
                 element.font = TextFormatting.getFont(.helvetica)
-                element.color = element.text == "■" ? color(settings.theme.color1) : Color.init(white: 0.4)
+                element.color = element.text == "■" ? color((theme ?? settings.theme).color1) : Color.init(white: 0.4)
                 element.opacity = 0.4
             }
             
@@ -141,7 +142,7 @@ class TextFormatting {
             else if element.text == "#|" {
                 
                 element.display = "|"
-                element.color = color(settings.theme.color1)
+                element.color = color((theme ?? settings.theme).color1)
                 element.opacity = 0.7
                 
                 if Double(prev?.text ?? "") != nil {

@@ -242,7 +242,7 @@ struct PastCalcSavedView: View {
                                     
                                 } else {
                                     Button(action: {
-                                        guard proCheckNotice() else { return }
+                                        guard proCheckNotice(.cycle) else { return }
                                     }) {
                                         HStack {
                                             Text("New Folder")

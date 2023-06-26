@@ -26,7 +26,7 @@ struct OmegaProLockFade: ViewModifier {
                     .foregroundColor(Color.init(white: 0.5))
             }
             .onTapGesture {
-                let _ = proCheckNotice()
+                let _ = proCheckNotice(.cycle)
             }
         }
     }
@@ -35,9 +35,9 @@ struct OmegaProLockFade: ViewModifier {
 func proCheck() -> Bool {
     return Settings.settings.pro
 }
-func proCheckNotice() -> Bool {
+func proCheckNotice(_ type: ProFeatureDisplay) -> Bool {
     if !proCheck() {
-        Settings.settings.promptProAd = true
+        Settings.settings.popUp(type)
     }
     return proCheck()
 }

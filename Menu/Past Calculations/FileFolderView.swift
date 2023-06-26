@@ -86,7 +86,7 @@ struct FileFolderView: View {
                                 Image(systemName: "folder.badge.plus")
                                     .foregroundColor(Color.init(white: 0.8))
                                 TextField(NSLocalizedString("New Folder", comment: ""), text: self.$newFolderText, onCommit: {
-                                    guard proCheckNotice() else { newFolderText.removeAll(); return }
+                                    guard proCheckNotice(.cycle) else { newFolderText.removeAll(); return }
                                     while self.newFolderText.last == " " {
                                         self.newFolderText.removeLast()
                                     }
@@ -111,7 +111,7 @@ struct FileFolderView: View {
                             
                         } else {
                             Button(action: {
-                                guard proCheckNotice() else { return }
+                                guard proCheckNotice(.cycle) else { return }
                             }) {
                                 HStack {
                                     Image(systemName: "folder.badge.plus")

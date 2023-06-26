@@ -20,7 +20,6 @@ struct ThemeView: View {
     @State private var showPreview: Bool = false
     @State private var preview: ThemePreviewItem? = nil
     @State private var showUnlock: Bool = false
-    @State private var promptUnlock: Bool = false
     
     private var favorites: [Theme] {
         return settings.favoriteThemes.map{ ThemeData.allThemes[$0] }
@@ -69,7 +68,7 @@ struct ThemeView: View {
                                             .padding(.horizontal, 5)
                                     } else {
                                         SettingsRow {
-                                            ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: self.$preview, showUnlock: self.$showUnlock)
+                                            ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: $preview, showUnlock: $showUnlock)
                                                 .padding(.vertical, 5)
                                         }
                                     }
@@ -96,7 +95,7 @@ struct ThemeView: View {
                                             if category.themes[0].locked {
                                                 
                                                 Button(action: {
-                                                    self.showUnlock.toggle()
+                                                    showUnlock.toggle()
                                                 }) {
                                                     Text(NSLocalizedString("Unlock", comment: "").uppercased())
                                                         .font(Font.system(.caption, design: .rounded).weight(.bold))
@@ -122,7 +121,7 @@ struct ThemeView: View {
                                         .padding(.horizontal, 5)
                                         .padding(.bottom, 5)
                                         
-                                        ThemeGrouping(category: category, themes: category.themes, geometry: geometry, preview: self.$preview, showUnlock: self.$promptUnlock)
+                                        ThemeGrouping(category: category, themes: category.themes, geometry: geometry, preview: $preview, showUnlock: $showUnlock)
                                             .padding(.bottom, 3)
                                     }
                                 }
@@ -130,7 +129,7 @@ struct ThemeView: View {
                         }
                         
                         Button(action: {
-                            self.showUnlock.toggle()
+                            showUnlock.toggle()
                         }) {
                             Text("Unlock Colors")
                                 .font(Font.system(.headline, design: .rounded).weight(.bold))
@@ -145,13 +144,13 @@ struct ThemeView: View {
             }
         }
         .sheet(isPresented: self.$showUnlock) {
-            OmegaProAd(storeManager: self.storeManager)
-        }
-        .sheet(isPresented: self.$promptUnlock) {
-            OmegaProAd(storeManager: self.storeManager, prompted: true)
+            OmegaProSplash(storeManager: storeManager)
+                .onAppear {
+                    settings.proPopUpType = .themes
+                }
         }
         .sheet(isPresented: self.$showPreview) {
-            ThemePreview(preview: self.$preview, showUnlock: self.$showUnlock)
+            ThemePreview(preview: self.$preview)
         }
     }
 }

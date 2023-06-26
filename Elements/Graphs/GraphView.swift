@@ -151,7 +151,7 @@ struct GraphView: View {
                         LinePlot(line: line, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
                             return point(x, y, geometry)
                         }
-                        .stroke(color(line.color, edit: true), lineWidth: 3)
+                        .stroke(color(line.color, edit: true), lineWidth: 2)
                     }
                 }
 

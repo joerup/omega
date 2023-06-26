@@ -111,67 +111,90 @@ struct CalculatorModel: View {
     
     var theme: Theme = Settings.settings.theme
     
-    init(_ displayType: ModelDisplayType = .buttons, orientation: Orientation? = nil, size: Size? = nil, maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil, theme: Theme? = nil) {
+    var modes: ModeSettings? = nil
+    
+    init(_ displayType: ModelDisplayType = .buttons, orientation: Orientation? = nil, size: Size? = nil, maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil, theme: Theme? = nil, modes: ModeSettings? = nil) {
         self.displayType = displayType
         self.setOrientation = orientation
         self.setSize = size
         self.maxWidth = maxWidth
         self.maxHeight = maxHeight
         self.theme = theme ?? Settings.settings.theme
+        self.modes = modes
     }
     
     var body: some View {
-        
-        ZStack {
-            Rectangle()
-                .fill(Color.init(white: 0.05))
-            VStack {
-                Spacer(minLength: 0)
-                ZStack {
-                    switch displayType {
-                    case .buttons:
-                        ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: true)
-                            .padding(.bottom, bottomSafeArea)
-                            .padding(.top, 2*scale)
-                    case .shapes:
-                        ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
-                            .padding(.bottom, bottomSafeArea)
-                            .padding(.top, 2*scale)
-                    case .buttonsText(let text):
-                        VStack {
-                            TextDisplay(strings: text.strings, size: 40)
+        if safeSize != .zero {
+            ZStack {
+                Rectangle()
+                    .fill(Color.init(white: 0.05))
+                VStack {
+                    Spacer(minLength: 0)
+                    ZStack {
+                        switch displayType {
+                        case .buttons:
+                            ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false)
+                                .padding(.bottom, bottomSafeArea)
+                                .padding(.top, 2*scale)
+                        case .shapes:
                             ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
                                 .padding(.bottom, bottomSafeArea)
                                 .padding(.top, 2*scale)
+                        case .buttonsText(let text):
+                            VStack {
+                                TextDisplay(strings: text.strings, modes: modes, size: safeSize.height*0.09, scrollable: true, theme: theme)
+                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                    .padding(.bottom, bottomSafeArea)
+                                    .padding(.top, 2*scale)
+                            }
+                        case .popUp(let text):
+                            ZStack {
+                                VStack {
+                                    Spacer()
+                                    ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                        .padding(.bottom, bottomSafeArea)
+                                        .padding(.top, 2*scale)
+                                }
+                                VStack {
+                                    Text(text)
+                                        .font(.system(.caption, design: .rounded).weight(.semibold))
+                                        .lineLimit(0).minimumScaleFactor(0.5)
+                                        .padding()
+                                    Spacer()
+                                }
+                                .frame(width: min(200, safeSize.width*0.7), height: min(300, safeSize.height*0.6))
+                                .background(Color.init(white: 0.25).cornerRadius(10))
+                            }
+                        case .graph(let elements):
+                            if (maxWidth ?? 0) > 0, (maxHeight ?? 0) > 0 {
+                                GraphView(elements, gridLines: false, interactive: false, precision: 200)
+                            }
+                        case .table(let function):
+                            TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), fullTable: true)
                         }
-                    case .graph(let elements):
-                        if (maxWidth ?? 0) > 0, (maxHeight ?? 0) > 0 {
-                            GraphView(elements, gridLines: false, interactive: false, precision: 60)
-                        }
-                    case .table(let function):
-                        TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), fullTable: true)
                     }
+                    .id(theme.id)
                 }
-                .id(theme.id)
+                .padding(.top, ignoreSafeArea ? 0 : topSafeArea)
+                .padding(.leading, ignoreSafeArea ? 0 : leftSafeArea)
+                .padding(.trailing, ignoreSafeArea ? 0 : rightSafeArea)
             }
-            .padding(.top, ignoreSafeArea ? 0 : topSafeArea)
-            .padding(.leading, ignoreSafeArea ? 0 : leftSafeArea)
-            .padding(.trailing, ignoreSafeArea ? 0 : rightSafeArea)
+            .frame(width: modelSize.width, height: modelSize.height)
+            .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
+            .cornerRadius(scale*50)
+            .overlay(
+                RoundedRectangle(cornerRadius: scale*50)
+                    .stroke(.black, lineWidth: border)
+                    .frame(width: modelSize.width+border/2, height: modelSize.height+border/2)
+            )
         }
-        .frame(width: modelSize.width, height: modelSize.height)
-        .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
-        .cornerRadius(scale*50)
-        .overlay(
-            RoundedRectangle(cornerRadius: scale*50)
-                .stroke(.black, lineWidth: border)
-                .frame(width: modelSize.width+border/2, height: modelSize.height+border/2)
-        )
     }
     
     enum ModelDisplayType {
         case shapes
         case buttons
         case buttonsText(text: Queue)
+        case popUp(text: String)
         case graph(elements: [GraphElement])
         case table(function: Queue)
     }

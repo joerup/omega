@@ -21,7 +21,7 @@ struct LargeIconButton: View {
     var body: some View {
         
         Button(action: {
-            guard !proOnly || proCheckNotice() else { return }
+            guard !proOnly || proCheckNotice(.misc) else { return }
             SoundManager.play(sound: .click3, haptic: .light)
             action()
         }) {

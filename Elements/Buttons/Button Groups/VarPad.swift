@@ -63,7 +63,6 @@ struct VarPad: View {
                         }
                     }
                 }
-                .proLock()
             }
             .edgesIgnoringSafeArea(.bottom)
             .frame(width: width)

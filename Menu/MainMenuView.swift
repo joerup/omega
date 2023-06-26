@@ -20,9 +20,7 @@ struct MainMenuView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var showThemes: Bool = false
-    @State private var showProView: Bool = false
     @State private var showTesterView: Bool = false
-    @State private var showUnlock: Bool = false
     @State private var showExport: Bool = false
     @State private var showShare = false
     
@@ -47,7 +45,7 @@ struct MainMenuView: View {
                         if !proCheck() {
                             SettingsGroup {
                                 Button {
-                                    self.showProView.toggle()
+                                    settings.popUp(.cycle)
                                 } label: {
                                     VStack {
                                         Text("OMEGA PRO")
@@ -102,7 +100,7 @@ struct MainMenuView: View {
                         
                         SettingsGroup {
                             SettingsButton(title: "Omega Pro", icon: "star.fill") {
-                                self.showProView.toggle()
+                                settings.popUp(.list)
                             }
                             SettingsButton(title: "Restore Purchases", icon: "bag") {
                                 self.storeManager.restoreProducts()
@@ -157,11 +155,8 @@ struct MainMenuView: View {
                 .accentColor(color(self.settings.theme.color1, edit: true))
             }
             .accentColor(color(settings.theme.color1))
-            .sheet(isPresented: self.$showProView) {
-                OmegaProSplash(storeManager: self.storeManager)
-            }
-            .sheet(isPresented: self.$showUnlock) {
-                OmegaProAd(storeManager: self.storeManager)
+            .sheet(isPresented: self.$settings.showProPopUp) {
+                OmegaProSplash(storeManager: storeManager)
             }
             .sheet(isPresented: self.$showThemes) {
                 ThemeView(storeManager: storeManager)

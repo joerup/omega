@@ -28,6 +28,7 @@ struct TextDisplay: View {
     var equals: Bool
     var scrollable: Bool
     var animations: Bool
+    var theme: Theme?
     var interaction: InteractionType
     
     var count: Int {
@@ -49,7 +50,7 @@ struct TextDisplay: View {
     @State private var position: CGFloat = 0
     @State private var scroll: CGFloat = 0
     
-    init(strings: [String], map: [[Int]] = [], modes: ModeSettings? = nil, calculation: Calculation = Calculation.current, size: CGFloat = 50, height: CGFloat? = nil, color: Color? = nil, opacity: CGFloat? = nil, equals: Bool = false, scrollable: Bool = false, animations: Bool = false, interaction: InteractionType = .none) {
+    init(strings: [String], map: [[Int]] = [], modes: ModeSettings? = nil, calculation: Calculation = Calculation.current, size: CGFloat = 50, height: CGFloat? = nil, color: Color? = nil, opacity: CGFloat? = nil, equals: Bool = false, scrollable: Bool = false, animations: Bool = false, theme: Theme? = nil, interaction: InteractionType = .none) {
         self.data = RawTextData(strings: strings, map: map, modes: modes)
         self.calculation = calculation
         self.size = size
@@ -59,6 +60,7 @@ struct TextDisplay: View {
         self.equals = equals
         self.scrollable = scrollable
         self.animations = animations
+        self.theme = theme
         self.interaction = interaction
     }
     
@@ -201,25 +203,11 @@ struct TextDisplay: View {
     // Set the elements
     func setElements(_ strings: [String], map: [[Int]], modes: ModeSettings?, maxWidth: CGFloat, maxHeight: CGFloat) {
         
-//        var elements: [TextElement] {
-//            // Attempt to use locally stored elements for these strings
-//            if let stored = TextElement.locallyStoredTextElements.first(where: { $0.key == strings })?.value {
-//                stored.elements.forEach { $0.shrink(size/stored.size) }
-//                return stored.elements
-//            }
-//            // Create new elements
-//            else {
-//                let elements = TextElement.setElements(strings, map: map, size: size)
-//                TextElement.locallyStoredTextElements[strings] = (elements, size)
-//                return elements
-//            }
-//        }
-        
         // Set the elements
         var textStrings: [String] {
             return strings + (equals ? ["="] : [])
         }
-        self.textElements = TextElement.setElements(textStrings, map: map, modes: modes ?? Settings.settings.modes, size: size)
+        self.textElements = TextElement.setElements(textStrings, map: map, modes: modes ?? Settings.settings.modes, theme: theme, size: size)
         
         // Set the width
         

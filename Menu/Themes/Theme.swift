@@ -55,6 +55,7 @@ class Theme: ObservableObject, Codable {
         guard !locked else { return }
         
         Settings.settings.themeID = self.id
+        Calculation.current.refresh()
         
         let impactMed = UIImpactFeedbackGenerator(style: .light)
         impactMed.impactOccurred()

@@ -39,7 +39,7 @@ struct SmallTextButton: View {
     var body: some View {
         
         Button(action: {
-            guard !proOnly || proCheckNotice() else { return }
+            guard !proOnly || proCheckNotice(.misc) else { return }
             SoundManager.play(sound: sound, haptic: .light)
             action()
         }) {

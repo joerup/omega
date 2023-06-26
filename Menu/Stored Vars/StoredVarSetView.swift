@@ -172,7 +172,7 @@ struct StoredVarSetView: View {
     
     func setVariable() {
         
-        guard proCheckNotice(), let value = value, !value.allLetters.contains(where: { $0.name == letter }) else { return }
+        guard proCheckNotice(.variables), let value = value, !value.allLetters.contains(where: { $0.name == letter }) else { return }
         
         let storedVar = StoredVar(context: managedObjectContext)
         

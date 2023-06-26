@@ -14,7 +14,6 @@ struct ThemePreview: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     @Binding var preview: ThemePreviewItem?
-    @Binding var showUnlock: Bool
     
     @Environment(\.presentationMode) var presentationMode
     

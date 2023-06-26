@@ -105,10 +105,11 @@ class TextElement: Equatable {
     
     static var locallyStoredTextElements: [[String] : (elements: [TextElement], size: CGFloat)] = [:]
     
-    static func setElements(_ strings: [String], map: [[Int]] = [], modes: ModeSettings? = nil, size: CGFloat) -> [TextElement] {
+    static func setElements(_ strings: [String], map: [[Int]] = [], modes: ModeSettings? = nil, theme: Theme? = nil, size: CGFloat) -> [TextElement] {
         
         let formatting = TextFormatting(elements: strings.enumerated().map { createElement($1, index: ($0 < map.count ? map[$0] : []), size: size) })
         formatting.modeSettings = modes
+        formatting.theme = theme
         formatting.formatElements()
         
         var totalWidth: CGFloat = 0
