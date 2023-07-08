@@ -73,13 +73,13 @@ extension PastObject {
     // MARK: Export
     
     func export() {
-        guard proCheckNotice(.cycle) else { return }
+        guard proCheckNotice(.misc) else { return }
         Settings.settings.popUp = AnyView(
             ExportView(calculation: self)
         )
     }
     static func exportSelected(_ calculations: [PastObject]) {
-        guard proCheckNotice(.cycle) else { return }
+        guard proCheckNotice(.misc) else { return }
         Settings.settings.popUp = AnyView(
             ExportView(calculations: calculations)
         )

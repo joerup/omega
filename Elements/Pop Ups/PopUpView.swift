@@ -116,7 +116,7 @@ struct PopUpView: View {
                             Notification(text: "Assigned to Variable", image: "character.textbox", notification: $settings.notification)
                         }
                         else if settings.notification == .export {
-                            Notification(text: "Exported File", image: "arrow.up.doc", notification: $settings.notification)
+                            Notification(text: "Exported File", image: "square.and.arrow.up", notification: $settings.notification)
                         }
                         else if settings.notification == .delete {
                             Notification(text: "Deleted", image: "trash", notification: $settings.notification)

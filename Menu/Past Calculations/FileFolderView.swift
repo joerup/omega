@@ -111,7 +111,7 @@ struct FileFolderView: View {
                             
                         } else {
                             Button(action: {
-                                guard proCheckNotice(.cycle) else { return }
+                                guard proCheckNotice(.misc) else { return }
                             }) {
                                 HStack {
                                     Image(systemName: "folder.badge.plus")
@@ -120,8 +120,6 @@ struct FileFolderView: View {
                                         .font(Font.system(.body, design: .rounded).weight(.semibold))
                                         .foregroundColor(Color.init(white: 0.6))
                                     Spacer()
-                                    Image(systemName: "lock.fill")
-                                        .foregroundColor(color(settings.theme.color1))
                                 }
                                 .frame(width: 250)
                                 .padding(10)

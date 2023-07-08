@@ -40,6 +40,7 @@ struct ButtonPad: View {
                         NumPad(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
                     }
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height*(4.8/5), active: active, showText: showText))
+                    .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                     
                     ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
                         .padding(.top, self.width*0.005)
@@ -58,6 +59,7 @@ struct ButtonPad: View {
                         }
                     }
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height))
+                    .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                     
                     ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
                         .padding(.top, self.width*0.005)
@@ -77,9 +79,11 @@ struct ButtonPad: View {
                 
                 LandscapePad(width: width*7/11, buttonHeight: height, theme: theme, active: active, showText: showText)
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width*7/11, buttonHeight: height))
+                    .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                 
                 VStack(spacing:0) {
                     NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active, showText: showText)
+                        .overlay(SecondDetailOverlay(size: size, orientation: orientation, active: active))
                     ControlPad(width: width*4/11, buttonHeight: height, active: active, showText: showText)
                 }
             }

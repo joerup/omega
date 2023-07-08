@@ -36,7 +36,7 @@ struct SubstituteView: View {
                 
                 HStack {
                     
-                    TextDisplay(strings: [variable.text], size: size == .small ? 28 : 35, color: color(settings.theme.color1, edit: true))
+                    TextDisplay(strings: [variable.text], size: size == .small ? 24 : 35, color: color(settings.theme.color1, edit: true))
                         .frame(width: size == .small ? 28 : 35)
                     
                     HStack {
@@ -51,23 +51,23 @@ struct SubstituteView: View {
                         Spacer()
                         
                         if variable.type == .constant {
-                            TextDisplay(strings: variable.value!.strings, size: size == .small ? 22 : 25, color: Color.init(white: variable.value!.variables.isEmpty && variable.value!.bounds.isEmpty ? 0.8 : 1), scrollable: true)
+                            TextDisplay(strings: variable.value!.strings, size: size == .small ? 20 : 25, color: Color.init(white: variable.value!.variables.isEmpty && variable.value!.bounds.isEmpty ? 0.8 : 1), scrollable: true)
                         }
                         else if variable.type == .bound || variable.type == .dummy {
-                            TextDisplay(strings: [], size: size == .small ? 22 : 25, color: Color.init(white: 0.6), scrollable: true)
+                            TextDisplay(strings: [], size: size == .small ? 20 : 25, color: Color.init(white: 0.6), scrollable: true)
                         }
                         else if variable.storedValue {
-                            TextInput(queue: variable.value!, placeholder: [variable.text], defaultValue: variable.value!, size: size == .small ? 22 : 25, scrollable: true, onChange: { value in
+                            TextInput(queue: variable.value!, placeholder: [variable.text], defaultValue: variable.value!, size: size == .small ? 20 : 25, scrollable: true, onChange: { value in
                                 self.values[variable.name] = value
                             })
                         } else {
-                            TextInput(queue: values[variable.name], placeholder: [variable.text], size: size == .small ? 22 : 25, scrollable: true, onChange: { value in
+                            TextInput(queue: values[variable.name], placeholder: [variable.text], size: size == .small ? 20 : 25, scrollable: true, onChange: { value in
                                 self.values[variable.name] = value
                             })
                         }
                     }
                     .frame(maxWidth: .infinity)
-                    .frame(height: size == .small ? 28 : 35)
+                    .frame(height: size == .small ? 24 : 35)
                     .padding(10)
                     .background(Color.init(white: variable.type == .variable ? 0.27 : 0.23).cornerRadius(20))
                 }

@@ -232,7 +232,7 @@ struct OmegaProView: View {
                                     
                                     FeatureGrouping(geometry: geometry) {
                                         Group {
-                                            FeatureDetailView("Export Calculations", icon: "arrow.up.doc", desc: "Export any or all of your past calculations to spreadsheet format in a CSV file, which can be imported into other programs.")
+                                            FeatureDetailView("Export Calculations", icon: "square.and.arrow.up", desc: "Export any or all of your past calculations to spreadsheet format in a CSV file, which can be imported into other programs.")
                                             FeatureDetailView("Keyboard Support", icon: "keyboard", desc: "External/bluetooth keyboards for iPad and Mac can be used in place of the calculator buttons.")
                                         }
                                     }

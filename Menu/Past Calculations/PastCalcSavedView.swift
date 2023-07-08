@@ -122,7 +122,7 @@ struct PastCalcSavedView: View {
                                         PastCalculation.saveSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "arrow.up.doc", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, proOnly: true, action: {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
                                         PastCalculation.exportSelected(selectedCalculations)
                                     })
 
@@ -171,7 +171,7 @@ struct PastCalcSavedView: View {
                                         Spacer()
                                     }
                                     .padding(10)
-                                    .background(Color.init(white: selectedFolder == nil ? 0.25 : 0.15))
+                                    .background(Color.init(white: selectedFolder == nil ? 0.25 : 0.2))
                                     .cornerRadius(10)
                                 }
                                 .padding(.top, 10)
@@ -215,7 +215,7 @@ struct PastCalcSavedView: View {
                                             }
                                         }
                                         .padding(10)
-                                        .background(Color.init(white: selectedFolder == folder ? 0.25 : 0.15))
+                                        .background(Color.init(white: selectedFolder == folder ? 0.25 : 0.2))
                                         .cornerRadius(10)
                                     }
                                     
@@ -237,23 +237,21 @@ struct PastCalcSavedView: View {
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                     .foregroundColor(.white)
                                     .padding(10)
-                                    .background(Color.init(white: 0.15))
+                                    .background(Color.init(white: 0.2))
                                     .cornerRadius(10)
                                     
                                 } else {
                                     Button(action: {
-                                        guard proCheckNotice(.cycle) else { return }
+                                        guard proCheckNotice(.misc) else { return }
                                     }) {
                                         HStack {
                                             Text("New Folder")
                                                 .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                                 .foregroundColor(Color.init(white: 0.6))
                                             Spacer()
-                                            Image(systemName: "lock.fill")
-                                                .foregroundColor(color(settings.theme.color1))
                                         }
                                         .padding(10)
-                                        .background(Color.init(white: 0.15))
+                                        .background(Color.init(white: 0.2))
                                         .cornerRadius(10)
                                     }
                                 }
@@ -265,7 +263,7 @@ struct PastCalcSavedView: View {
                         .frame(maxHeight: 225)
                     }
                     .padding(.horizontal, 10)
-                    .background(Color.init(white: 0.1))
+                    .background(Color.init(white: 0.15))
                     .cornerRadius(20)
                     .padding(.horizontal, 10)
                     .padding(.top, 3)

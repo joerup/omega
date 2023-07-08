@@ -59,6 +59,8 @@ struct SettingsGroup<Content: View>: View {
 
 struct SettingsRow<Content: View>: View {
     
+    @Environment(\.sizeCategory) var sizeCategory
+    
     var desc: LocalizedStringKey? = nil
     var content: () -> Content
     
@@ -94,6 +96,7 @@ struct SettingsRow<Content: View>: View {
                 }
             }
             .padding(.horizontal, 5)
+            .padding(.vertical, 10)
             
             Divider()
         }
@@ -110,6 +113,5 @@ struct SettingsText: View {
                 .font(Font.system(.subheadline, design: .default).weight(.semibold))
                 .foregroundColor(Color.init(white: 0.9))
         }
-        .frame(minHeight: 3.5*UIFont.preferredFont(forTextStyle: .subheadline).pointSize)
     }
 }

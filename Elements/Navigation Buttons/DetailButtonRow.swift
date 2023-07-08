@@ -32,7 +32,7 @@ struct DetailButtonRow: View {
                     SmallTextButton(text: "MAT",
                                     color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
                                     textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .small ? 50 : 75,
+                                    width: size == .small ? 55 : 70,
                                     smallerSmall: orientation == .landscape,
                                     sound: .click3
                     ) {
@@ -45,7 +45,7 @@ struct DetailButtonRow: View {
                     SmallTextButton(text: "MAT",
                                     color: settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
                                     textColor: settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .small ? 50 : 75,
+                                    width: size == .small ? 55 : 70,
                                     smallerSmall: orientation == .landscape,
                                     sound: .click3
                     ) {
@@ -58,7 +58,7 @@ struct DetailButtonRow: View {
                 SmallTextButton(text: "VAR",
                                 color: settings.buttonDisplayMode == .vars ? color(settings.theme.color3) : Color.init(white: 0.15),
                                 textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
-                                width: size == .small ? 50 : 75,
+                                width: size == .small ? 55 : 70,
                                 smallerSmall: orientation == .landscape,
                                 sound: .click3
                 ) {
@@ -71,21 +71,21 @@ struct DetailButtonRow: View {
                     settings.detailOverlay = .none
                 }
                 
-                SmallTextButton(text: "UNIT",
-                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
-                                width: size == .small ? 50 : 75,
-                                smallerSmall: orientation == .landscape,
-                                sound: .click3
-                ) {
-                    guard proCheck() else {
-                        settings.popUp(.misc)
-                        return
-                    }
-                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
-                    settings.buttonUppercase = false
-                    settings.detailOverlay = .none
-                }
+//                SmallTextButton(text: "UNIT",
+//                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
+//                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
+//                                width: size == .small ? 50 : 65,
+//                                smallerSmall: orientation == .landscape,
+//                                sound: .click3
+//                ) {
+//                    guard proCheck() else {
+//                        settings.popUp(.misc)
+//                        return
+//                    }
+//                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
+//                    settings.buttonUppercase = false
+//                    settings.detailOverlay = .none
+//                }
             }
             
             HStack {
@@ -100,7 +100,7 @@ struct DetailButtonRow: View {
             }
             .padding(.leading, 20)
             
-            Spacer()
+            Spacer(minLength: 0)
             
             HStack {
                 if orientation == .portrait && size == .small {
@@ -148,6 +148,7 @@ struct DetailButtonRow: View {
                     if calculation.completed {
                         
                         SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape) {
+                            guard proCheckNotice(.misc) else { return }
                             settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
                         }
                         .onAppear {
@@ -159,7 +160,7 @@ struct DetailButtonRow: View {
                 }
             }
         }
-        .frame(height: size == .large ? 65 : orientation == .landscape ? 35 : 40)
+        .frame(height: size == .large ? 45 : orientation == .landscape ? 35 : 40)
         .animation(.default, value: Calculation.current.completed)
         .animation(.default, value: settings.buttonDisplayMode)
     }
@@ -169,7 +170,7 @@ struct DetailButtonRow: View {
         SmallTextButton(text: "2nd",
                         color: settings.buttonUppercase ? color(settings.theme.color1) : Color.init(white: 0.15),
                         textColor: settings.buttonUppercase ? Color.white : color(settings.theme.color1, edit: true),
-                        width: size == .small ? 55 : 75,
+                        width: size == .small ? 50 : 65,
                         smallerSmall: orientation == .landscape,
                         sound: .click3
         ) {
@@ -182,7 +183,7 @@ struct DetailButtonRow: View {
     var varButtons: some View {
         AlphabetButton(alphabet: $settings.selectedAlphabet,
                        uppercase: $settings.buttonUppercase,
-                       width: size == .small ? 55 : 75,
+                       width: size == .small ? 50 : 65,
                        smallerSmall: orientation == .landscape
         )
         SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",

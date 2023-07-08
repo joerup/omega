@@ -17,6 +17,8 @@ struct VariablePlugView: View {
     @State private var pluggedResult: Queue? = nil
     @State private var editedResult: Queue? = nil
     
+    var main: Bool = false
+    
     var currentResult: Queue {
         return editedResult ?? pluggedResult ?? queue
     }
@@ -35,24 +37,24 @@ struct VariablePlugView: View {
                 
                 HStack {
                     
-                    if !queue.allVariables.isEmpty {
-                        
-                        SmallIconButton(symbol: "plus.circle", color: Color.init(white: 0.3), textColor: color(settings.theme.color1, edit: true), smallerLarge: true) {
-                            Calculation.current.setUpInput()
-                            Calculation.current.queue.insertToQueue(currentResult)
-                            SoundManager.play(sound: .click3, haptic: .medium)
-                        }
-                        
-                        SmallIconButton(symbol: "doc.on.clipboard\(Settings.settings.clipboard == currentResult.items ? ".fill" : "")", color: Color.init(white: 0.3), textColor: color(settings.theme.color1, edit: true), smallerLarge: true) {
-                            UIPasteboard.general.string = currentResult.exportString()
-                            Settings.settings.clipboard = currentResult.items
-                            Settings.settings.notification = .copy
-                        }
-                    }
-                    
-                    Spacer()
-                    
                     if let editedResult = editedResult {
+                        
+                        if !queue.allVariables.isEmpty {
+                            
+                            SmallIconButton(symbol: "plus.circle", color: Color.init(white: main ? 0.2 : 0.25), textColor: color(settings.theme.color1, edit: true), smallerLarge: true) {
+                                Calculation.current.setUpInput()
+                                Calculation.current.queue.insertToQueue(currentResult)
+                                SoundManager.play(sound: .click3, haptic: .medium)
+                            }
+                            
+                            SmallIconButton(symbol: "doc.on.clipboard\(Settings.settings.clipboard == currentResult.items ? ".fill" : "")", color: Color.init(white: main ? 0.2 : 0.25), textColor: color(settings.theme.color1, edit: true), smallerLarge: true) {
+                                UIPasteboard.general.string = currentResult.exportString()
+                                Settings.settings.clipboard = currentResult.items
+                                Settings.settings.notification = .copy
+                            }
+                        }
+                        
+                        Spacer()
                     
                         TextDisplay(strings: ["="]+editedResult.strings, size: 24, scrollable: true, animations: true)
                         

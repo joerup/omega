@@ -65,7 +65,7 @@ struct SettingsMenuPicker: View {
     
     var body: some View {
         SettingsRow(desc: desc) {
-            HStack {
+            AStack {
                 SettingsText(title: title)
                 Spacer()
                 Picker("", selection: self.$value) {
@@ -97,7 +97,7 @@ struct SettingsBoolPicker: View {
     
     var body: some View {
         SettingsRow {
-            HStack {
+            AStack {
                 SettingsText(title: title)
                 Spacer()
                 Picker(title, selection: self.$value) {
@@ -129,9 +129,9 @@ struct SettingsBoolMenuPicker: View {
     
     var body: some View {
         SettingsRow(desc: displayDescriptions.isEmpty ? nil : displayDescriptions[trueFirst ? (value ? 0 : 1) : (value ? 1 : 0)]) {
-            HStack {
+            AStack {
                 SettingsText(title: title)
-                Spacer()
+                Spacer(minLength: 0)
                 Picker("", selection: self.$value) {
                     Text(LocalizedStringKey(self.displayOptions[0]))
                         .tag(trueFirst)
@@ -163,20 +163,25 @@ struct SettingsIconPicker: View {
     
     var body: some View {
         SettingsRow(desc: desc) {
-            HStack {
+            AStack {
                 SettingsText(title: title)
-                Spacer()
+                Spacer(minLength: 0)
                 let language = Locale.current.languageCode
                 let options = (language == "en" || alternateOptions.isEmpty) ? displayOptions : alternateOptions
-                ForEach(options.indices, id: \.self) { index in
-                    Button {
-                        self.value = index*increment + offset
-                    } label: {
-                        Image(systemName: "\(options[index])\(self.value == index*increment + offset ? ".fill" : "")")
-                            .imageScale(.large)
+                HScrollStack {
+                    HStack(spacing: displayOptions.count > 4 ? 5 : 10) {
+                        ForEach(options.indices, id: \.self) { index in
+                            Button {
+                                self.value = index*increment + offset
+                            } label: {
+                                Image(systemName: "\(options[index])\(self.value == index*increment + offset ? ".fill" : "")")
+                                    .imageScale(.large)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.horizontal, -1)
+                        }
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.horizontal, -1)
+                    .padding(.vertical, 5)
                 }
             }
         }
@@ -241,6 +246,7 @@ struct SettingsLink: View {
                         .foregroundColor(Color.init(white: 0.4))
                 }
             }
+            .padding(.vertical, 5)
         }
     }
 }
@@ -260,9 +266,8 @@ struct SettingsButton: View {
                 HStack {
                     if let icon = icon {
                         Image(systemName: icon)
-                            .imageScale(.small)
                             .foregroundColor(color(self.settings.theme.color1, edit: true))
-                            .padding(.trailing, 5)
+                            .padding([.trailing, .bottom], 5)
                     }
                     SettingsText(title: title)
                     Spacer()
@@ -271,6 +276,7 @@ struct SettingsButton: View {
                         .foregroundColor(Color.init(white: 0.4))
                 }
             }
+            .padding(.vertical, 5)
         }
     }
 }
@@ -295,3 +301,41 @@ struct SettingsButtonContent<Content: View>: View {
     }
 }
 
+struct AStack<Content: View>: View {
+    
+    @Environment(\.sizeCategory) var sizeCategory
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    @ViewBuilder
+    var content: () -> Content
+    
+    var body: some View {
+        if sizeCategory >= .accessibilityMedium && horizontalSizeClass == .compact {
+            HStack {
+                VStack(alignment: .leading, content: content)
+                Spacer()
+            }
+        } else {
+            HStack(content: content)
+        }
+    }
+}
+
+struct HScrollStack<Content: View>: View {
+                            
+    @Environment(\.sizeCategory) var sizeCategory
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    @ViewBuilder
+    var content: () -> Content
+    
+    var body: some View {
+        if sizeCategory >= .accessibilityMedium && horizontalSizeClass == .compact {
+            ScrollView(.horizontal) {
+                HStack(content: content)
+            }
+        } else {
+            HStack(content: content)
+        }
+    }
+}

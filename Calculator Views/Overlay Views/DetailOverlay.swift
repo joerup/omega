@@ -12,25 +12,39 @@ struct DetailOverlay: View {
     
     @ObservedObject var settings = Settings.settings
     
+    var size: Size
+    var orientation: Orientation
+    
+    var active: Bool = true
+    
     var body: some View {
-        
-        GeometryReader { geometry in
-            
-            if settings.detailOverlay == .result {
-            
-                ScrollView {
-
-                    VStack {
-
-                        ResultOverlay(geometry: geometry)
-
-                        Spacer()
-
-                    }
-                    .padding(.top, 7.5)
+        if active {
+            GeometryReader { geometry in
+                if settings.detailOverlay == .result {
+                    ResultOverlay(geometry: geometry, size: size, orientation: orientation, primary: true)
+                        .background(Color.init(white: 0.075))
                 }
-                .background(Color.init(white: 0.1))
-                .edgesIgnoringSafeArea(.bottom)
+            }
+        }
+    }
+}
+
+struct SecondDetailOverlay: View {
+    
+    @ObservedObject var settings = Settings.settings
+    
+    var size: Size
+    var orientation: Orientation
+    
+    var active: Bool = true
+    
+    var body: some View {
+        if active {
+            GeometryReader { geometry in
+                if settings.detailOverlay == .result {
+                    ResultOverlay(geometry: geometry, size: size, orientation: orientation, primary: false)
+                        .background(Color.init(white: 0.075))
+                }
             }
         }
     }

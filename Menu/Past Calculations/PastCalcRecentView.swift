@@ -140,7 +140,7 @@ struct PastCalcRecentView: View {
                                         PastCalculation.saveSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "arrow.up.doc", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, proOnly: true, action: {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
                                         PastCalculation.exportSelected(selectedCalculations)
                                     })
 

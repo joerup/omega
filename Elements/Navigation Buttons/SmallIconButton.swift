@@ -41,7 +41,7 @@ struct SmallIconButton: View {
                     .frame(width: size == .large ? (smallerLarge ? size.smallerLargeSize : size.standardSize) : (smallerSmall ? 35 : 40), height: size == .large ? (smallerLarge ? size.smallerLargeSize : size.standardSize) : (smallerSmall ? 35 : 40))
                     .cornerRadius(100)
                 Image(systemName: symbol)
-                    .font(.system(size: size == .large ? (smallerLarge ? 21 : 24) : (smallerSmall ? 15 : 18), weight: .bold))
+                    .font(.system(size: size == .large ? (smallerLarge ? 21 : 22) : (smallerSmall ? 15 : 18), weight: .bold))
                     .foregroundColor(textColor)
             }
             .overlay(Color.init(white: 0.2).cornerRadius(100).opacity(!proOnly || proCheck() ? 0 : 0.8))

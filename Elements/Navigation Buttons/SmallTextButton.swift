@@ -46,9 +46,9 @@ struct SmallTextButton: View {
             ZStack {
                 Rectangle()
                     .fill(color)
-                    .frame(width: circle ? height : width ?? (size == .large ? (smallerLarge ? 100 : 120) : (smallerSmall ? 60 : 75)), height: height)
+                    .frame(width: circle ? height : width ?? (size == .large ? (smallerLarge ? 90 : 110) : (smallerSmall ? 60 : 75)), height: height)
                 Text(LocalizedStringKey(text))
-                    .font(.system(size: fontScale*(size == .large ? (smallerLarge ? 18 : 21) : 13), design: .rounded).weight(.semibold))
+                    .font(.system(size: fontScale*(size == .large ? 18 : 13), design: .rounded).weight(.semibold))
                     .foregroundColor(textColor.lighter(by: 0.4))
                     .lineLimit(0)
                     .minimumScaleFactor(0.3)

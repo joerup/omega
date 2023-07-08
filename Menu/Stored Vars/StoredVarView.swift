@@ -113,7 +113,13 @@ struct StoredVarView: View {
                             storedVar.delete()
                         })
                     }
-                    .animation(nil)
+                    
+                    // Squares
+                    
+                    HStack(spacing: 0) {
+                        CalculationVisuals(calculation: Calculation(storedVar.value), width: geometry.size.width-30, height: geometry.size.width/2-30)
+                    }
+                    .id(Calculation.current.update)
                     
                     // Substitute
                     
@@ -123,14 +129,6 @@ struct StoredVarView: View {
                             .cornerRadius(20)
                             .id(Calculation.current.update)
                     }
-                    
-                    // Squares
-                    
-                    LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible())]) {
-                        CalculationVisuals(calculation: Calculation(storedVar.value), width: geometry.size.width/2-15, height: geometry.size.width/2-15)
-                            .id(Calculation.current.update)
-                    }
-                    .animation(nil)
                     
                     Spacer()
                         .frame(height: 60)

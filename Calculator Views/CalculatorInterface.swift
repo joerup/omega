@@ -34,7 +34,7 @@ struct CalculatorInterface: View {
                 VStack(spacing: 0) {
                     Spacer(minLength: size == .large ? standardSize : 0)
                     TextView(size: size, orientation: orientation, standardSize: standardSize)
-                        .frame(maxHeight: min(geometry.size.height*(size == .large ? 0.2 : orientation == .landscape ? 0.3 : 0.22), geometry.size.width*0.5))
+                        .frame(maxHeight: min(size == .large ? max(geometry.size.height*0.2, 190) : geometry.size.height*(orientation == .landscape ? 0.3 : 0.22), geometry.size.width*0.5))
                         .padding(.top, orientation == .landscape ? 2 : standardSize + 2)
                         .border(Color.red, width: settings.guidelines ? 1 : 0)
                 }
@@ -50,7 +50,8 @@ struct CalculatorInterface: View {
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
                         .padding(.horizontal, 2)
                         .border(Color.blue, width: settings.guidelines ? 1 : 0)
-                        .overlay(DetailOverlay().cornerRadius(0.42*0.98*geometry.size.height*buttonHeight).padding(.trailing, orientation == .landscape ? geometry.size.width*(4/11*0.98+0.01) : 0).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight*0.8+(size == .small ? 5 : 15)))
+//                        .overlay(DetailOverlay().padding(.trailing, orientation == .landscape ? geometry.size.width*4/11 : 0).padding(.horizontal, 2).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight*0.8+verticalPadding))
+//                        .overlay(orientation == .landscape ? SecondDetailOverlay().padding(.leading, geometry.size.width*7/11).padding(.horizontal, 2).padding(.bottom, geometry.size.height*buttonHeight+verticalPadding) : nil)
                 }
                 .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay() } else {}})
             }

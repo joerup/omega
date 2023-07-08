@@ -44,28 +44,30 @@ struct MainMenuView: View {
                         
                         if !proCheck() {
                             SettingsGroup {
-                                Button {
-                                    settings.popUp(.cycle)
-                                } label: {
-                                    VStack {
-                                        Text("OMEGA PRO")
-                                            .font(Font.system(.title2, design: .rounded).weight(.heavy))
-                                            .lineLimit(0)
-                                            .minimumScaleFactor(0.5)
-                                            .foregroundColor(Color.white)
-                                            .shadow(color: .init(white: 0.3), radius: 5)
-                                        Text("Take your calculator to the next level.")
-                                            .font(Font.system(.callout, design: .rounded).weight(.semibold))
-                                            .lineLimit(0)
-                                            .minimumScaleFactor(0.5)
-                                            .foregroundColor(Color.white)
-                                            .shadow(color: .init(white: 0.3), radius: 5)
+                                SettingsButtonContent {
+                                    settings.popUp(.list)
+                                } content: {
+                                    HStack {
+                                        Image(systemName: "star.fill")
+                                            .font(.largeTitle)
+                                            .foregroundColor(color(settings.theme.color1))
+                                            .padding(.trailing, 5)
+                                        VStack(alignment: .leading) {
+                                            Text("OMEGA PRO")
+                                                .font(.system(.title2, design: .rounded).weight(.heavy))
+                                                .lineLimit(0)
+                                                .minimumScaleFactor(0.5)
+                                                .foregroundColor(Color.white)
+                                            Text("Take your calculator to the next level.")
+                                                .font(.system(.callout, design: .rounded).weight(.medium))
+                                                .lineLimit(0)
+                                                .minimumScaleFactor(0.5)
+                                                .foregroundColor(Color.init(white: 0.7))
+                                        }
+                                        .padding(.vertical, 10)
+                                        
+                                        Spacer()
                                     }
-                                    .padding(20)
-                                    .frame(maxWidth: .infinity)
-                                    .background(RadialGradient(colors: [.green.lighter(by: 0.4), .init(red: 0.2, green: 0.6, blue: 0.6)], center: .center, startRadius: 0, endRadius: 300))
-                                    .cornerRadius(10)
-                                    .padding(.vertical, 10)
                                 }
                             }
                         }
@@ -84,51 +86,37 @@ struct MainMenuView: View {
                             }
                         }
                         
+                        SettingsGroup {
+                            SettingsButton(title: "Export Calculations", icon: "square.and.arrow.up") {
+                                guard proCheckNotice(.misc) else { return }
+                                self.showExport.toggle()
+                            }
+                        }
+                        
                         SettingsView()
                         
-                        if proCheck() {
-                            
-                            SettingsGroup {
-                            
-                                SettingsLabel(title: "Number of Calculations", label: String(PastCalculation.getCalculations().count), icon: "number")
-                            
-                                SettingsButton(title: "Export Calculations", icon: "arrow.up.doc") {
-                                    self.showExport.toggle()
-                                }
-                            }
-                        }
-                        
                         SettingsGroup {
-                            SettingsButton(title: "Omega Pro", icon: "star.fill") {
-                                settings.popUp(.list)
-                            }
-                            SettingsButton(title: "Restore Purchases", icon: "bag") {
-                                self.storeManager.restoreProducts()
-                            }
-                        }
-                        
-                        SettingsGroup {
-                            SettingsLink(title: "Visit our Website",
-                                         url: URL(string: "https://omegacalculator.com")!,
-                                         icon: "contextualmenu.and.cursorarrow"
+                            SettingsLink(title: "Website",
+                                         url: URL(string: "https://omegacalculator.com")!
                             )
-                            SettingsLink(title: "Contact Support",
-                                         url: URL(string: "https://omegacalculator.com/support")!,
-                                         icon: "paperplane"
+                            SettingsLink(title: "Support",
+                                         url: URL(string: "https://omegacalculator.com/support")!
                             )
                             SettingsLink(title: "Privacy Policy",
-                                         url: URL(string: "https://omegacalculator.com/privacy")!,
-                                         icon: "hand.raised"
+                                         url: URL(string: "https://omegacalculator.com/privacy")!
                             )
+                            SettingsButton(title: "Pro Features") {
+                                settings.popUp(.list)
+                            }
                         }
                         
                         SettingsGroup {
-                            SettingsButton(title: "Rate the App", icon: "star") {
+                            SettingsButton(title: "Rate the App") {
                                 guard let writeReviewURL = URL(string: "https://apps.apple.com/app/id1528068503?action=write-review")
                                     else { fatalError("Expected a valid URL") }
                                 UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
                             }
-                            SettingsButton(title: "Share the App", icon: "square.and.arrow.up") {
+                            SettingsButton(title: "Share the App") {
                                 self.showShare.toggle()
                             }
                         }
@@ -146,7 +134,8 @@ struct MainMenuView: View {
                                     .foregroundColor(Color.init(white: 0.5))
                             }
                         }
-                        .padding(10)
+                        .padding(.horizontal, 10)
+                        .padding(.bottom, 20)
                     }
                     .animation(nil)
                     .padding(5)

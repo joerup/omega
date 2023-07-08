@@ -72,7 +72,7 @@ struct PastCalculationMultipleContextMenu: View {
                 Button(action: {
                     PastCalculation.exportSelected(calculations)
                 }) {
-                    Image(systemName: "arrow.up.doc")
+                    Image(systemName: "square.and.arrow.up")
                     Text("Export")
                 }
             }

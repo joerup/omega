@@ -33,12 +33,6 @@ struct OmegaProSplash: View {
     @State private var introSubtitleScale: CGFloat = 1
     @State private var cycleContentOpacity: CGFloat = 1
     
-    private let expression1 = Queue([Number(1),Operation(.fra),Number(2),Operation(.con),Letter("x"),Operation(.pow),Number(4),Operation(.sub),Number(2),Operation(.con),Letter("x"),Operation(.pow),Number(3)])
-    private let expression2 = Queue([Letter("a"),Operation(.add),Letter("b"),Operation(.add),Letter("c"),Operation(.add),Pointer()])
-    private let expression3 = Queue([Function(.definteg),Number(0),Expression([Number(3),Operation(.con),Number("π")], grouping: .hidden),Expression([Number(7),Operation(.con),Function(.sin),Expression([Number(1),Operation(.fra),Number(3),Operation(.con),Letter("x")])], grouping: .hidden),Letter("x")])
-    private let expression4 = Queue([Function(.valDeriv),Number("#1"),Letter("z"),Expression([Function(.log),Number("#e"),Letter("z")]),Number("e")])
-    private let expression5 = Queue([Number(2),Pointer(),Operation(.add),Number(3.01)])
-    
     private let modes = ModeSettings(angleUnit: .rad)
     
     @State private var displayTimer: Timer? = nil
@@ -248,14 +242,14 @@ struct OmegaProSplash: View {
                     LinearGradient(colors: [.white, .gray], startPoint: .top, endPoint: .bottom)
                         .overlay(color(theme.color1).opacity(0.6))
                         .edgesIgnoringSafeArea(.all)
-                    ForEach(starPositions.indices, id: \.self) { i in
-                        Image(systemName: "star.fill")
-                            .font(.system(size: (50-pow(Double(i), 0.7))))
-                            .scaleEffect(starScales[i])
-                            .foregroundColor(.white.opacity(0.8*scale))
-                            .opacity((Double(i)/100 + 0.1)*0.3)
-                            .position(starPositions[i])
-                    }
+//                    ForEach(starPositions.indices, id: \.self) { i in
+//                        Image(systemName: "star.fill")
+//                            .font(.system(size: (50-pow(Double(i), 0.7))))
+//                            .scaleEffect(starScales[i])
+//                            .foregroundColor(color(theme.color1).opacity(0.8*scale))
+//                            .opacity((Double(i)/100 + 0.1)*0.2)
+//                            .position(starPositions[i])
+//                    }
                 }
             )
             .onChange(of: geometry.size) { size in
@@ -264,21 +258,8 @@ struct OmegaProSplash: View {
             }
         }
         .onAppear {
-            // Cycle Displays
-            displayTimer?.invalidate()
-            if displayType == .cycle {
-                settings.proPopUpType = ProFeatureDisplay.random()
-                displayTimer = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: true) { _ in
-                    cycleDisplay()
-                }
-            }
-            
-            // Cycle Themes
-            themeTimer?.invalidate()
-            recentThemeIDs = [theme.id, otherTheme1.id, otherTheme2.id]
-            themeTimer = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: true) { _ in
-                cycleTheme()
-            }
+            // Run the cycles
+            runCycles()
             
             // Intro Animations
             withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
@@ -302,6 +283,25 @@ struct OmegaProSplash: View {
         }
     }
     
+    private func runCycles() {
+    
+        // Cycle Displays
+        displayTimer?.invalidate()
+        if displayType == .cycle {
+            settings.proPopUpType = ProFeatureDisplay.random()
+            displayTimer = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: true) { _ in
+                cycleDisplay()
+            }
+        }
+        
+        // Cycle Themes
+        themeTimer?.invalidate()
+        recentThemeIDs = [theme.id, otherTheme1.id, otherTheme2.id]
+        themeTimer = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: true) { _ in
+            cycleTheme()
+        }
+    }
+    
     private var text: String {
         switch displayType {
         case .list, .cycle:
@@ -316,6 +316,7 @@ struct OmegaProSplash: View {
             return "Convenient tools and features."
         }
     }
+    
     private var desc: String {
         switch displayType {
         case .list, .cycle:
@@ -323,16 +324,90 @@ struct OmegaProSplash: View {
         case .themes:
             return "Access to over 30 themes. With so many colorful options, there's a look for everyone."
         case .variables:
-            return "Variables. Functions. Graphs. Make quick computations and easily analyze relationships."
+            return "Variables. Functions. Graphs. Make quick computations and analyze relationships."
         case .calculus:
             return "Summation & Products. Derivatives & Integrals. More power to meet your needs."
         case .misc:
-            return "Make easy edits with an interactive text pointer. Save and export unlimited calculations. And more."
+            return "Edit your input with the interactive text pointer. Save & export unlimited calculations. And more."
         }
     }
     
+    private let features = [
+        "Over 30 interface themes",
+        "Variables & functions",
+        "Graphs & tables",
+        "Stored variables",
+        "Summation & products",
+        "Derivatives & integrals",
+        "Equivalent forms of results",
+        "Special trig & calculus visuals",
+        "Interactive text pointer",
+        "Export calculations to spreadsheet",
+        "Unlimited saved calculations",
+        "Saved calculation folders",
+        "External keyboard support"
+    ]
     
     private func featureList() -> some View {
+        ScrollView {
+            VStack {
+                Text("Take your calculator to the next level.")
+                    .font(.system(.title2, design: .rounded).weight(.bold))
+                    .lineLimit(0)
+                    .minimumScaleFactor(0.5)
+                    .foregroundColor(Color.white)
+                    .shadow(color: .black.opacity(0.3), radius: 10)
+                    .padding(.horizontal)
+                    .padding(.vertical, 15)
+                
+                FeatureBubble(theme: theme) {
+                    VStack(spacing: 10) {
+                        ForEach(features, id: \.self) { feature in
+                            HStack {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.black.opacity(0.5))
+                                    .overlay(Image(systemName: "star.fill").foregroundColor(color(theme.color1)).opacity(0.7))
+                                    .padding(.leading, 5).padding(.vertical, 3).padding(.trailing, 2)
+                                Text(feature)
+                                    .font(.system(.headline, design: .rounded).weight(.medium))
+                                    .foregroundColor(.black)
+                                    .overlay(
+                                        Text(feature)
+                                            .font(.system(.headline, design: .rounded).weight(.medium))
+                                            .foregroundColor(color(theme.color1)).opacity(0.3)
+                                    )
+                                Spacer(minLength: 0)
+                            }
+                        }
+                    }
+                }
+                
+                Button {
+                    withAnimation {
+                        settings.proPopUpType = .cycle
+                        runCycles()
+                    }
+                } label: {
+                    Text("See Preview")
+                        .font(.system(.headline, design: .rounded).weight(.bold))
+                        .foregroundColor(.white.opacity(0.9))
+                        .minimumScaleFactor(0.5)
+                        .shadow(color: .init(white: 0.05).opacity(0.4), radius: 20)
+                }
+                .padding(10)
+                .padding(.bottom, 10)
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+                        
+    private let expression1 = Queue([Number(1),Operation(.fra),Number(2),Operation(.con),Letter("x"),Operation(.pow),Number(4),Operation(.sub),Number(2),Operation(.con),Letter("x"),Operation(.pow),Number(3)])
+    private let expression2 = Queue([Letter("a"),Operation(.add),Letter("b"),Operation(.add),Letter("c"),Operation(.add),Pointer()])
+    private let expression3 = Queue([Function(.definteg),Number(0),Expression([Number(3),Operation(.con),Number("π")], grouping: .hidden),Expression([Number(7),Operation(.con),Function(.sin),Expression([Number(1),Operation(.fra),Number(3),Operation(.con),Letter("x")])], grouping: .hidden),Letter("x")])
+    private let expression4 = Queue([Function(.valDeriv),Number("#1"),Letter("z"),Expression([Function(.log),Number("#e"),Letter("z")]),Number("e")])
+    private let expression5 = Queue([Number(2),Pointer(),Operation(.add),Number(3.01)])
+    
+    private func featureDescriptions() -> some View {
         ScrollView {
             VStack {
                 
@@ -345,10 +420,10 @@ struct OmegaProSplash: View {
                     .padding(.horizontal)
                     .padding(.bottom, 10)
                 
-                FeatureBubble(title: "All the themes.", theme: theme, linkAction: { settings.proPopUpType = .themes }) {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 8)) {
+                FeatureBubble(title: "Access to all themes.", theme: theme, linkAction: { settings.proPopUpType = .themes }) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 16)) {
                         ForEach(ThemeData.allThemes[4...], id: \.id) { theme in
-                            ThemeIcon(theme: theme, size: 36)
+                            ThemeIcon(theme: theme, size: 18)
                         }
                     }
                     .padding(10)
@@ -411,7 +486,7 @@ struct OmegaProSplash: View {
                 
                 FeatureBubble(title: "For your convenience.", theme: theme, linkAction: { settings.proPopUpType = .misc }) {
                     FeatureView(title: "Interactive text pointer", icon: "character.cursor.ibeam", desc: "Move anywhere in the input line to edit it. Use the arrows or simply tap the text directly.")
-                    FeatureView(title: "Export calculations", icon: "arrow.up.doc", desc: "Export to CSV and use calculations into other programs.")
+                    FeatureView(title: "Export calculations", icon: "square.and.arrow.up", desc: "Export to CSV and use calculations into other programs.")
                     FeatureView(title: "Unlimited saved calculations", icon: "folder")
                     FeatureView(title: "Recent calculations last 180 days", icon: "clock.arrow.circlepath")
                     FeatureView(title: "Saved calculation folders", icon: "folder.fill")
@@ -425,7 +500,7 @@ struct OmegaProSplash: View {
     private func themeDisplay() -> some View {
         GeometryReader { geometry in
             ZStack {
-                CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: otherTheme1)
+                CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: otherTheme1)
                     .overlay(
                         VStack {
                             Text(otherTheme1.name)
@@ -439,23 +514,25 @@ struct OmegaProSplash: View {
                             Spacer()
                         }
                     )
-                .padding(.trailing, geometry.size.width*0.63)
+                    .padding(.trailing, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
-                CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: otherTheme2)
-                .overlay(
-                    VStack {
-                        Text(otherTheme2.name)
-                            .font(.system(.caption, design: .rounded).weight(.bold))
-                            .foregroundColor(Color.white.opacity(0.8))
-                            .lineLimit(0)
-                            .minimumScaleFactor(0.5)
-                            .padding(.top)
-                        ThemeCircles(theme: otherTheme2)
-                            .scaleEffect(0.7)
-                        Spacer()
-                    }
-                )
-                .padding(.leading, geometry.size.width*0.63)
+                CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: otherTheme2)
+                    .overlay(
+                        VStack {
+                            Text(otherTheme2.name)
+                                .font(.system(.caption, design: .rounded).weight(.bold))
+                                .foregroundColor(Color.white.opacity(0.8))
+                                .lineLimit(0)
+                                .minimumScaleFactor(0.5)
+                                .padding(.top)
+                            ThemeCircles(theme: otherTheme2)
+                                .scaleEffect(0.7)
+                            Spacer()
+                        }
+                    )
+                    .padding(.leading, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
                 CalculatorModel(.shapes, orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .overlay(
@@ -482,11 +559,13 @@ struct OmegaProSplash: View {
         GeometryReader { geometry in
             ZStack {
                 
-                CalculatorModel(.buttonsText(text: expression2), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.buttonsText(text: expression2), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.trailing, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
-                CalculatorModel(.buttonsText(text: expression1), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.buttonsText(text: expression1), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.leading, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
                 CalculatorModel(.graph(elements: [Line(equation: expression1, color: theme.color1)]), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
             }
@@ -500,11 +579,13 @@ struct OmegaProSplash: View {
         GeometryReader { geometry in
             ZStack {
                 
-                CalculatorModel(.buttonsText(text: expression4), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.buttonsText(text: expression4), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.trailing, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
-                CalculatorModel(.buttonsText(text: expression3), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme, modes: modes)
+                CalculatorModel(.buttonsText(text: expression3), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme, modes: modes)
                     .padding(.leading, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
                 let function3 = Queue((expression3.queue1[3] as! Expression).queue.items, modes: modes)
                 CalculatorModel(.graph(elements: [Line(equation: function3, modes: modes, color: theme.color1), LineShape(equation: function3, location: .center, domain: 0...3*Double.pi, color: theme.color2, opacity: 0.5)]), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme, modes: modes)
@@ -520,11 +601,13 @@ struct OmegaProSplash: View {
         GeometryReader { geometry in
             ZStack {
                 
-                CalculatorModel(.popUp(text: "Save"), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.popUp(text: "Save"), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.trailing, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
-                CalculatorModel(.popUp(text: "Export"), orientation: .portrait, maxWidth: geometry.size.width*0.31, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.popUp(text: "Export"), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.leading, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
                 
                 CalculatorModel(.buttonsText(text: expression5), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                 
@@ -605,7 +688,15 @@ enum ProFeatureDisplay: String, Identifiable {
     }
     
     static func random() -> ProFeatureDisplay {
-        return [.themes,.variables,.calculus,.misc].randomElement()!
+        if Double.random(in: 0..<1) > 0.5 {
+            return .themes
+        } else if Double.random(in: 0..<1) > 0.5 {
+            return .misc
+        } else if Double.random(in: 0..<1) > 0.5 {
+            return .variables
+        } else {
+            return .calculus
+        }
     }
 }
 
@@ -636,34 +727,40 @@ struct FeatureView: View {
 
 struct FeatureBubble<Content: View>: View {
     
-    var title: String
+    var title: String? = nil
     var theme: Theme
     var linkAction: () -> Void = { }
     
     @ViewBuilder var content: () -> Content
     
     var body: some View {
-        VStack {
-            Button {
-                withAnimation {
-                    linkAction()
+        HStack {
+            Spacer(minLength: 0)
+            VStack {
+                if let title {
+                    Button {
+                        withAnimation {
+                            linkAction()
+                        }
+                    } label: {
+                        Text(title)
+                            .foregroundColor(color(theme.color1).lighter(by: 0.9))
+                            .font(.system(.title3, design: .rounded).weight(.bold))
+                            .shadow(color: .black.opacity(0.7), radius: 20)
+                            .padding(10).padding(.top, 10)
+                    }
                 }
-            } label: {
-                Text(title)
-                    .foregroundColor(color(theme.color1).lighter(by: 0.9))
-                    .font(.system(.title3, design: .rounded).weight(.bold))
-                    .shadow(color: .black.opacity(0.7), radius: 20)
-                    .padding(10).padding(.top, 10)
+                VStack(alignment: .leading) {
+                    content()
+                        .id(theme.id)
+                }
+                .padding(10)
+                .padding(.vertical, 5)
+                .frame(maxWidth: 480)
+                .background(Color.white.opacity(0.6))
+                .cornerRadius(20)
             }
-            VStack(alignment: .leading) {
-                content()
-                    .id(theme.id)
-            }
-            .padding(10)
-            .padding(.vertical, 10)
-            .frame(maxWidth: 400)
-            .background(Color.white.opacity(0.6))
-            .cornerRadius(20)
+            Spacer(minLength: 0)
         }
     }
 }

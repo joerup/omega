@@ -151,7 +151,6 @@ struct PastCalculationView: View {
                             calculation.copy()
                         }
                     }
-                    .animation(nil)
                     
                     HStack {
                         LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")") {
@@ -165,7 +164,6 @@ struct PastCalculationView: View {
                             calculation.delete()
                         }
                     }
-                    .animation(nil)
                     
                     if proCheck(), !calculation.isFault {
                         
@@ -179,6 +177,13 @@ struct PastCalculationView: View {
                                 .proLock()
                         }
                         
+                        // Squares
+                        
+                        HStack(spacing: 10) {
+                            CalculationVisuals(calculation: calculation.newCalculation(), width: geometry.size.width-20, height: geometry.size.width*0.6-20)
+                        }
+                        .id(Calculation.current.update)
+                        
                         // Substitute
                         
                         if !calculation.queue.allLetters.filter{ !$0.systemConstant }.isEmpty {
@@ -187,13 +192,6 @@ struct PastCalculationView: View {
                                 .cornerRadius(20)
                                 .id(Calculation.current.update)
                                 .proLock()
-                        }
-                        
-                        // Squares
-                        
-                        LazyVGrid(columns: [GridItem(.flexible()),GridItem(.flexible())]) {
-                            CalculationVisuals(calculation: calculation.newCalculation(), width: geometry.size.width/2-15, height: geometry.size.width/2-15)
-                                .id(Calculation.current.update)
                         }
                         
                         // Analysis

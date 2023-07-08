@@ -133,7 +133,7 @@ enum Size {
     case large
     
     var standardSize: CGFloat {
-        self == .large ? 60 : 40
+        self == .large ? 50 : 40
     }
     var smallerLargeSize: CGFloat {
         self == .large ? 50 : 40

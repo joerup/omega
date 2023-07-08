@@ -40,6 +40,7 @@ struct ThemeView: View {
                         SettingsGroup {
                             ThemeDescription(theme: settings.theme)
                                 .padding(.horizontal, 5)
+                                .padding(.vertical, 10)
                         }
                         
                         SettingsGroup {
@@ -69,10 +70,11 @@ struct ThemeView: View {
                                     } else {
                                         SettingsRow {
                                             ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: $preview, showUnlock: $showUnlock)
-                                                .padding(.vertical, 5)
+                                                .padding(-5)
                                         }
                                     }
                                 }
+                                .padding(.vertical, -10)
                             }
                         }
                         
@@ -124,6 +126,7 @@ struct ThemeView: View {
                                         ThemeGrouping(category: category, themes: category.themes, geometry: geometry, preview: $preview, showUnlock: $showUnlock)
                                             .padding(.bottom, 3)
                                     }
+                                    .padding(.vertical, -10)
                                 }
                             }
                         }

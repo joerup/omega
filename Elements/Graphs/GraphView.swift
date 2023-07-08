@@ -52,7 +52,7 @@ struct GraphView: View {
     
     @State var showPopUpGraph: Bool = false
     
-    init(_ elements: [GraphElement], width: CGFloat = 20, centerX: CGFloat = 0, centerY: CGFloat = 0, horizontalAxis: Letter = Letter("x"), verticalAxis: Letter = Letter("y"), gridLines: Bool = true, gridStyle: CoordinateSystem = .cartesian, interactive: Bool = true, popUpGraph: Bool = false, precision: Int = 1000) {
+    init(_ elements: [GraphElement], width: CGFloat = 21, centerX: CGFloat = 0, centerY: CGFloat = 0, horizontalAxis: Letter = Letter("x"), verticalAxis: Letter = Letter("y"), gridLines: Bool = true, gridStyle: CoordinateSystem = .cartesian, interactive: Bool = true, popUpGraph: Bool = false, precision: Int = 1000) {
         self.elements = elements
         self.width = interactive ? width : width/2
         self.centerX = centerX
@@ -89,15 +89,19 @@ struct GraphView: View {
 
                 // Grid Lines
                 Path { path in
+                    
+                    if xf > xi, yf > yi {
                         
-                    for x in adjustDisplayRange(range: xi...xf) {
-                        path.move(to: point(Double(x), yi, geometry))
-                        path.addLine(to: point(Double(x), yf, geometry))
-                    }
-
-                    for y in adjustDisplayRange(range: yi...yf) {
-                        path.move(to: point(xi, Double(y), geometry))
-                        path.addLine(to: point(xf, Double(y), geometry))
+                        for x in adjustDisplayRange(range: xi...xf) {
+                            path.move(to: point(Double(x), yi, geometry))
+                            path.addLine(to: point(Double(x), yf, geometry))
+                        }
+                        
+                        for y in adjustDisplayRange(range: yi...yf) {
+                            path.move(to: point(xi, Double(y), geometry))
+                            path.addLine(to: point(xf, Double(y), geometry))
+                        }
+                        
                     }
                         
 //                    else if gridStyle == .polar {
@@ -115,21 +119,24 @@ struct GraphView: View {
 //                    }
                 }
                 .stroke(Color.gray.opacity(0.1), lineWidth: 1)
-
-                // Numbers
-                ForEach(adjustDisplayRange(range: xi...xf, number: true), id: \.self) { num in
-                    Text(formatNum(num))
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.gray)
-                        .position(point(Double(num), 0, geometry, limitY: true, num: num))
-                }
-                ForEach(adjustDisplayRange(range: yi...yf, number: true), id: \.self) { num in
-                    Text(formatNum(num))
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.gray)
-                        .position(point(0, Double(num), geometry, limitX: true, num: num))
+                
+                if xf > xi, yf > yi {
+                    
+                    // Numbers
+                    ForEach(adjustDisplayRange(range: xi...xf, number: true), id: \.self) { num in
+                        Text(formatNum(num))
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.gray)
+                            .position(point(Double(num), 0, geometry, limitY: true, num: num))
+                    }
+                    ForEach(adjustDisplayRange(range: yi...yf, number: true), id: \.self) { num in
+                        Text(formatNum(num))
+                            .font(.caption)
+                            .fontWeight(.bold)
+                            .foregroundColor(.gray)
+                            .position(point(0, Double(num), geometry, limitX: true, num: num))
+                    }
                 }
 
                 // MARK: Lines
@@ -232,8 +239,8 @@ struct GraphView: View {
             .background(Color.init(white: 0.05).opacity(popUpGraph ? 0:1).edgesIgnoringSafeArea(.all))
             .overlay(
                 Rectangle()
-                    .fill(Color.init(white: 0.6))
-                    .opacity(popUpGraph ? 0.1 : 0)
+                    .fill(Color.init(white: 0.1))
+                    .opacity(popUpGraph ? 0.01 : 0)
                     .onTapGesture {
                         if popUpGraph {
                             SoundManager.play(haptic: .medium)
@@ -267,7 +274,6 @@ struct GraphView: View {
                 }
                 .background(Color.init(white: 0.05).edgesIgnoringSafeArea(.all))
             }
-            .animation(nil)
             .onAppear {
                 setInitialBounds(geometry)
                 setPoints()

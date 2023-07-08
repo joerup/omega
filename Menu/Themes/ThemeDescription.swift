@@ -36,6 +36,6 @@ struct ThemeDescription: View {
             
             Spacer()
         }
-        .padding(.vertical, 15)
+        .padding(.vertical, 5)
     }
 }
