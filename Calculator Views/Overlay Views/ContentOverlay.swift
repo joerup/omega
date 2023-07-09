@@ -48,7 +48,6 @@ struct ContentOverlay: ViewModifier {
                                 )
                         }
                     }
-                    .animation(nil)
                 }
             })
     }

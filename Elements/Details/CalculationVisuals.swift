@@ -17,7 +17,8 @@ struct CalculationVisuals: View {
     var width: CGFloat = 10
     var height: CGFloat = 10
     
-    var ignoreIfEmpty: Bool = false
+    var lightBackground: Bool = false
+    var ignoreIfEmpty: Bool = true
     
     var body: some View {
         
@@ -29,10 +30,10 @@ struct CalculationVisuals: View {
                 let line = Line(equation: calculation.queue, color: settings.theme.color1)
 
                 CalculationVisualSquare(text: "Graph", width: height, height: height) {
-                    GraphView([line], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), gridStyle: variable.name != "θ" ? .cartesian : .polar, interactive: false, popUpGraph: true, precision: 500)
+                    GraphView([line], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), gridStyle: variable.name != "θ" ? .cartesian : .polar, interactive: false, popUpGraph: true, lightBackground: lightBackground, precision: 500)
                 }
                 CalculationVisualSquare(text: "Table", width: width-10-height, height: height) {
-                    TableView(equation: calculation.queue, horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), lowerBound: .constant(-10), upperBound: .constant(10), centerValue: .constant(0), increment: .constant(1), fullTable: false, popUpTable: true)
+                    TableView(equation: calculation.queue, horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), lowerBound: .constant(height > 400 ? -10 : -7), upperBound: .constant(height > 400 ? 10 : 7), centerValue: .constant(0), increment: .constant(1), fullTable: false, popUpTable: true, lightBackground: lightBackground, fontSize: height > 400 ? (height-52)/(21*1.2) : (height-40)/(15*1.2))
                 }
             }
 
@@ -40,7 +41,7 @@ struct CalculationVisuals: View {
             else if calculation.queue.items.count == 2, let function = calculation.queue.items[0] as? Function, Function.baseTrig.contains(function.function), let angle = calculation.queue.items[1].simplify() as? Number {
 
                 CalculationVisualSquare(text: "Unit Circle", width: width, height: height) {
-                    UnitCircleView(function: function, angle: angle, unit: calculation.queue.modes.angleUnit, gridLines: false, interactive: false, popUpGraph: true)
+                    UnitCircleView(function: function, angle: angle, unit: calculation.queue.modes.angleUnit, gridLines: false, interactive: false, popUpGraph: true, lightBackground: lightBackground)
                 }
             }
 
@@ -53,7 +54,7 @@ struct CalculationVisuals: View {
                 let tangentLine = Line(equation: Queue([derivative, Operation(.mlt), Expression([variable, Operation(.sub), value]), Operation(.add), Expression(equation.items).plugIn(value, to: variable)], modes: calculation.queue.modes), color: settings.theme.color2)
 
                 CalculationVisualSquare(text: "Derivative", width: width, height: height) {
-                    GraphView([line, tangentLine], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.text)"), interactive: false, popUpGraph: true, precision: 500)
+                    GraphView([line, tangentLine], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.text)"), interactive: false, popUpGraph: true, lightBackground: lightBackground, precision: 500)
                 }
             }
 
@@ -66,13 +67,17 @@ struct CalculationVisuals: View {
                 let area = LineShape(equation: equation, location: .center, domain: lowerBound.value...upperBound.value, color: settings.theme.color2, opacity: 0.5)
 
                 CalculationVisualSquare(text: "Integral", width: width, height: height) {
-                    GraphView([line, area], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.text)"), interactive: false, popUpGraph: true, precision: 500)
+                    GraphView([line, area], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.text)"), interactive: false, popUpGraph: true, lightBackground: lightBackground, precision: 500)
                 }
             }
             
             else if !ignoreIfEmpty {
                 CalculationVisualSquare(text: "None", width: width, height: height) {
-                    Color.init(white: 0.15).cornerRadius(20)
+                    ZStack {
+                        Color.init(white: 0.15).cornerRadius(20)
+                        Text("No Preview")
+                            .foregroundColor(.gray)
+                    }
                 }
             }
         }

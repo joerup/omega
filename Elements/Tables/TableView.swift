@@ -22,14 +22,22 @@ struct TableView: View {
     @Binding var centerValue: Double
     @Binding var increment: Double
     
+    @State private var startValue: Int = 0
+    @State private var endValue: Int = 0
+    
     var fullTable: Bool = false
     var popUpTable: Bool = false
+    var lightBackground: Bool = false
+    
     @State var showPopUpTable: Bool = false
     
     var fontSize: CGFloat
     var overlayColor: [CGFloat]
     
-    init(equation: Queue, horizontalAxis: Letter, verticalAxis: Letter, lowerBound: Binding<Double>, upperBound: Binding<Double>, centerValue: Binding<Double>, increment: Binding<Double>, fullTable: Bool = false, popUpTable: Bool = false, fontSize: CGFloat = 25) {
+    @GestureState private var dragOffset: CGFloat = 0
+    @State private var offset: CGFloat = 0
+    
+    init(equation: Queue, horizontalAxis: Letter, verticalAxis: Letter, lowerBound: Binding<Double>, upperBound: Binding<Double>, centerValue: Binding<Double>, increment: Binding<Double>, fullTable: Bool = false, popUpTable: Bool = false, lightBackground: Bool = false, fontSize: CGFloat = 25) {
         self.equation = equation
         self.horizontalAxis = horizontalAxis
         self.verticalAxis = verticalAxis
@@ -39,20 +47,22 @@ struct TableView: View {
         self._increment = increment
         self.fullTable = fullTable
         self.popUpTable = popUpTable
+        self.lightBackground = lightBackground
         self.fontSize = fontSize
         self.overlayColor = Settings.settings.theme.color1
     }
     
-    init(equation: Queue, horizontalAxis: Letter, verticalAxis: Letter, lowerBound: Double? = nil, upperBound: Double? = nil, centerValue: Double? = nil, increment: Double? = nil, fullTable: Bool = false, popUpTable: Bool = false, fontSize: CGFloat = 25, color: [CGFloat]? = nil) {
+    init(equation: Queue, horizontalAxis: Letter, verticalAxis: Letter, lowerBound: Double? = nil, upperBound: Double? = nil, centerValue: Double? = nil, increment: Double? = nil, fullTable: Bool = false, popUpTable: Bool = false, lightBackground: Bool = false, fontSize: CGFloat = 25, color: [CGFloat]? = nil) {
         self.equation = equation
         self.horizontalAxis = horizontalAxis
         self.verticalAxis = verticalAxis
-        self._lowerBound = .constant(lowerBound ?? -50)
-        self._upperBound = .constant(upperBound ?? 50)
-        self._centerValue = .constant(centerValue ?? .nan)
+        self._lowerBound = .constant(lowerBound ?? -30)
+        self._upperBound = .constant(upperBound ?? 30)
+        self._centerValue = .constant(centerValue ?? 0)
         self._increment = .constant(increment ?? 1)
         self.fullTable = fullTable
         self.popUpTable = popUpTable
+        self.lightBackground = lightBackground
         self.fontSize = fontSize
         self.overlayColor = color ?? Settings.settings.theme.color1
     }
@@ -63,129 +73,121 @@ struct TableView: View {
             
             VStack {
 
-                ScrollViewReader { scrollView in
+                ZStack {
 
-                    ScrollView {
+                    ForEach(startValue...endValue, id: \.self) { num in
 
-                        LazyVStack(spacing: 0) {
+                        let x = round((Double(num)*increment + lowerBound.truncatingRemainder(dividingBy: increment)) * 1E10)/1E10
 
-                            if fullTable {
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .opacity(0)
-                                    .onAppear {
-                                        if centerValue.isFinite {
-                                            self.lowerBound -= 25*increment
-                                            self.upperBound -= 25*increment
-                                            scrollView.scrollTo(lowerBound+50*increment, anchor: .top)
-                                        } else {
-                                            centerValue = 0
-                                        }
-                                    }
+                        let y = value(input: x)
+
+                        let number = Value.setValue(y)
+
+                        HStack(spacing: 5) {
+                            
+                            let xStrings = Queue([Number(x)]).strings
+
+                            HStack {
+                                Spacer(minLength: 0)
+                                TextDisplay(strings: xStrings, size: fontSize)
+                                    .opacity(0.6)
                             }
+                            .frame(maxWidth: geometry.size.width*(fullTable ? 0.3 : 0.2), maxHeight: fontSize*1.2)
+                            .padding(.horizontal, fontSize/2)
+                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(color(overlayColor).opacity(0.1)).cornerRadius(20))
 
-                            ForEach(Int(lowerBound/increment)...Int(upperBound/increment), id: \.self) { num in
+                            let yStrings = number is Expression ? (number as! Expression).queue.strings : Queue([number]).strings
 
-                                let x = round((Double(num)*increment + lowerBound.truncatingRemainder(dividingBy: increment)) * 1e10)/1e10
-
-                                let y = Expression(equation.items).plugIn(Number(x), to: horizontalAxis, using: equation.modes)
-
-                                let number = Value.setValue(y)
-
-                                HStack {
-                                    
-                                    let xString = Number(x).string
-
-                                    HStack {
-                                        Spacer()
-                                        Text(xString)
-                                            .font(Font(UIFont(name: TextFormatting.getFont(), size: fontSize) ?? UIFont()))
-                                            .minimumScaleFactor(0.5)
-                                            .opacity(0.6)
+                            HStack {
+                                TextDisplay(strings: yStrings, size: fontSize)
+                                Spacer(minLength: 0)
+                                if fullTable {
+                                    Button {
+                                        guard yStrings != ["ERROR"] else { return }
+                                        UIPasteboard.general.string = Queue([number]).exportString()
+                                        Settings.settings.clipboard = [number]
+                                        Settings.settings.notification = .copy
+                                    } label: {
+                                        Image(systemName: "doc.on.clipboard")
+                                            .font(.system(size: fontSize*0.5))
+                                            .foregroundColor(.init(white: 0.7))
+                                            .opacity(isCenter(x) ? 0.9 : 0.5)
                                     }
-                                    .frame(maxWidth: geometry.size.width*0.3, maxHeight: fontSize*1.2)
-                                    .padding(.horizontal, 15)
-                                    .background(Color.init(white: !fullTable ? 0.25 : x == centerValue ? 0.3 : 0.2).cornerRadius(20))
-                                    .overlay(color(overlayColor).opacity(0.1).cornerRadius(20))
-
-                                    let yStrings = number is Expression ? (number as! Expression).queue.strings : Queue([number]).strings
-
-                                    HStack {
-                                        TextDisplay(strings: yStrings, size: fontSize)
-                                        Spacer()
-                                    }
-                                    .frame(minWidth: geometry.size.width*0.3)
-                                    .padding(.horizontal, 15)
-                                    .background(Color.init(white: !fullTable ? 0.25 : x == centerValue ? 0.3 : 0.2).cornerRadius(20))
-                                    .overlay(color(overlayColor).opacity(0.1).cornerRadius(20))
-                                    .contextMenu {
-                                        Button(action: {
-                                            guard yStrings != ["ERROR"] else { return }
-                                            UIPasteboard.general.string = Queue([number]).exportString()
-                                            Settings.settings.clipboard = [number]
-                                            Settings.settings.notification = .copy
-                                        }) {
-                                            Image(systemName: "doc.on.clipboard")
-                                            Text("Copy")
-                                        }
-                                    }
-
                                 }
-                                .id(x)
-                                .frame(height: fontSize*1.2)
-                                .padding(.horizontal, 5)
-                                .padding(.vertical, 1)
                             }
-
-                            if fullTable {
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .opacity(0)
-                                    .onAppear {
-                                        if centerValue.isFinite {
-                                            self.lowerBound += 25*increment
-                                            self.upperBound += 25*increment
-                                            scrollView.scrollTo(upperBound-50*increment, anchor: .bottom)
-                                        }
-                                    }
-                            }
+                            .frame(minWidth: geometry.size.width*(fullTable ? 0.3 : 0.2))
+                            .padding(.horizontal, fontSize/2)
+                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(color(overlayColor).opacity(0.1)).cornerRadius(20))
                         }
-                        .onAppear {
-                            if centerValue.isNaN {
-                                scrollView.scrollTo(0, anchor: .center)
-                            } else {
-                                scrollView.scrollTo(centerValue, anchor: .center)
-                            }
-                        }
-                        .onChange(of: centerValue) { centerValue in
-                            lowerBound = centerValue - 50*increment
-                            upperBound = centerValue + 50*increment
-                            scrollView.scrollTo(centerValue, anchor: .center)
-                        }
-                        .onChange(of: increment) { increment in
-                            lowerBound = centerValue - 50*increment
-                            upperBound = centerValue + 50*increment
-                            scrollView.scrollTo(centerValue, anchor: .center)
-                        }
+                        .id(x)
+                        .frame(height: fontSize*1.2)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 1)
+                        .position(x: geometry.size.width/2, y: geometry.size.height/2 + CGFloat((x - centerValue) / increment) * (fontSize*1.2+2))
                     }
                 }
+                .offset(y: dragOffset + offset)
+                .gesture(DragGesture()
+                    .updating($dragOffset) { value, gestureOffset, _ in
+                        gestureOffset = value.translation.height
+                    }
+                    .onEnded { value in
+                        self.offset += value.translation.height
+                        let boundChange = round(offset / (fontSize*1.2 + 2)) * increment
+                        let difference = upperBound - lowerBound
+                        lowerBound = centerValue - difference/2 - boundChange
+                        upperBound = centerValue + difference/2 - boundChange
+                        setLimits()
+                    }
+                )
+                .onChange(of: centerValue) { centerValue in
+                    lowerBound = centerValue - 30*increment
+                    upperBound = centerValue + 30*increment
+                    offset = 0
+                    setLimits()
+                }
+                .onChange(of: increment) { increment in
+                    lowerBound = centerValue - 30*increment
+                    upperBound = centerValue + 30*increment
+                    offset = 0
+                    setLimits()
+                }
+                .onAppear {
+                    setLimits()
+                }
                 .overlay(
-                    Rectangle()
-                        .fill(Color.init(white: 0.6))
-                        .opacity(popUpTable ? 0.1 : 0)
-                        .onTapGesture {
-                            if popUpTable {
-                                SoundManager.play(haptic: .medium)
-                                self.showPopUpTable.toggle()
-                            }
+                    ZStack {
+                        if popUpTable {
+                            Rectangle()
+                                .fill(Color.init(white: 0.6))
+                                .opacity(lightBackground ? 0.1 : 1e-6)
+                                .onTapGesture {
+                                    SoundManager.play(haptic: .medium)
+                                    self.showPopUpTable.toggle()
+                                }
                         }
+                    }
                 )
             }
             .background(Color.init(white: 0.1).opacity(fullTable ? 1 : 0))
             .cornerRadius(20)
             .fullScreenCover(isPresented: self.$showPopUpTable) {
                 TableMenuView(equation: equation, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis)
+                    .contentOverlay()
             }
         }
+    }
+    
+    private func setLimits() {
+        startValue = Int(lowerBound / increment)
+        endValue = Int(upperBound / increment)
+    }
+    
+    private func isCenter(_ x: Double) -> Bool {
+        return abs(centerValue - x) < 1E-12
+    }
+    
+    private func value(input: Double) -> Value {
+        return Expression(equation.items).plugIn(Number(input), to: horizontalAxis, using: equation.modes)
     }
 }

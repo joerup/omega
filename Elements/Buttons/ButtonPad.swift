@@ -43,7 +43,7 @@ struct ButtonPad: View {
                     .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                     
                     ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
-                        .padding(.top, self.width*0.005)
+                        .padding(.top, self.width*0.0025)
                     
                 } else {
                     
@@ -62,7 +62,7 @@ struct ButtonPad: View {
                     .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                     
                     ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
-                        .padding(.top, self.width*0.005)
+                        .padding(.top, self.width*0.0025)
                 }
             }
             .padding(.horizontal, self.width*0.01)

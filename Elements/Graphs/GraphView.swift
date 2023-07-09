@@ -47,12 +47,13 @@ struct GraphView: View {
     var gridStyle: CoordinateSystem
     var interactive: Bool
     var popUpGraph: Bool
+    var lightBackground: Bool
     
     var precision: Int
     
     @State var showPopUpGraph: Bool = false
     
-    init(_ elements: [GraphElement], width: CGFloat = 21, centerX: CGFloat = 0, centerY: CGFloat = 0, horizontalAxis: Letter = Letter("x"), verticalAxis: Letter = Letter("y"), gridLines: Bool = true, gridStyle: CoordinateSystem = .cartesian, interactive: Bool = true, popUpGraph: Bool = false, precision: Int = 1000) {
+    init(_ elements: [GraphElement], width: CGFloat = 21, centerX: CGFloat = 0, centerY: CGFloat = 0, horizontalAxis: Letter = Letter("x"), verticalAxis: Letter = Letter("y"), gridLines: Bool = true, gridStyle: CoordinateSystem = .cartesian, interactive: Bool = true, popUpGraph: Bool = false, lightBackground: Bool = false, precision: Int = 1000) {
         self.elements = elements
         self.width = interactive ? width : width/2
         self.centerX = centerX
@@ -64,6 +65,7 @@ struct GraphView: View {
         self.gridStyle = gridStyle
         self.interactive = interactive
         self.popUpGraph = popUpGraph
+        self.lightBackground = lightBackground
         self.precision = precision
     }
 
@@ -238,15 +240,17 @@ struct GraphView: View {
             .offset(offset)
             .background(Color.init(white: 0.05).opacity(popUpGraph ? 0:1).edgesIgnoringSafeArea(.all))
             .overlay(
-                Rectangle()
-                    .fill(Color.init(white: 0.1))
-                    .opacity(popUpGraph ? 0.01 : 0)
-                    .onTapGesture {
-                        if popUpGraph {
-                            SoundManager.play(haptic: .medium)
-                            self.showPopUpGraph.toggle()
-                        }
+                ZStack {
+                    if popUpGraph {
+                        Rectangle()
+                            .fill(Color.init(white: 0.6))
+                            .opacity(lightBackground ? 0.1 : 1e-6)
+                            .onTapGesture {
+                                SoundManager.play(haptic: .medium)
+                                self.showPopUpGraph.toggle()
+                            }
                     }
+                }
             )
             .gesture(DragGesture()
                 .onChanged { value in

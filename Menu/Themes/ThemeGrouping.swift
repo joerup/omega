@@ -19,12 +19,16 @@ struct ThemeGrouping: View {
     var name: String? = nil
     
     var geometry: GeometryProxy
+    var hasColumns: Bool = false
     
     @Binding var preview: ThemePreviewItem?
     @Binding var showUnlock: Bool
     
+    var size: CGFloat {
+        return hasColumns ? 65 : 70
+    }
     var columns: Int {
-        return Int(geometry.size.width/90)
+        return Int((hasColumns ? 0.5 : 1) * geometry.size.width/(size*1.25))
     }
     
     var body: some View {
@@ -37,7 +41,7 @@ struct ThemeGrouping: View {
                     
                     Button(action: { }) {
                         VStack {
-                            ThemeIcon(theme: theme, size: 70, locked: theme.locked, selected: self.settings.theme.name == theme.name)
+                            ThemeIcon(theme: theme, size: size, locked: theme.locked, selected: self.settings.theme.name == theme.name)
 
                             Text(theme.name)
                                 .font(Font.system(.footnote, design: .rounded).weight(.bold))

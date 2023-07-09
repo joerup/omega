@@ -35,15 +35,15 @@ struct ResultOverlay: View {
                     
                     if primary {
                         HStack(spacing: 10) {
-                            CalculationVisuals(width: geometry.size.width-10, height: geometry.size.height)
+                            CalculationVisuals(width: geometry.size.width-8, height: geometry.size.height, ignoreIfEmpty: false)
                         }
-                        .padding(.trailing, 5)
+                        .padding(.trailing, 3)
                     } else {
                         ZStack {
                             RoundedRectangle(cornerRadius: 20)
                                 .fill(Color.init(white: 0.15))
                             ScrollView {
-                                VStack {
+                                VStack(spacing: 0) {
                                     if let pastCalculation = pastCalculation, !pastCalculation.extraResults.isEmpty {
                                         ExtraResultView(calculation: pastCalculation)
                                             .id(Calculation.current.update)
@@ -55,6 +55,7 @@ struct ResultOverlay: View {
                                 }
                             }
                         }
+                        .padding(.horizontal, 2)
                         .padding(.bottom, 5)
                     }
                     
@@ -62,15 +63,14 @@ struct ResultOverlay: View {
                     
                     HStack(spacing: 10) {
                         CalculationVisuals(width: geometry.size.width-10, height: geometry.size.width*0.6, ignoreIfEmpty: true)
-                            .padding(.bottom, 3)
+                            .padding(.bottom, 2)
                     }
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color.init(white: 0.15))
                         ScrollView {
-                            VStack {
-                                
+                            VStack(spacing: 0) {
                                 if let pastCalculation = pastCalculation {
                                     
                                     if !pastCalculation.extraResults.isEmpty {

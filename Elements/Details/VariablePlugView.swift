@@ -41,13 +41,13 @@ struct VariablePlugView: View {
                         
                         if !queue.allVariables.isEmpty {
                             
-                            SmallIconButton(symbol: "plus.circle", color: Color.init(white: main ? 0.2 : 0.25), textColor: color(settings.theme.color1, edit: true), smallerLarge: true) {
+                            SmallIconButton(symbol: "plus.circle", color: Color.init(white: main ? 0.2 : 0.25), textColor: color(settings.theme.color1, edit: true)) {
                                 Calculation.current.setUpInput()
                                 Calculation.current.queue.insertToQueue(currentResult)
                                 SoundManager.play(sound: .click3, haptic: .medium)
                             }
                             
-                            SmallIconButton(symbol: "doc.on.clipboard\(Settings.settings.clipboard == currentResult.items ? ".fill" : "")", color: Color.init(white: main ? 0.2 : 0.25), textColor: color(settings.theme.color1, edit: true), smallerLarge: true) {
+                            SmallIconButton(symbol: "doc.on.clipboard\(Settings.settings.clipboard == currentResult.items ? ".fill" : "")", color: Color.init(white: main ? 0.2 : 0.25), textColor: color(settings.theme.color1, edit: true)) {
                                 UIPasteboard.general.string = currentResult.exportString()
                                 Settings.settings.clipboard = currentResult.items
                                 Settings.settings.notification = .copy

@@ -177,13 +177,6 @@ struct PastCalculationView: View {
                                 .proLock()
                         }
                         
-                        // Squares
-                        
-                        HStack(spacing: 10) {
-                            CalculationVisuals(calculation: calculation.newCalculation(), width: geometry.size.width-20, height: geometry.size.width*0.6-20)
-                        }
-                        .id(Calculation.current.update)
-                        
                         // Substitute
                         
                         if !calculation.queue.allLetters.filter{ !$0.systemConstant }.isEmpty {
@@ -193,6 +186,13 @@ struct PastCalculationView: View {
                                 .id(Calculation.current.update)
                                 .proLock()
                         }
+                        
+                        // Squares
+                        
+                        HStack(spacing: 10) {
+                            CalculationVisuals(calculation: calculation.newCalculation(), width: geometry.size.width-20, height: geometry.size.width*0.6-20, lightBackground: true)
+                        }
+                        .id(Calculation.current.update)
                         
                         // Analysis
                         

@@ -117,7 +117,7 @@ struct StoredVarView: View {
                     // Squares
                     
                     HStack(spacing: 0) {
-                        CalculationVisuals(calculation: Calculation(storedVar.value), width: geometry.size.width-30, height: geometry.size.width/2-30)
+                        CalculationVisuals(calculation: Calculation(storedVar.value), width: geometry.size.width-30, height: geometry.size.width/2-30, lightBackground: true)
                     }
                     .id(Calculation.current.update)
                     

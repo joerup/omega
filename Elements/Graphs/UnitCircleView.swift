@@ -25,8 +25,9 @@ struct UnitCircleView: View {
     var gridLines: Bool
     var interactive: Bool
     var popUpGraph: Bool
+    var lightBackground: Bool
     
-    init(function: Function, angle: Number, unit: ModeSettings.AngleUnit, color1: [CGFloat]? = nil, color2: [CGFloat]? = nil, gridLines: Bool = true, interactive: Bool = true, popUpGraph: Bool = false) {
+    init(function: Function, angle: Number, unit: ModeSettings.AngleUnit, color1: [CGFloat]? = nil, color2: [CGFloat]? = nil, gridLines: Bool = true, interactive: Bool = true, popUpGraph: Bool = false, lightBackground: Bool = false) {
         self.function = function
         self.angle = angle
         self.unit = unit
@@ -37,10 +38,11 @@ struct UnitCircleView: View {
         self.gridLines = gridLines
         self.interactive = interactive
         self.popUpGraph = popUpGraph
+        self.lightBackground = lightBackground
     }
     
     var body: some View {
-        GraphView(circle()+triangle()+angles()+text(), width: 2.5, gridLines: gridLines, interactive: interactive, popUpGraph: popUpGraph)
+        GraphView(circle()+triangle()+angles()+text(), width: 2.5, gridLines: gridLines, interactive: interactive, popUpGraph: popUpGraph, lightBackground: lightBackground)
     }
     
     func circle() -> [Guideline] {

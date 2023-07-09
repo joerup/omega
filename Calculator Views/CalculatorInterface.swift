@@ -32,7 +32,7 @@ struct CalculatorInterface: View {
             VStack(spacing: 0) {
                 
                 VStack(spacing: 0) {
-                    Spacer(minLength: size == .large ? standardSize : 0)
+                    Spacer(minLength: size == .large ? size.smallerLargeSize : 0)
                     TextView(size: size, orientation: orientation, standardSize: standardSize)
                         .frame(maxHeight: min(size == .large ? max(geometry.size.height*0.2, 190) : geometry.size.height*(orientation == .landscape ? 0.3 : 0.22), geometry.size.width*0.5))
                         .padding(.top, orientation == .landscape ? 2 : standardSize + 2)
@@ -44,7 +44,8 @@ struct CalculatorInterface: View {
                     
                     DetailButtonRow(size: size, orientation: orientation)
                         .padding(.horizontal, horizontalPadding)
-                        .padding(.bottom, size == .small && orientation == .landscape ? 1 : 5)
+                        .padding(.bottom, size == .small && orientation == .landscape ? 0 : 2)
+                        .padding(.top, size == .small && orientation == .landscape ? 0 : 5)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)

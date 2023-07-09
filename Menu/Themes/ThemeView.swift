@@ -123,7 +123,7 @@ struct ThemeView: View {
                                         .padding(.horizontal, 5)
                                         .padding(.bottom, 5)
                                         
-                                        ThemeGrouping(category: category, themes: category.themes, geometry: geometry, preview: $preview, showUnlock: $showUnlock)
+                                        ThemeGrouping(category: category, themes: category.themes, geometry: geometry, hasColumns: geometry.size.width > 700, preview: $preview, showUnlock: $showUnlock)
                                             .padding(.bottom, 3)
                                     }
                                     .padding(.vertical, -10)

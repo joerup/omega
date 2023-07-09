@@ -50,8 +50,7 @@ struct OmegaProSplash: View {
                     .minimumScaleFactor(0.5)
                     .foregroundColor(Color.white)
                     .scaleEffect(introTitleScale)
-                    .shadow(color: .init(white: 0.05), radius: 20)
-                    .scaleEffect(scale)
+                    .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
                     .padding(.top, 30)
                 
                 if displayType != .list {
@@ -62,7 +61,7 @@ struct OmegaProSplash: View {
                         .foregroundColor(Color.white)
                         .opacity(cycleContentOpacity)
                         .scaleEffect(introSubtitleScale)
-                        .shadow(color: .init(white: 0.05), radius: 10)
+                        .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
                         .padding(.horizontal)
                         .padding(.top, 10)
                         .padding(.top, -30)
@@ -73,7 +72,7 @@ struct OmegaProSplash: View {
                     Spacer(minLength: 0)
                     
                     VStack {
-                        if verticalSizeClass == .regular {
+                        if verticalSizeClass == .regular || displayType == .list {
                             switch displayType {
                             case .list, .cycle:
                                 featureList()
@@ -86,28 +85,22 @@ struct OmegaProSplash: View {
                             case .misc:
                                 miscDisplay()
                             }
-                        } else if displayType == .list {
-                            Text("Turn your device")
-                                .font(.callout.weight(.medium))
-                                .foregroundColor(.white.opacity(0.9))
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.5)
-                                .multilineTextAlignment(.center)
-                                .shadow(color: .init(white: 0.05), radius: 10)
                         }
                     }
-                    .shadow(color: .init(white: 0.05).opacity(0.7), radius: 10)
+                    .frame(maxWidth: geometry.size.height > 800 ? .infinity : 500)
+                    .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
                     
                     Spacer(minLength: 0)
                     
                     if displayType != .list {
                         Text(desc)
-                            .font(.callout.weight(.medium))
+                            .font(.callout.weight(.semibold))
                             .foregroundColor(.white.opacity(0.9))
                             .lineLimit(2)
                             .minimumScaleFactor(0.5)
                             .multilineTextAlignment(.center)
-                            .shadow(color: .init(white: 0.05), radius: 10)
+                            .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
+                            .frame(maxWidth: 500)
                             .padding(.vertical, 5)
                             .padding(.horizontal)
                             .opacity(cycleContentOpacity)
@@ -123,7 +116,7 @@ struct OmegaProSplash: View {
                                 .font(.system(.headline, design: .rounded).weight(.bold))
                                 .foregroundColor(.white.opacity(0.9))
                                 .minimumScaleFactor(0.5)
-                                .shadow(color: .init(white: 0.05), radius: 10)
+                                .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
                         }
                     }
                 }
@@ -239,7 +232,7 @@ struct OmegaProSplash: View {
             .frame(width: geometry.size.width)
             .background(
                 ZStack {
-                    LinearGradient(colors: [.white, .gray], startPoint: .top, endPoint: .bottom)
+                    LinearGradient(colors: [.init(white: 0.7), .init(white: 0.4)], startPoint: .top, endPoint: .bottom)
                         .overlay(color(theme.color1).opacity(0.6))
                         .edgesIgnoringSafeArea(.all)
 //                    ForEach(starPositions.indices, id: \.self) { i in
@@ -349,55 +342,60 @@ struct OmegaProSplash: View {
     ]
     
     private func featureList() -> some View {
-        ScrollView {
-            VStack {
-                Text("Take your calculator to the next level.")
-                    .font(.system(.title2, design: .rounded).weight(.bold))
-                    .lineLimit(0)
-                    .minimumScaleFactor(0.5)
-                    .foregroundColor(Color.white)
-                    .shadow(color: .black.opacity(0.3), radius: 10)
-                    .padding(.horizontal)
-                    .padding(.vertical, 15)
-                
-                FeatureBubble(theme: theme) {
-                    VStack(spacing: 10) {
-                        ForEach(features, id: \.self) { feature in
-                            HStack {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(.black.opacity(0.5))
-                                    .overlay(Image(systemName: "star.fill").foregroundColor(color(theme.color1)).opacity(0.7))
-                                    .padding(.leading, 5).padding(.vertical, 3).padding(.trailing, 2)
-                                Text(feature)
-                                    .font(.system(.headline, design: .rounded).weight(.medium))
-                                    .foregroundColor(.black)
-                                    .overlay(
-                                        Text(feature)
-                                            .font(.system(.headline, design: .rounded).weight(.medium))
-                                            .foregroundColor(color(theme.color1)).opacity(0.3)
-                                    )
-                                Spacer(minLength: 0)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack {
+                    Text("Take your calculator to the next level.")
+                        .font(.system(.title2, design: .rounded).weight(.bold))
+                        .lineLimit(0)
+                        .minimumScaleFactor(0.5)
+                        .foregroundColor(Color.white)
+                        .padding(.horizontal)
+                        .padding(.vertical, 15)
+                    
+                    Spacer(minLength: 0)
+                    
+                    FeatureBubble(theme: theme) {
+                        VStack(spacing: 10) {
+                            ForEach(features, id: \.self) { feature in
+                                HStack {
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.black.opacity(0.5))
+                                        .overlay(Image(systemName: "star.fill").foregroundColor(color(theme.color1)).opacity(0.7))
+                                        .padding(.leading, 5).padding(.vertical, 3).padding(.trailing, 2)
+                                    Text(feature)
+                                        .font(.system(.headline, design: .rounded).weight(.medium))
+                                        .foregroundColor(.black)
+                                        .overlay(
+                                            Text(feature)
+                                                .font(.system(.headline, design: .rounded).weight(.medium))
+                                                .foregroundColor(color(theme.color1)).opacity(0.3)
+                                        )
+                                    Spacer(minLength: 0)
+                                }
                             }
                         }
                     }
-                }
-                
-                Button {
-                    withAnimation {
-                        settings.proPopUpType = .cycle
-                        runCycles()
+                    
+                    Spacer(minLength: 0)
+                    
+                    Button {
+                        withAnimation {
+                            settings.proPopUpType = .cycle
+                            runCycles()
+                        }
+                    } label: {
+                        Text("See Preview")
+                            .font(.system(.headline, design: .rounded).weight(.bold))
+                            .foregroundColor(.white.opacity(0.9))
+                            .minimumScaleFactor(0.5)
                     }
-                } label: {
-                    Text("See Preview")
-                        .font(.system(.headline, design: .rounded).weight(.bold))
-                        .foregroundColor(.white.opacity(0.9))
-                        .minimumScaleFactor(0.5)
-                        .shadow(color: .init(white: 0.05).opacity(0.4), radius: 20)
+                    .padding(10)
+                    .padding(.bottom, 3)
                 }
-                .padding(10)
-                .padding(.bottom, 10)
+                .padding(.horizontal, 20)
+                .frame(minHeight: geometry.size.height)
             }
-            .padding(.horizontal, 20)
         }
     }
                         
@@ -416,7 +414,6 @@ struct OmegaProSplash: View {
                     .lineLimit(0)
                     .minimumScaleFactor(0.5)
                     .foregroundColor(Color.white)
-                    .shadow(color: .init(white: 0.3), radius: 20)
                     .padding(.horizontal)
                     .padding(.bottom, 10)
                 
@@ -427,7 +424,7 @@ struct OmegaProSplash: View {
                         }
                     }
                     .padding(10)
-                .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity)
                 }
                 
                 FeatureBubble(title: "More power to you.", theme: theme, linkAction: { settings.proPopUpType = .variables }) {
