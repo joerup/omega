@@ -38,7 +38,9 @@ struct PopUpSheet<Content: View>: View {
                 
                 if showCancel {
                     Button(action: {
-                        settings.popUp = nil
+                        withAnimation {
+                            settings.popUp = nil
+                        }
                         SoundManager.play(sound: .click2, haptic: .light)
                     }) {
                         Text("Cancel")
@@ -54,7 +56,9 @@ struct PopUpSheet<Content: View>: View {
                 }
                 
                 Button(action: {
-                    confirmAction()
+                    withAnimation {
+                        confirmAction()
+                    }
                     SoundManager.play(sound: .click3, haptic: .light)
                 }) {
                     Text(LocalizedStringKey(confirmText))

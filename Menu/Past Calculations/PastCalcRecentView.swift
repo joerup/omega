@@ -49,7 +49,7 @@ struct PastCalcRecentView: View {
     var size: Size {
         return verticalSizeClass == .compact || horizontalSizeClass == .compact ? .small : .large
     }
-
+    
     var body: some View {
 
         GeometryReader { geometry in
@@ -67,14 +67,18 @@ struct PastCalcRecentView: View {
                             HStack {
                                     
                                 SmallIconButton(symbol: "calendar", color: Color.init(white: editCalendar ? 0.3 : 0.2), textColor: color(self.settings.theme.color2, edit: true), smallerLarge: true) {
-                                    self.editCalendar.toggle()
+                                    withAnimation {
+                                        self.editCalendar.toggle()
+                                    }
                                 }
                                 
                                 Spacer()
                                 
                                 Button(action: {
                                     if prevDate >= minDate {
-                                        self.selectedDate = prevDate
+                                        withAnimation {
+                                            self.selectedDate = prevDate
+                                        }
                                         SoundManager.play(sound: .click2, haptic: .light)
                                     }
                                 }) {
@@ -93,7 +97,9 @@ struct PastCalcRecentView: View {
                                 
                                 Button(action: {
                                     if nextDate <= Date() {
-                                        self.selectedDate = nextDate
+                                        withAnimation {
+                                            self.selectedDate = nextDate
+                                        }
                                         SoundManager.play(sound: .click3, haptic: .light)
                                     }
                                 }) {
@@ -106,7 +112,9 @@ struct PastCalcRecentView: View {
                                 Spacer()
                                 
                                 SmallIconButton(symbol: "house", color: Color.init(white: Calendar.current.isDate(selectedDate, inSameDayAs: Date()) ? 0.3 : 0.2), textColor: color(self.settings.theme.color2, edit: true), smallerLarge: true) {
-                                    self.selectedDate = Date()
+                                    withAnimation {
+                                        self.selectedDate = Date()
+                                    }
                                 }
                             }
                             .frame(maxHeight: size == .large ? 50 : 40)
@@ -118,11 +126,13 @@ struct PastCalcRecentView: View {
                             HStack {
                                 
                                 SmallIconButton(symbol: "checkmark.circle\(selectedCalculations.isEmpty ? "" : ".fill")", color: Color.init(white: self.selectedAll ? 0.4 : 0.2), smallerLarge: true, action: {
-                                    if !selectedCalculations.isEmpty {
-                                        self.resetSelected()
-                                    } else {
-                                        self.selectedAll = true
-                                        self.selectedCalculations = getAllCalculations(limit: false).reversed()
+                                    withAnimation {
+                                        if !selectedCalculations.isEmpty {
+                                            self.resetSelected()
+                                        } else {
+                                            self.selectedAll = true
+                                            self.selectedCalculations = getAllCalculations(limit: false).reversed()
+                                        }
                                     }
                                 })
                                 
@@ -160,11 +170,14 @@ struct PastCalcRecentView: View {
                         }
                         
                         SmallTextButton(text: self.selectionMode ? "Cancel" : "Edit", color: Color.init(white: 0.15), circle: true, smallerLarge: true) {
-                            self.editCalendar = false
-                            self.selectionMode.toggle()
-                            self.resetSelected()
+                            withAnimation {
+                                self.editCalendar = false
+                                self.selectionMode.toggle()
+                                self.resetSelected()
+                            }
                         }
                     }
+                    .animation(.default, value: selectedDate)
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 5)
@@ -174,7 +187,9 @@ struct PastCalcRecentView: View {
                     DatePicker("Date", selection: self.$selectedDate, in: Date().addingTimeInterval(-PastCalculation.expirationLength)...Date(), displayedComponents: .date)
                         .datePickerStyle(GraphicalDatePickerStyle())
                         .onChange(of: self.selectedDate) { _ in
-                            self.editCalendar = false
+                            withAnimation {
+                                self.editCalendar = false
+                            }
                             SoundManager.play(sound: .click3, haptic: .medium)
                         }
                         .padding(.horizontal, 10)
@@ -186,6 +201,7 @@ struct PastCalcRecentView: View {
                         .padding(.horizontal, 10)
                         .padding(.top, 3)
                         .padding(.bottom, 5)
+                        .animation(.default, value: selectedDate)
                 }
 
                 if self.calculations.isEmpty && !self.editCalendar {
@@ -240,7 +256,6 @@ struct PastCalcRecentView: View {
                                                 .foregroundColor(.init(white: calculation.saved ? 1 : 0.1))
                                                 .opacity(calculation.saved ? 1 : 0.6)
                                                 .font(.system(size: 50/2, weight: .black))
-                                                .animation(nil)
                                         }
                                         .padding(.horizontal, 5)
                                         .padding(.top, 5)
@@ -304,21 +319,22 @@ struct PastCalcRecentView: View {
                                 .padding(.horizontal, 7)
                                 .padding(5)
                                 .background(Color.init(white: calculation == selectedCalculation ? 0.25 : selectedCalculations.contains(calculation) ? 0.25 : 0.15).cornerRadius(20))
-                                .animation(nil)
                                 .padding(.horizontal, 10)
                                 .onTapGesture {
                                     SoundManager.play(haptic: .light)
-                                    if self.selectionMode {
-                                        self.selectedCalculation = nil
-                                        if selectedCalculations.contains(calculation) {
-                                            selectedCalculations.removeAll(where: { $0 == calculation })
+                                    withAnimation {
+                                        if self.selectionMode {
+                                            self.selectedCalculation = nil
+                                            if selectedCalculations.contains(calculation) {
+                                                selectedCalculations.removeAll(where: { $0 == calculation })
+                                            } else {
+                                                self.selectedCalculations += [calculation]
+                                            }
+                                        } else if selectedCalculation == calculation {
+                                            self.selectedCalculation = nil
                                         } else {
-                                            self.selectedCalculations += [calculation]
+                                            self.selectedCalculation = calculation
                                         }
-                                    } else if selectedCalculation == calculation {
-                                        self.selectedCalculation = nil
-                                    } else {
-                                        self.selectedCalculation = calculation
                                     }
                                 }
                                 .contextMenu {
@@ -344,21 +360,12 @@ struct PastCalcRecentView: View {
                                 }
                         }
                     }
-                    .animation(nil)
                 }
                 .id(self.selectedDate)
-                .animation(.default)
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
             .accentColor(color(self.settings.theme.color1, edit: true))
-            .simultaneousGesture(DragGesture(minimumDistance: 30)
-                .onChanged { value in
-                    if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                        settings.calculatorOverlay = .none
-                    }
-                }
-            )
             .overlay(
                 VStack {
                     if geometry.size.width > 650 {
@@ -403,16 +410,20 @@ struct PastCalcRecentView: View {
                 self.lastOpened = Date().timeIntervalSince1970
             }
             .onChange(of: displayType) { _ in
-                self.count = 50
-                self.calculations = []
-                self.calculations = getAllCalculations()
-                self.resetSelected()
+                withAnimation {
+                    self.count = 50
+                    self.calculations = []
+                    self.calculations = getAllCalculations()
+                    self.resetSelected()
+                }
             }
             .onChange(of: selectedDate) { _ in
-                self.count = 50
-                self.calculations = []
-                self.calculations = getAllCalculations()
-                self.resetSelected()
+                withAnimation {
+                    self.count = 50
+                    self.calculations = []
+                    self.calculations = getAllCalculations()
+                    self.resetSelected()
+                }
             }
             .onChange(of: PastCalculation.refresh) { _ in
                 self.calculations = getAllCalculations()

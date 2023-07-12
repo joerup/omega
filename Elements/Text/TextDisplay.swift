@@ -178,7 +178,6 @@ struct TextDisplay: View {
             }
             .id(calculation.update)
             .frame(height: totalHeight > height ? totalHeight : height, alignment: .trailing)
-            .animation(animations && settings.textAnimations ? .easeInOut : nil)
             .environment(\.layoutDirection, .leftToRight)
         }
         else {

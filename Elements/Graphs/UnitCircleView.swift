@@ -53,7 +53,7 @@ struct UnitCircleView: View {
     func angles() -> [GraphAngle] {
         
         let theta = GraphAngle(center: CGPoint(x: 0, y: 0), startAngle: 0, endAngle: angle.value, unit: unit, string: angle.string + (unit == .deg ? "º" : ""))
-        let right = GraphAngle(center: CGPoint(x: x, y: 0), startAngle: x > 0 ? 180 : 0, endAngle: y > 0 ? 90 : 270, unit: .deg)
+        let right = GraphAngle(center: CGPoint(x: x, y: 0), startAngle: x > 0 ? 180 : 0, endAngle: y > 0 ? 90 : 270, maxSize: min(abs(x), abs(y))/3, unit: .deg)
         
         return [theta,right]
     }

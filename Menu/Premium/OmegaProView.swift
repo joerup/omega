@@ -47,7 +47,6 @@ struct OmegaProView: View {
                                     .minimumScaleFactor(0.5)
                                     .foregroundColor(Color.white)
                                     .shadow(color: .init(white: 0.3), radius: 20)
-                                    .animation(.default)
                                     .padding(20)
                             }
                             .frame(height: 200)
@@ -83,11 +82,8 @@ struct OmegaProView: View {
                                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 8)) {
                                                     ForEach(ThemeData.allThemes[8...], id: \.id) { theme in
                                                         ThemeIcon(theme: theme, size: geometry.size.width > 1000 ? 50 : 30)
-                                                            .animation(nil)
                                                     }
-                                                    .animation(nil)
                                                 }
-                                                .animation(nil)
                                                 .padding(.vertical, 10)
                                             }
                                         }

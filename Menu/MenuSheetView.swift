@@ -23,30 +23,15 @@ struct MenuSheetView<Content: View>: View {
             Spacer()
             
         }
-        .overlay(ZStack {
+        .overlay {
             if let onDismiss = onDismiss {
-                VStack {
-                    Rectangle()
-                        .fill(Color.init(white: 0.1))
-                        .opacity(0.02)
-                        .frame(height: 30)
-                        .gesture(DragGesture(minimumDistance: 30)
-                            .onChanged { value in
-                                if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                                    onDismiss()
-                                }
-                            }
-                        )
-                    Spacer()
-                }
                 XButtonOverlay(action: onDismiss)
             }
-        })
+        }
         .frame(maxWidth: .infinity)
         .background(Color.init(white: 0.15))
         .cornerRadius(20)
         .edgesIgnoringSafeArea(.bottom)
-        .animation(.default)
         .transition(.move(edge: .bottom))
     }
 }

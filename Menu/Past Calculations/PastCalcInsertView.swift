@@ -55,7 +55,6 @@ struct PastCalcInsertView: View {
                     }
                     .background(Color.init(white: 0.3))
                     .cornerRadius(20)
-                    .animation(nil)
                     
                     Spacer()
                     

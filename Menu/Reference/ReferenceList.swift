@@ -72,7 +72,6 @@ struct ReferenceList: View {
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.init(white: 0.6))
                                             .textCase(nil)
-                                            .animation(nil)
                                             .padding([.horizontal, .top], 10)
                                     }
                                 ) {
@@ -108,7 +107,6 @@ struct ReferenceList: View {
                         .background(Color.init(white: 0.15).cornerRadius(20))
                         .edgesIgnoringSafeArea(.bottom)
                         .transition(.move(edge: .bottom))
-                        .animation(.default)
                     }
                 }
                 .frame(width: geometry.size.width > 800 ? geometry.size.width*0.5 : geometry.size.width)
@@ -117,7 +115,6 @@ struct ReferenceList: View {
         }
         .navigationBarTitle("Reference")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing: MenuX())
     }
     
     

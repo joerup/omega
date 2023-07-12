@@ -63,6 +63,7 @@ struct TableMenuView: View {
                         .padding(.horizontal, 10)
                         .padding(5)
                         .background(Color.init(white: 0.1).cornerRadius(20))
+                        .frame(maxWidth: 300)
                         
                         HStack(spacing: 0) {
                             TextDisplay(strings: [horizontalAxis.text,"="], size: 25, opacity: 0.6)
@@ -87,6 +88,9 @@ struct TableMenuView: View {
                         .padding(.horizontal, 10)
                         .padding(5)
                         .background(Color.init(white: 0.1).cornerRadius(20))
+                        .frame(maxWidth: 300)
+                        
+                        Spacer(minLength: 0)
                         
                         XButton {
                             presentationMode.wrappedValue.dismiss()

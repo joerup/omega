@@ -55,7 +55,6 @@ struct InfoButtonList: View {
                     }
                 }
             }
-            .animation(nil)
         }
     }
     

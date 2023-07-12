@@ -52,7 +52,6 @@ struct Welcome: View {
                             )
                     )
             }
-            .animation(.default)
                 
             Spacer()
             

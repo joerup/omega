@@ -143,10 +143,24 @@ struct CalculatorModel: View {
                         case .buttonsText(let text):
                             VStack {
                                 TextDisplay(strings: text.strings, modes: modes, size: safeSize.height*0.09, scrollable: true, theme: theme)
+                                    .padding(.top, 2*scale)
                                 ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
                                     .padding(.bottom, bottomSafeArea)
-                                    .padding(.top, 2*scale)
                             }
+                        case .buttonsResult(let input, let result):
+                            VStack {
+                                TextDisplay(strings: input.strings, modes: .init(), size: safeSize.height*0.06, opacity: 0.8, equals: true, scrollable: true, theme: theme)
+                                    .padding(.top, 2*scale)
+                                TextDisplay(strings: result.strings, modes: modes, size: safeSize.height*0.09, scrollable: true, theme: theme)
+                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                    .padding(.bottom, bottomSafeArea)
+                            }
+                        case .graph(let elements):
+                            if (maxWidth ?? 0) > 0, (maxHeight ?? 0) > 0 {
+                                GraphView(elements, gridLines: false, interactive: false, precision: 200)
+                            }
+                        case .table(let function):
+                            TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), fullTable: true)
                         case .popUp(let text):
                             ZStack {
                                 VStack {
@@ -159,18 +173,111 @@ struct CalculatorModel: View {
                                     Text(text)
                                         .font(.system(.caption, design: .rounded).weight(.semibold))
                                         .lineLimit(0).minimumScaleFactor(0.5)
-                                        .padding()
+                                        .padding([.top, .horizontal])
+                                    VStack(spacing: 2.5) {
+                                        ForEach(0...4, id: \.self) { _ in
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .fill(Color.init(white: 0.3))
+                                                .frame(width: min(200, safeSize.width*0.7)*0.75, height: min(300, safeSize.height*0.6)*0.075)
+                                        }
+                                    }
                                     Spacer()
                                 }
                                 .frame(width: min(200, safeSize.width*0.7), height: min(300, safeSize.height*0.6))
                                 .background(Color.init(white: 0.25).cornerRadius(10))
                             }
-                        case .graph(let elements):
-                            if (maxWidth ?? 0) > 0, (maxHeight ?? 0) > 0 {
-                                GraphView(elements, gridLines: false, interactive: false, precision: 200)
+                        case .pastCalculations(let calculations):
+                            VStack {
+                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                    .padding(.bottom, bottomSafeArea)
+                                    .padding(.top, 10)
+                                    .overlay(
+                                        VStack(spacing: 2.5) {
+                                            Text("Folder")
+                                                .font(.system(size: safeSize.height*0.04).weight(.bold))
+                                                .foregroundColor(.white)
+                                                .frame(width: safeSize.width*0.9, height: safeSize.height*0.08)
+                                                .background(Color.init(white: 0.25).cornerRadius(safeSize.height*0.03))
+                                                .padding(.top, 10).padding(.bottom, 2)
+                                            ForEach(calculations, id: \.id) { calculation in
+                                                RoundedRectangle(cornerRadius: safeSize.height*0.03)
+                                                    .fill(Color.init(white: 0.2))
+                                                    .frame(width: safeSize.width*0.9, height: safeSize.height*0.1)
+                                                    .overlay(TextDisplay(strings: calculation.strings, size: safeSize.height*0.05, scrollable: true))
+                                            }
+                                            Spacer()
+                                        }
+                                        .frame(width: safeSize.width)
+                                        .background(Color.init(white: 0.15).cornerRadius(safeSize.height*0.05))
+                                    )
                             }
-                        case .table(let function):
-                            TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), fullTable: true)
+                        case .extraResults(let input, let mainResult, let extraResults):
+                            VStack {
+                                TextDisplay(strings: input.strings, modes: .init(), size: safeSize.height*0.06, opacity: 0.8, equals: true, scrollable: true, theme: theme)
+                                    .padding(.top, 2*scale)
+                                TextDisplay(strings: mainResult.strings, size: safeSize.height*0.09, scrollable: true, theme: theme)
+                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                    .padding(.bottom, bottomSafeArea)
+                                    .overlay(
+                                        VStack(spacing: 2.5) {
+                                            ForEach(extraResults, id: \.id) { result in
+                                                TextDisplay(strings: ["="]+result.strings, size: safeSize.height*(result.count > 1 ? 0.1 : 0.07), scrollable: true)
+                                                    .frame(width: safeSize.width*0.9, height: safeSize.height*0.15)
+                                            }
+                                            Spacer()
+                                        }
+                                        .frame(width: safeSize.width)
+                                        .padding(.vertical, 10)
+                                        .background(Color.init(white: 0.15).cornerRadius(safeSize.height*0.05))
+                                    )
+                            }
+                        case .trigDisplay(let result, let function, let angle):
+                            VStack {
+                                VStack(spacing: 2) {
+                                    TextDisplay(strings: Queue([function,Expression(angle)]).strings, modes: .init(), size: safeSize.height*0.06, opacity: 0.8, equals: true, scrollable: true, theme: theme)
+                                        .padding(.top, 2*scale)
+                                    TextDisplay(strings: result.strings, size: safeSize.height*0.09, scrollable: true, theme: theme)
+                                }
+                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                    .padding(.bottom, bottomSafeArea)
+                                    .overlay(
+                                        UnitCircleView(function: function, angle: angle, unit: .deg, color1: theme.color1, color2: theme.color2, gridLines: false, interactive: false, popUpGraph: true)
+                                            .disabled(true)
+                                            .frame(width: safeSize.width)
+                                            .padding(.vertical, 10)
+                                            .background(Color.init(white: 0.15).cornerRadius(safeSize.height*0.05))
+                                    )
+                            }
+                        case .variablePlug(let expression, let variables, let values, let result):
+                            VStack {
+                                VStack {
+                                    VStack(spacing: 2) {
+                                        TextDisplay(strings: expression.strings, size: safeSize.height*0.09, scrollable: true, theme: theme)
+                                            .padding(.top, 2*scale)
+                                    }
+                                    ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                        .padding(.bottom, bottomSafeArea)
+                                        .overlay(
+                                            VStack(spacing: safeSize.height*0.02) {
+                                                ForEach(variables.indices, id: \.self) { i in
+                                                    HStack {
+                                                        TextDisplay(strings: [variables[i].name], size: safeSize.height*0.05, color: color(theme.color1))
+                                                            .frame(width: safeSize.width*0.2, height: safeSize.height*0.07)
+                                                        TextDisplay(strings: values[i].strings, size: safeSize.height*0.05, scrollable: true)
+                                                            .frame(height: safeSize.height*0.07)
+                                                            .background(Color.init(white: 0.2).cornerRadius(safeSize.height*0.03))
+                                                    }
+                                                    .frame(width: safeSize.width*0.9)
+                                                }
+                                                TextDisplay(strings: ["="]+result.strings, size: safeSize.height*0.05, scrollable: true, theme: theme)
+                                                Spacer()
+                                            }
+                                            .frame(width: safeSize.width)
+                                            .padding(.vertical, 10)
+                                            .background(Color.init(white: 0.15).cornerRadius(safeSize.height*0.05))
+                                        )
+                                }
+                            }
                         }
                     }
                     .id(theme.id)
@@ -194,8 +301,13 @@ struct CalculatorModel: View {
         case shapes
         case buttons
         case buttonsText(text: Queue)
-        case popUp(text: String)
+        case buttonsResult(input: Queue, result: Queue)
         case graph(elements: [GraphElement])
         case table(function: Queue)
+        case popUp(text: String)
+        case pastCalculations(calculations: [Queue])
+        case extraResults(input: Queue, mainResult: Queue, extraResults: [Queue])
+        case trigDisplay(result: Queue, function: Function, angle: Number)
+        case variablePlug(expression: Queue, variables: [Letter], values: [Queue], result: Queue)
     }
 }

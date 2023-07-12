@@ -16,11 +16,12 @@ struct AlphabetButton: View {
     @Binding var uppercase: Bool
     
     var width: CGFloat
+    var backgroundColor: Color = .init(white: 0.15)
     var smallerSmall: Bool
     
     var body: some View {
         SmallTextButton(text: text,
-                        color: alphabet != .english ? color(settings.theme.color1) : Color.init(white: 0.15),
+                        color: alphabet != .english ? color(settings.theme.color1) : backgroundColor,
                         textColor: alphabet != .english ? .white : color(settings.theme.color1, edit: true),
                         width: width,
                         smallerSmall: smallerSmall,

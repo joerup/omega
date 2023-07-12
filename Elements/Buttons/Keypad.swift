@@ -32,19 +32,11 @@ struct Keypad: View {
     }
     
     var body: some View {
-        
         GeometryReader { geometry in
-            
-            if verticalSizeClass == .regular {
-                
-                ShortPadA(queue: queue, width: geometry.size.width, buttonHeight: geometry.size.height/4, onChange: onChange)
-                    .animation(.default)
-                
-            } else {
-                
-                ShortPadB(queue: queue, width: geometry.size.width, buttonHeight: geometry.size.height/2, onChange: onChange)
-                    .animation(.default)
-                
+            HStack {
+                Spacer(minLength: 0)
+                ShortPadA(queue: queue, width: min(geometry.size.width, geometry.size.height*1.5), buttonHeight: min(geometry.size.height/4, min(geometry.size.width, 500)*0.95/6), onChange: onChange)
+                Spacer(minLength: 0)
             }
         }
     }

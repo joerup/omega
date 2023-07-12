@@ -24,6 +24,8 @@ struct TextSequence: View {
     var animations: Bool = false
     var interaction: InteractionType = .none
     
+    @Namespace private var namespace
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -59,7 +61,6 @@ struct TextSequence: View {
                                 .scaleEffect(x: 1, y: element.aspectRatio)
                                 .border(Color.green, width: settings.guidelines ? 1 : 0)
                                 .background(Color.blue.opacity(settings.guidelines ? 0.3 : 0))
-                                .animation(animations && settings.textAnimations ? .easeInOut(duration: 0.2) : nil)
                                 .gesture(DragGesture(minimumDistance: 0).onEnded { value in
                                     if value.translation.width < 1 && value.translation.height < 1 {
                                         interact(element: element, position: value.location.x/element.width)
@@ -87,6 +88,9 @@ struct TextSequence: View {
                             }
                     }
                     .position(x: element.centerPosition, y: geometry.size.height/2 - element.midline)
+                    .if(settings.textAnimations && animations) { view in
+                        view.animation(.easeIn(duration: 0.2), value: element)
+                    }
                     
                     Rectangle()
                         .fill(Color.red)
@@ -100,7 +104,6 @@ struct TextSequence: View {
                         .frame(width: element.width)
                         .position(x: element.centerPosition, y: geometry.size.height/2 - element.midline)
                 }
-                .animation(animations && self.settings.textAnimations ? .easeInOut : .none)
             }
         }
         .frame(width: textElements.last?.endPosition ?? 0)

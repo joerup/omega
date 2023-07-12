@@ -137,10 +137,8 @@ struct MainMenuView: View {
                         .padding(.horizontal, 10)
                         .padding(.bottom, 20)
                     }
-                    .animation(nil)
                     .padding(5)
                 }
-                .animation(nil)
                 .accentColor(color(self.settings.theme.color1, edit: true))
             }
             .accentColor(color(settings.theme.color1))

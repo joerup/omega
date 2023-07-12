@@ -52,7 +52,6 @@ struct ThemeView: View {
                                     HStack {
                                         Text("Favorite Colors")
                                             .font(Font.system(.body, design: .rounded).weight(.bold))
-                                            .animation(nil)
                                         Spacer()
                                     }
                                     .padding(.top, 17)
@@ -90,7 +89,6 @@ struct ThemeView: View {
                                             
                                             Text("\(category.name) Series")
                                                 .font(Font.system(.body, design: .rounded).weight(.bold))
-                                                .animation(nil)
                                             
                                             Spacer()
                                             
@@ -105,7 +103,6 @@ struct ThemeView: View {
                                                         .minimumScaleFactor(0.5)
                                                 }
                                                 .padding(.horizontal, 10)
-                                                .animation(nil)
                                             }
                                             
                                             Button(action: {
@@ -117,7 +114,6 @@ struct ThemeView: View {
                                                     .lineLimit(0)
                                                     .minimumScaleFactor(0.5)
                                             }
-                                            .animation(nil)
                                         }
                                         .padding(.top, 17)
                                         .padding(.horizontal, 5)

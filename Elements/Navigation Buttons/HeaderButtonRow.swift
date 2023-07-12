@@ -30,22 +30,28 @@ struct HeaderButtonRow: View {
             }
             
             SmallIconButton(symbol: "clock.arrow.circlepath", color: Color.init(white: self.settings.calculatorOverlay == .calculations ? 0.3 : 0.15), smallerSmall: orientation == .landscape, action: {
-                self.settings.calculatorOverlay = self.settings.calculatorOverlay == .calculations ? .none : .calculations
+                withAnimation {
+                    self.settings.calculatorOverlay = self.settings.calculatorOverlay == .calculations ? .none : .calculations
+                }
             })
             
             SmallIconButton(symbol: "folder", color: Color.init(white: self.settings.calculatorOverlay == .saved ? 0.3 : 0.15), smallerSmall: orientation == .landscape, action: {
-                self.settings.calculatorOverlay = self.settings.calculatorOverlay == .saved ? .none : .saved
+                withAnimation {
+                    self.settings.calculatorOverlay = self.settings.calculatorOverlay == .saved ? .none : .saved
+                }
             })
             
             if proCheck() {
                 
                 SmallIconButton(symbol: "character.textbox", color: Color.init(white: self.settings.calculatorOverlay == .variables ? 0.3 : 0.15), smallerSmall: orientation == .landscape, action: {
-                    self.settings.calculatorOverlay = self.settings.calculatorOverlay == .variables ? .none : .variables
+                    withAnimation {
+                        self.settings.calculatorOverlay = self.settings.calculatorOverlay == .variables ? .none : .variables
+                    }
                 })
             } else {
                 
                 SmallTextButton(text: "PRO", color: Color.init(white: 0.15), textColor: color(settings.theme.color1, edit: true), width: size == .small ? 55 : 75, smallerSmall: orientation == .landscape, action: {
-                    settings.popUp(.list)
+                    settings.popUp(.cycle)
                 })
             }
             
@@ -69,7 +75,7 @@ struct HeaderButtonScrollView: View {
     
         HStack {
                     
-            SmallTextButton(text: self.settings.modes.angleUnit.rawValue.uppercased(), color: Color.init(white: 0.15), textColor: Color.init(white: 0.7), width: size == .small ? 55 : 75, smallerSmall: orientation == .landscape, sound: .click3) {
+            SmallTextButton(text: self.settings.modes.angleUnit.rawValue.uppercased(), color: Color.init(white: 0.075), textColor: Color.init(white: 0.7), width: size == .small ? 55 : 75, smallerSmall: orientation == .landscape, sound: .click3) {
                 
                 self.settings.modes.angleUnit = settings.modes.angleUnit == .rad ? .deg : .rad
                 Calculation.current.setModes(to: self.settings.modes)

@@ -99,7 +99,6 @@ struct ThemePreview: View {
                             .lineLimit(0)
                             .minimumScaleFactor(0.5)
                             .padding(.vertical, 5)
-                            .animation(nil)
                         
                         ThemeCircles(theme: theme)
                     }

@@ -103,27 +103,3 @@ struct CalculationVisualSquare<Content: View>: View {
     }
 }
 
-struct CalculationVisualButton<Content: View>: View {
-    
-    var symbol: String
-    var textColor: Color
-    
-    var content: () -> Content
-    
-    @State private var showView: Bool = false
-    
-    var body: some View {
-        
-        SmallIconButton(symbol: symbol, textColor: textColor, action: {
-            self.showView.toggle()
-        })
-        .fullScreenCover(isPresented: self.$showView) {
-            ZStack {
-                content()
-                MenuXOverlay(presentBool: $showView)
-            }
-        }
-        .proLock()
-    }
-}
-

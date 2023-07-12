@@ -169,9 +169,6 @@ struct LayoutEditor: View {
                 }
                 .navigationTitle("Layout")
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(
-                    leading: LayoutResetButton(displayType: displayType, size: size, variant: variant, selectedGroup: $selectedGroup, selectedIndex: $selectedIndex, selectedButton: $selectedButton),
-                    trailing: MenuX(sheet: true, presentationMode: self.presentationMode))
             }
             .accentColor(color(self.settings.theme.color1, edit: true))
         }

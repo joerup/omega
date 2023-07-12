@@ -54,7 +54,7 @@ struct Notification: View {
         .padding(10)
         .background(Color.init(white: 0.2))
         .cornerRadius(30)
-        .shadow(color: .black.opacity(0.4), radius: 10)
+        .shadow(radius: 10)
         .onTapGesture {
             self.notification = .none
         }

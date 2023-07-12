@@ -61,8 +61,10 @@ struct ResultOverlay: View {
                     
                 } else {
                     
+                    let height = min(geometry.size.width*0.6, geometry.size.height*0.7)
+                    
                     HStack(spacing: 10) {
-                        CalculationVisuals(width: geometry.size.width-10, height: geometry.size.width*0.6, ignoreIfEmpty: true)
+                        CalculationVisuals(width: geometry.size.width-10, height: height, ignoreIfEmpty: true)
                             .padding(.bottom, 2)
                     }
                     

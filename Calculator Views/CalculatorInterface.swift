@@ -54,13 +54,13 @@ struct CalculatorInterface: View {
 //                        .overlay(DetailOverlay().padding(.trailing, orientation == .landscape ? geometry.size.width*4/11 : 0).padding(.horizontal, 2).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight*0.8+verticalPadding))
 //                        .overlay(orientation == .landscape ? SecondDetailOverlay().padding(.leading, geometry.size.width*7/11).padding(.horizontal, 2).padding(.bottom, geometry.size.height*buttonHeight+verticalPadding) : nil)
                 }
+                .keypadShift()
                 .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay() } else {}})
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
-            .background(Color.init(white: 0.07).edgesIgnoringSafeArea(.all))
             .overlay(VStack{ if verticalSizeClass == .compact { CalculatorOverlay().padding(.top, standardSize+7) } else {}})
-            .keypadShift()
             .contentOverlay()
+            .background(Color.init(white: 0.07).edgesIgnoringSafeArea(.all))
             .accentColor(color(self.settings.theme.color1))
             .ignoresSafeArea(.keyboard)
         }

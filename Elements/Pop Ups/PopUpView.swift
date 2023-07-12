@@ -18,22 +18,27 @@ struct PopUpView: View {
             
             ZStack {
                 
-                if let popUp = settings.popUp {
-                    
-                    Rectangle()
-                        .fill(Color.black)
-                        .opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            settings.popUp = nil
-                            SoundManager.play(haptic: .light)
-                        }
-                    
-                    popUp
-                        .padding(10)
-                        .background(Color.init(white: 0.25).cornerRadius(20))
-                        .padding(.horizontal, 20)
+                ZStack {
+                    if let popUp = settings.popUp {
+                        
+                        Rectangle()
+                            .fill(Color.black)
+                            .opacity(0.4)
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture {
+                                withAnimation {
+                                    settings.popUp = nil
+                                }
+                                SoundManager.play(haptic: .light)
+                            }
+                        
+                        popUp
+                            .padding(10)
+                            .background(Color.init(white: 0.25).cornerRadius(20).shadow(radius: 10))
+                            .padding(.horizontal, 20)
+                    }
                 }
+                .animation(.default, value: settings.popUp != nil)
                 
                 if let warning = settings.warning {
                     
@@ -42,7 +47,9 @@ struct PopUpView: View {
                         .opacity(0.4)
                         .edgesIgnoringSafeArea(.all)
                         .onTapGesture {
-                            settings.warning = nil
+                            withAnimation {
+                                settings.warning = nil
+                            }
                             SoundManager.play(haptic: .light)
                         }
                     
@@ -62,8 +69,10 @@ struct PopUpView: View {
                         HStack {
                             
                             Button(action: {
-                                settings.warning = nil
-                                warning.cancelAction()
+                                withAnimation {
+                                    settings.warning = nil
+                                    warning.cancelAction()
+                                }
                                 SoundManager.play(sound: .click2, haptic: .light)
                             }) {
                                 Text(LocalizedStringKey(warning.cancelString))
@@ -78,8 +87,10 @@ struct PopUpView: View {
                             }
                             
                             Button(action: {
-                                settings.warning = nil
-                                warning.continueAction()
+                                withAnimation {
+                                    settings.warning = nil
+                                    warning.continueAction()
+                                }
                                 SoundManager.play(sound: .click3, haptic: .light)
                             }) {
                                 Text(LocalizedStringKey(warning.continueString))
@@ -95,7 +106,7 @@ struct PopUpView: View {
                         }
                     }
                     .padding(20)
-                    .background(Color.init(white: 0.25).cornerRadius(20))
+                    .background(Color.init(white: 0.25).cornerRadius(20).shadow(radius: 10))
                     .padding(.horizontal, 20)
                 }
                 
@@ -131,12 +142,13 @@ struct PopUpView: View {
                             Notification(text: "Removed from Favorites", image: "star.slash", notification: $settings.notification)
                         }
                     }
+                    .animation(.default, value: settings.notification)
                     .padding(50)
                 }
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .transition(.move(edge: .bottom))
-            .animation(.default)
+            .animation(.default, value: settings.warning?.id)
         }
     }
 }

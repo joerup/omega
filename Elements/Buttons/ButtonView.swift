@@ -47,7 +47,7 @@ struct ButtonView: View {
         
         if active {
             ZStack {
-                Button(action: { }) {
+                Button { } label: {
                     ButtonText(button: button, fontSize: fontSize)
                         .foregroundColor(.white)
                         .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
@@ -61,7 +61,7 @@ struct ButtonView: View {
                             pressButton(pressType: .hold)
                         }
                 }
-                .scaleEffect(isPressed ? 0.8 : 1.0)
+                .scaleEffect(isPressed ? 0.95 : 1.0)
             }
         }
         else if showText {

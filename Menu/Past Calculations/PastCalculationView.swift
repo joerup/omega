@@ -38,7 +38,6 @@ struct PastCalculationView: View {
                                 .foregroundColor(.init(white: calculation.saved ? 1 : 0.1))
                                 .opacity(calculation.saved ? 1 : 0.6)
                                 .font(.system(size: 85/2, weight: .black))
-                                .animation(.none)
                         }
                         .padding(.top, -3)
                         
@@ -140,28 +139,17 @@ struct PastCalculationView: View {
                     
                     // Buttons
                     
-                    HStack {
-                        LargeIconButton(text: "Insert", image: "plus.circle") {
-                            calculation.insert()
+                    if geometry.size.width > 500 {
+                        HStack {
+                            buttonRow1
+                            buttonRow2
                         }
-                        LargeIconButton(text: "Edit", image: "pencil") {
-                            calculation.edit()
+                    } else {
+                        HStack {
+                            buttonRow1
                         }
-                        LargeIconButton(text: "Copy", image: "doc.on.clipboard\(calculation.copied ? ".fill" : "")") {
-                            calculation.copy()
-                        }
-                    }
-                    
-                    HStack {
-                        LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")") {
-                            calculation.save()
-                        }
-                        LargeIconButton(text: "Assign", image: "character.textbox") {
-                            guard proCheckNotice(.variables) else { return }
-                            calculation.store()
-                        }
-                        LargeIconButton(text: "Delete", image: "trash") {
-                            calculation.delete()
+                        HStack {
+                            buttonRow2
                         }
                     }
                     
@@ -224,6 +212,32 @@ struct PastCalculationView: View {
             .onChange(of: self.calculation) { calculation in
                 self.name = calculation.name ?? ""
             }
+        }
+    }
+    
+    @ViewBuilder
+    private var buttonRow1: some View {
+        LargeIconButton(text: "Insert", image: "plus.circle") {
+            calculation.insert()
+        }
+        LargeIconButton(text: "Edit", image: "pencil") {
+            calculation.edit()
+        }
+        LargeIconButton(text: "Copy", image: "doc.on.clipboard\(calculation.copied ? ".fill" : "")") {
+            calculation.copy()
+        }
+    }
+    @ViewBuilder
+    private var buttonRow2: some View {
+        LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")") {
+            calculation.save()
+        }
+        LargeIconButton(text: "Assign", image: "character.textbox") {
+            guard proCheckNotice(.variables) else { return }
+            calculation.store()
+        }
+        LargeIconButton(text: "Delete", image: "trash") {
+            calculation.delete()
         }
     }
 

@@ -96,6 +96,7 @@ struct StoredVarSetView: View {
                                 TextDisplay(strings: ["="], size: 36, opacity: 0.5)
                             }
                             .frame(width: 80)
+                            .transaction { $0.animation = nil }
                         }
 
                         Spacer()
@@ -104,43 +105,30 @@ struct StoredVarSetView: View {
                             self.value = value
                         })
                         .disabled(!editing)
+                        .transaction { $0.animation = nil }
                     }
                     .frame(height: 50)
                     .padding(10)
                     .background(Color.init(white: 0.3))
                     .cornerRadius(20)
-                    .padding(.top, 10)
+                    .padding(.vertical, 10)
                     
                     ScrollView {
                         
                         VStack {
                             
-                            Text("Select Variable")
-                                .font(Font.system(.body, design: .rounded).weight(.semibold))
-                                .padding(10)
-                            
                             let count = geometry.size.width > 400 ? 10 : 8
                             
                             HStack {
-                                SmallTextButton(text: uppercase ? "ABC" : "abc",
-                                                color: alphabet == .english ? color(settings.theme.color3) : Color.init(white: 0.3),
-                                                textColor: alphabet == .english ? Color.white : color(settings.theme.color3, edit: true),
-                                                width: 60,
-                                                smallerSmall: true,
-                                                sound: .click3
-                                ) {
-                                    alphabet = .english
-                                }
-                                SmallTextButton(text: uppercase ? "ΑΒΓ" : "αβγ",
-                                                color: alphabet == .greek ? color(settings.theme.color3) : Color.init(white: 0.3),
-                                                textColor: alphabet == .greek ? Color.white : color(settings.theme.color3, edit: true),
-                                                width: 60,
-                                                smallerSmall: true,
-                                                sound: .click3
-                                ) {
-                                    alphabet = .greek
-                                }
+                                Text("Select Variable")
+                                    .font(.system(.body, design: .rounded).weight(.semibold))
                                 Spacer()
+                                AlphabetButton(alphabet: $alphabet,
+                                               uppercase: $uppercase,
+                                               width: 50,
+                                               backgroundColor: Color.init(white: 0.3),
+                                               smallerSmall: true
+                                )
                                 SmallIconButton(symbol: uppercase ? "capslock.fill" : "capslock",
                                                 color: Color.init(white: 0.3),
                                                 textColor: .white,
@@ -150,6 +138,7 @@ struct StoredVarSetView: View {
                                     uppercase.toggle()
                                 }
                             }
+                            .padding(.horizontal, 5)
                             
                             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: count), spacing: 0) {
                                 
@@ -159,9 +148,9 @@ struct StoredVarSetView: View {
                                     })
                                     .padding(.vertical, geometry.size.width*0.95/CGFloat(count)*0.025)
                                     .padding(.horizontal, geometry.size.width*0.95/CGFloat(count)*0.025/CGFloat(count))
-                                    .animation(nil)
                                 }
                             }
+                            .transaction { $0.animation = nil }
                         }
                     }
                 }

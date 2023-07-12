@@ -27,11 +27,12 @@ struct ShortPadA: View {
     
     var body: some View {
         
-        HStack(spacing:0) {
-            
-            VStack(spacing: 0) {
+        ScrollView {
+        
+            HStack(spacing:0) {
                 
-                ScrollView {
+                VStack(spacing: 0) {
+                    
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
                         ForEach(Input.shortScroll.buttons, id: \.id) { button in
                             ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
@@ -39,39 +40,34 @@ struct ShortPadA: View {
                                 .padding(.horizontal, width*0.025/6)
                         }
                     }
-                    .id(UUID())
-                    Spacer()
-                }
-                .frame(height: buttonHeight*1.05*3)
-                .background(color((theme ?? self.settings.theme).color3).darker(by: 0.05))
-                .cornerRadius((width*0.95/6+buttonHeight)/2 * 0.4)
-                .padding(.horizontal, width*0.025/6)
-                .padding(.vertical, buttonHeight*0.025)
-                
-                HStack(spacing: 0) {
+                    .frame(height: buttonHeight*1.05*3)
+                    .padding(.vertical, buttonHeight*0.025)
                     
-                    ButtonView(button: InputButton("clear"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/4, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
-                        .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/4)
-                    
-                    ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/4, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
-                        .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/4)
+                    HStack(spacing: 0) {
+                        
+                        ButtonView(button: InputButton("clear"), input: queue, backgroundColor: Color.init(white: 0.2), width: width*0.95/4, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                            .padding(.vertical, buttonHeight*0.025)
+                            .padding(.horizontal, width*0.025/4)
+                        
+                        ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: Color.init(white: 0.2), width: width*0.95/4, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                            .padding(.vertical, buttonHeight*0.025)
+                            .padding(.horizontal, width*0.025/4)
+                    }
                 }
-            }
-            .frame(width: width/2)
-            
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
+                .frame(width: width/2)
                 
-                ForEach(Input.numPad.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
-                        .padding(.vertical, buttonHeight*0.025)
-                        .padding(.horizontal, width*0.025/6)
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
+                    
+                    ForEach(Input.numPad.buttons, id: \.id) { button in
+                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                            .padding(.vertical, buttonHeight*0.025)
+                            .padding(.horizontal, width*0.025/6)
+                    }
                 }
+                .frame(width: width/2)
             }
-            .frame(width: width/2)
         }
-        .frame(width: width)
+        .frame(width: width, height: (buttonHeight*1.1)*4)
         .border(Color.blue, width: self.settings.guidelines ? 1 : 0)
     }
 }

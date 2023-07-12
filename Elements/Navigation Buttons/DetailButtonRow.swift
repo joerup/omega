@@ -148,7 +148,7 @@ struct DetailButtonRow: View {
                     if calculation.completed {
                         
                         SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape) {
-                            guard proCheckNotice(.misc) else { return }
+                            guard proCheckNotice(.results) else { return }
                             settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
                         }
                         .onAppear {

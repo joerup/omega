@@ -113,7 +113,6 @@ struct NewsUpdate: View {
                                         .foregroundColor(.init(white: 0.1))
                                         .opacity(0.6)
                                         .font(.system(size: 50/2, weight: .black))
-                                        .animation(nil)
                                 }
                                 .padding(.horizontal, 5)
                                 .padding(.top, 5)
@@ -141,7 +140,6 @@ struct NewsUpdate: View {
                         .padding(.horizontal, 7)
                         .padding(5)
                         .background(Color.init(white:0.25).cornerRadius(20))
-                        .animation(nil)
                         .padding(.horizontal, -10)
                     }
                     

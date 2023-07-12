@@ -40,14 +40,17 @@ struct ContentOverlay: ViewModifier {
                         VStack(spacing: 0) {
                             Spacer()
                             keypad
-                                .frame(height: size*0.3)
-                                .padding(.vertical, 5)
-                                .background(Color.init(white: 0.2)
+                                .frame(maxHeight: min(max(size*0.3, min(size*0.5, 300)), 400))
+                                .padding(5)
+                                .frame(maxWidth: .infinity)
+                                .background(Color.init(white: 0.15)
                                     .cornerRadius(20)
+                                    .shadow(radius: 5)
                                     .edgesIgnoringSafeArea(.bottom)
                                 )
                         }
                     }
+                    .transition(.move(edge: .bottom))
                 }
             })
     }
@@ -63,7 +66,7 @@ struct KeypadShift: ViewModifier {
         
         content
             .animation(.default, value: settings.keypad != nil)
-            .offset(y: settings.keypad != nil && settings.popUp == nil ? -size*0.3 : 0)
+            .offset(y: settings.keypad != nil && settings.popUp == nil ? -size*0.22 : 0)
         
     }
 }

@@ -19,6 +19,8 @@ struct CalculatorOverlay: View {
     @State private var selectedDate: Date = Date()
     @State private var selectedFolder: String? = nil
     
+    @State private var gestureOffset: CGFloat = 0
+    
     var body: some View {
         
         ZStack {
@@ -52,17 +54,30 @@ struct CalculatorOverlay: View {
                 .edgesIgnoringSafeArea(.bottom)
                 .background(Color.init(white: 0.1)
                     .cornerRadius(20)
+                    .shadow(radius: 10)
                     .edgesIgnoringSafeArea(.bottom)
                 )
+                .offset(y: gestureOffset)
                 .gesture(DragGesture(minimumDistance: 30)
                     .onChanged { value in
+                        if value.translation.height > 0 {
+                            gestureOffset = value.translation.height
+                        }
+                    }
+                    .onEnded { value in
                         if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                            settings.calculatorOverlay = .none
+                            withAnimation {
+                                print("close")
+                                settings.calculatorOverlay = .none
+                            }
+                        }
+                        withAnimation {
+                            gestureOffset = 0
                         }
                     }
                 )
                 .transition(.move(edge: .bottom))
-                .animation(.default)
+                .keypadShift()
             }
         }
     }

@@ -101,6 +101,11 @@ struct TableView: View {
                             HStack {
                                 TextDisplay(strings: yStrings, size: fontSize)
                                 Spacer(minLength: 0)
+                            }
+                            .frame(minWidth: geometry.size.width*(fullTable ? 0.3 : 0.2))
+                            .padding(.horizontal, fontSize/2)
+                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(color(overlayColor).opacity(0.1)).cornerRadius(20))
+                            .contextMenu {
                                 if fullTable {
                                     Button {
                                         guard yStrings != ["ERROR"] else { return }
@@ -108,16 +113,10 @@ struct TableView: View {
                                         Settings.settings.clipboard = [number]
                                         Settings.settings.notification = .copy
                                     } label: {
-                                        Image(systemName: "doc.on.clipboard")
-                                            .font(.system(size: fontSize*0.5))
-                                            .foregroundColor(.init(white: 0.7))
-                                            .opacity(isCenter(x) ? 0.9 : 0.5)
+                                        Label("Copy", systemImage: "doc.on.clipboard")
                                     }
                                 }
                             }
-                            .frame(minWidth: geometry.size.width*(fullTable ? 0.3 : 0.2))
-                            .padding(.horizontal, fontSize/2)
-                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(color(overlayColor).opacity(0.1)).cornerRadius(20))
                         }
                         .id(x)
                         .frame(height: fontSize*1.2)

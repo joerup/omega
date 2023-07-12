@@ -84,6 +84,8 @@ struct OmegaProSplash: View {
                                 calculusDisplay()
                             case .misc:
                                 miscDisplay()
+                            case .results:
+                                resultsDisplay()
                             }
                         }
                     }
@@ -282,7 +284,7 @@ struct OmegaProSplash: View {
         displayTimer?.invalidate()
         if displayType == .cycle {
             settings.proPopUpType = ProFeatureDisplay.random()
-            displayTimer = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: true) { _ in
+            displayTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
                 cycleDisplay()
             }
         }
@@ -290,7 +292,7 @@ struct OmegaProSplash: View {
         // Cycle Themes
         themeTimer?.invalidate()
         recentThemeIDs = [theme.id, otherTheme1.id, otherTheme2.id]
-        themeTimer = Timer.scheduledTimer(withTimeInterval: 7.0, repeats: true) { _ in
+        themeTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
             cycleTheme()
         }
     }
@@ -302,11 +304,13 @@ struct OmegaProSplash: View {
         case .themes:
             return "Customization to the extreme."
         case .variables:
-            return "A graphing calculator on the go."
+            return "A whole new set of capabilities."
         case .calculus:
             return "Advanced functions made simple."
         case .misc:
             return "Convenient tools and features."
+        case .results:
+            return "Results taken a step further."
         }
     }
     
@@ -317,11 +321,13 @@ struct OmegaProSplash: View {
         case .themes:
             return "Access to over 30 themes. With so many colorful options, there's a look for everyone."
         case .variables:
-            return "Variables. Functions. Graphs. Make quick computations and analyze relationships."
+            return "Variables. Functions. Graphs. Tables. Make quick computations and analyze relationships."
         case .calculus:
             return "Summation & Products. Derivatives & Integrals. More power to meet your needs."
         case .misc:
             return "Edit your input with the interactive text pointer. Save & export unlimited calculations. And more."
+        case .results:
+            return "There's more than one way to view your results – get equivalent forms and helpful visuals."
         }
     }
     
@@ -404,6 +410,21 @@ struct OmegaProSplash: View {
     private let expression3 = Queue([Function(.definteg),Number(0),Expression([Number(3),Operation(.con),Number("π")], grouping: .hidden),Expression([Number(7),Operation(.con),Function(.sin),Expression([Number(1),Operation(.fra),Number(3),Operation(.con),Letter("x")])], grouping: .hidden),Letter("x")])
     private let expression4 = Queue([Function(.valDeriv),Number("#1"),Letter("z"),Expression([Function(.log),Number("#e"),Letter("z")]),Number("e")])
     private let expression5 = Queue([Number(2),Pointer(),Operation(.add),Number(3.01)])
+    
+    private let expressionList = [Queue([Number(0.20847457)]), Queue([Number(1275)]), Queue([Number(2),Operation(.con),Letter("x"),Operation(.add),Number(1)]), Queue([Number(9.41),Operation(.exp),Number(5)])]
+    
+    private let input1 = Queue([Number(1),Operation(.fra),Number(9),Operation(.mlt),Number(2)])
+    private let result1 = Queue([Number(0.222222222)])
+    private let extraResults1 = [Queue([Number(2),Operation(.fra),Number(9)]), Queue([Number("0.2 ̅")])]
+    private let result2 = Queue([Number(-0.731353702)])
+    private let function2 = Function(.cos); private let angle2 = Number(137)
+    private let input3 = Queue([Number(30),Operation(.mlt),Number("π"),Operation(.fra),Number(180)])
+    private let result3 = Queue([Number("π"),Operation(.fra),Number(6)])
+    
+    private let plugInExp = Queue([Expression([Letter("G"),Operation(.con),Letter("M"),Operation(.con),Letter("m")], grouping: .hidden),Operation(.fra),Expression([Letter("r"),Operation(.pow),Number(2)], grouping: .hidden)])
+    private let plugInVars = [Letter("G"),Letter("M"),Letter("m"),Letter("r")]
+    private let plugInVals = [Queue([Number(6.67),Operation(.exp),Number(-11)]), Queue([Number(2),Operation(.exp),Number(30)]), Queue([Number(5.97),Operation(.exp),Number(24)]), Queue([Number(1.5),Operation(.exp),Number(11)])]
+    private let plugInResult = Queue([Number(3.53955),Operation(.exp),Number(22)])
     
     private func featureDescriptions() -> some View {
         ScrollView {
@@ -598,15 +619,36 @@ struct OmegaProSplash: View {
         GeometryReader { geometry in
             ZStack {
                 
-                CalculatorModel(.popUp(text: "Save"), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.popUp(text: "Export"), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.trailing, geometry.size.width*0.63)
                     .scaleEffect(0.9)
                 
-                CalculatorModel(.popUp(text: "Export"), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                CalculatorModel(.pastCalculations(calculations: expressionList), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                     .padding(.leading, geometry.size.width*0.63)
                     .scaleEffect(0.9)
                 
                 CalculatorModel(.buttonsText(text: expression5), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                
+            }
+            .frame(maxWidth: geometry.size.width, maxHeight: geometry.size.height)
+        }
+        .transition(.opacity)
+        .disabled(true)
+    }
+    
+    private func resultsDisplay() -> some View {
+        GeometryReader { geometry in
+            ZStack {
+                
+                CalculatorModel(.trigDisplay(result: result2, function: function2, angle: angle2), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                    .padding(.trailing, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
+                
+                CalculatorModel(.buttonsResult(input: input3, result: result3), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
+                    .padding(.leading, geometry.size.width*0.63)
+                    .scaleEffect(0.9)
+                
+                CalculatorModel(.extraResults(input: input1, mainResult: result1, extraResults: extraResults1), orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme)
                 
             }
             .frame(maxWidth: geometry.size.width, maxHeight: geometry.size.height)
@@ -656,12 +698,14 @@ struct OmegaProSplash: View {
             case .list:
                 settings.proPopUpType = .list
             case .cycle:
-                settings.proPopUpType = .themes
+                settings.proPopUpType = ProFeatureDisplay.random()
             case .themes:
                 settings.proPopUpType = .variables
             case .variables:
                 settings.proPopUpType = .misc
             case .misc:
+                settings.proPopUpType = .results
+            case .results:
                 settings.proPopUpType = .calculus
             case .calculus:
                 settings.proPopUpType = .themes
@@ -678,6 +722,7 @@ enum ProFeatureDisplay: String, Identifiable {
     case themes
     case variables
     case calculus
+    case results
     case misc
     
     var id: String {
@@ -689,6 +734,8 @@ enum ProFeatureDisplay: String, Identifiable {
             return .themes
         } else if Double.random(in: 0..<1) > 0.5 {
             return .misc
+        } else if Double.random(in: 0..<1) > 0.5 {
+            return .results
         } else if Double.random(in: 0..<1) > 0.5 {
             return .variables
         } else {

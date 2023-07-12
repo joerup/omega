@@ -74,7 +74,6 @@ struct SubstituteView: View {
                 .frame(height: 20+(size == .small ? 28 : 35))
             }
         }
-        .animation(.default)
         .padding(10)
         .onChange(of: values) { values in
             onChange(substituteValues(values))

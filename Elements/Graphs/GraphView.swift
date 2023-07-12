@@ -74,163 +74,13 @@ struct GraphView: View {
         GeometryReader { geometry in
                 
             ZStack {
-
-                // MARK: Grid
-
-                // Axes
-                Path { path in
-                    
-                    path.move(to: point(0, yi, geometry))
-                    path.addLine(to: point(0, yf, geometry))
-
-                    path.move(to: point(xi, 0, geometry))
-                    path.addLine(to: point(xf, 0, geometry))
-
-                }
-                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-
-                // Grid Lines
-                Path { path in
-                    
-                    if xf > xi, yf > yi {
-                        
-                        for x in adjustDisplayRange(range: xi...xf) {
-                            path.move(to: point(Double(x), yi, geometry))
-                            path.addLine(to: point(Double(x), yf, geometry))
-                        }
-                        
-                        for y in adjustDisplayRange(range: yi...yf) {
-                            path.move(to: point(xi, Double(y), geometry))
-                            path.addLine(to: point(xf, Double(y), geometry))
-                        }
-                        
-                    }
-                        
-//                    else if gridStyle == .polar {
-//
-//                        for θ in 0...23 {
-//                            path.move(to: point(0, 0, geometry))
-//                            path.addLine(to: point((xf-xi)/2*cos(Double(θ) * .pi/12), (xf-xi)/2*sin(Double(θ) * .pi/12), geometry))
-//                        }
-//
-//                        for r in adjustDisplayRange(range: 0...(xf-xi)/2) {
-//                            path.move(to: point(r, 0, geometry))
-//                            path.addArc(center: point(0, 0, geometry), radius: point(r, 0, geometry).x - point(0, 0, geometry).x, startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: true)
-//                            path.addArc(center: point(0, 0, geometry), radius: point(r, 0, geometry).x - point(0, 0, geometry).x, startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: false)
-//                        }
-//                    }
-                }
-                .stroke(Color.gray.opacity(0.1), lineWidth: 1)
                 
-                if xf > xi, yf > yi {
-                    
-                    // Numbers
-                    ForEach(adjustDisplayRange(range: xi...xf, number: true), id: \.self) { num in
-                        Text(formatNum(num))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.gray)
-                            .position(point(Double(num), 0, geometry, limitY: true, num: num))
-                    }
-                    ForEach(adjustDisplayRange(range: yi...yf, number: true), id: \.self) { num in
-                        Text(formatNum(num))
-                            .font(.caption)
-                            .fontWeight(.bold)
-                            .foregroundColor(.gray)
-                            .position(point(0, Double(num), geometry, limitX: true, num: num))
-                    }
-                }
-
-                // MARK: Lines
-
-                ForEach(self.lines.indices, id: \.self) { l in
-                    
-                    let line = self.lines[l]
-
-                    if let shape = line as? LineShape {
-
-                        LinePlot(line: shape, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
-                            return point(x, y, geometry)
-                        }
-                        .fill(color(shape.color, edit: true))
-                        .opacity(shape.opacity)
-
-                    } else {
-
-                        LinePlot(line: line, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
-                            return point(x, y, geometry)
-                        }
-                        .stroke(color(line.color, edit: true), lineWidth: 2)
-                    }
-                }
-
-                // Guidelines
-
-                ForEach(self.guidelines.indices, id: \.self) { l in
-
-                    let guideline = self.guidelines[l]
-
-                    Path { path in
-
-                        path.move(to: point(guideline.start.x, guideline.start.y, geometry))
-                        
-                        if guideline.circle {
-                            path.addArc(center: point(guideline.end.x, guideline.end.y, geometry),
-                                        radius: point(guideline.start.x, 0, geometry).x - point(guideline.end.x, 0, geometry).x,
-                                        startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: true)
-                            path.addArc(center: point(guideline.end.x, guideline.end.y, geometry),
-                                        radius: point(guideline.start.x, 0, geometry).x - point(guideline.end.x, 0, geometry).x,
-                                        startAngle: Angle(radians: .pi), endAngle: Angle(radians: .pi*2), clockwise: true)
-                        } else {
-                            path.addLine(to: point(guideline.end.x, guideline.end.y, geometry))
-                        }
-                    }
-                    .stroke(color(guideline.color, edit: true), lineWidth: 1)
-                }
-                
-                // Graph Angles
-                
-                ForEach(self.angles.indices, id: \.self) { a in
-                    
-                    let angle = self.angles[a]
-                    
-                    let center = point(angle.center.x, angle.center.y, geometry)
-                    let scaledSize: Double = point(0.1, 0, geometry).x - point(0, 0, geometry).x
-                    let size: Double = scaledSize > 30 ? 30 : scaledSize
-
-                    Path { path in
-                        
-                        path.move(to: CGPoint(x: center.x + size*cos(angle.start.radians), y: center.y - size*sin(angle.start.radians)))
-                        
-                        if abs(Int(angle.end.degrees) % 360 - Int(angle.start.degrees) % 360) % 180 == 90 {
-                            path.addLine(to: CGPoint(x: center.x + size*cos(angle.start.radians) + size*cos(angle.end.radians), y: center.y - size*sin(angle.start.radians) - size*sin(angle.end.radians)))
-                            path.addLine(to: CGPoint(x: center.x + size*cos(angle.end.radians), y: center.y - size*sin(angle.end.radians)))
-                        } else {
-                            path.addArc(center: point(angle.center.x, angle.center.y, geometry), radius: size, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
-                        }
-                    }
-                    .stroke(color(angle.color, edit: true), lineWidth: 1)
-                    
-                    if let string = angle.string {
-                        Text(string)
-                            .font(.system(size: size/2))
-                            .fontWeight(.bold)
-                            .position(x: center.x + size*cos(angle.start.radians) + size*cos(angle.end.radians), y: center.y - size*sin(angle.start.radians) - size*sin(angle.end.radians))
-                    }
-                }
-
-                // Graph Text
-
-//                ForEach(self.text.indices, id: \.self) { t in
-//
-//                    let text = self.text[t]
-//
-//                    Text(text.text)
-//                        .font(.system(size: point(0, 0, geometry).y - point(0, Double(text.size), geometry).y))
-//                        .foregroundColor(color(text.color))
-//                        .position(point(text.position.x, ytext.position.y, geometry))
-//                        .rotationEffect(text.rotation)
-//                }
+                axesView(geometry)
+                gridLinesView(geometry)
+                gridLabelsView(geometry)
+                linesView(geometry)
+                guidelinesView(geometry)
+                graphAnglesView(geometry)
                 
                 Rectangle()
                     .opacity(1e-10)
@@ -271,7 +121,7 @@ struct GraphView: View {
             )
             .fullScreenCover(isPresented: self.$showPopUpGraph) {
                 ZStack {
-                    GraphView(elements, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis, gridStyle: gridStyle)
+                    GraphView(elements, width: angles.isEmpty ? 21 : 2.2, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis, gridStyle: gridStyle)
                     XButtonOverlay {
                         self.showPopUpGraph = false
                     }
@@ -285,6 +135,158 @@ struct GraphView: View {
             .onChange(of: geometry.size) { _ in
                 setInitialBounds(geometry)
                 setPoints()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func axesView(_ geometry: GeometryProxy) -> some View {
+        Path { path in
+            
+            path.move(to: point(0, yi, geometry))
+            path.addLine(to: point(0, yf, geometry))
+
+            path.move(to: point(xi, 0, geometry))
+            path.addLine(to: point(xf, 0, geometry))
+
+        }
+        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+    }
+    
+    @ViewBuilder
+    private func gridLinesView(_ geometry: GeometryProxy) -> some View {
+        Path { path in
+            
+            if xf > xi, yf > yi {
+                
+                for x in adjustDisplayRange(range: xi...xf) {
+                    path.move(to: point(Double(x), yi, geometry))
+                    path.addLine(to: point(Double(x), yf, geometry))
+                }
+                
+                for y in adjustDisplayRange(range: yi...yf) {
+                    path.move(to: point(xi, Double(y), geometry))
+                    path.addLine(to: point(xf, Double(y), geometry))
+                }
+                
+            }
+                
+//                    else if gridStyle == .polar {
+//
+//                        for θ in 0...23 {
+//                            path.move(to: point(0, 0, geometry))
+//                            path.addLine(to: point((xf-xi)/2*cos(Double(θ) * .pi/12), (xf-xi)/2*sin(Double(θ) * .pi/12), geometry))
+//                        }
+//
+//                        for r in adjustDisplayRange(range: 0...(xf-xi)/2) {
+//                            path.move(to: point(r, 0, geometry))
+//                            path.addArc(center: point(0, 0, geometry), radius: point(r, 0, geometry).x - point(0, 0, geometry).x, startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: true)
+//                            path.addArc(center: point(0, 0, geometry), radius: point(r, 0, geometry).x - point(0, 0, geometry).x, startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: false)
+//                        }
+//                    }
+        }
+        .stroke(Color.gray.opacity(0.1), lineWidth: 1)
+    }
+    
+    @ViewBuilder
+    private func gridLabelsView(_ geometry: GeometryProxy) -> some View {
+        if xf > xi, yf > yi {
+            
+            // Numbers
+            ForEach(adjustDisplayRange(range: xi...xf, number: true), id: \.self) { num in
+                Text(formatNum(num))
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundColor(.gray)
+                    .position(point(Double(num), 0, geometry, limitY: true, num: num))
+            }
+            ForEach(adjustDisplayRange(range: yi...yf, number: true), id: \.self) { num in
+                Text(formatNum(num))
+                    .font(.caption)
+                    .fontWeight(.bold)
+                    .foregroundColor(.gray)
+                    .position(point(0, Double(num), geometry, limitX: true, num: num))
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func linesView(_ geometry: GeometryProxy) -> some View {
+        ForEach(self.lines.indices, id: \.self) { l in
+            
+            let line = self.lines[l]
+
+            if let shape = line as? LineShape {
+
+                LinePlot(line: shape, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
+                    return point(x, y, geometry)
+                }
+                .fill(color(shape.color, edit: true))
+                .opacity(shape.opacity)
+
+            } else {
+
+                LinePlot(line: line, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
+                    return point(x, y, geometry)
+                }
+                .stroke(color(line.color, edit: true), lineWidth: 2)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func guidelinesView(_ geometry: GeometryProxy) -> some View {
+        ForEach(self.guidelines.indices, id: \.self) { l in
+
+            let guideline = self.guidelines[l]
+
+            Path { path in
+
+                path.move(to: point(guideline.start.x, guideline.start.y, geometry))
+                
+                if guideline.circle {
+                    path.addArc(center: point(guideline.end.x, guideline.end.y, geometry),
+                                radius: point(guideline.start.x, 0, geometry).x - point(guideline.end.x, 0, geometry).x,
+                                startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: true)
+                    path.addArc(center: point(guideline.end.x, guideline.end.y, geometry),
+                                radius: point(guideline.start.x, 0, geometry).x - point(guideline.end.x, 0, geometry).x,
+                                startAngle: Angle(radians: .pi), endAngle: Angle(radians: .pi*2), clockwise: true)
+                } else {
+                    path.addLine(to: point(guideline.end.x, guideline.end.y, geometry))
+                }
+            }
+            .stroke(color(guideline.color, edit: true), lineWidth: 1)
+        }
+    }
+    
+    @ViewBuilder
+    private func graphAnglesView(_ geometry: GeometryProxy) -> some View {
+        ForEach(self.angles.indices, id: \.self) { a in
+            
+            let angle = self.angles[a]
+            
+            let center = point(angle.center.x, angle.center.y, geometry)
+            let scaledSize: Double = point(min(0.1, angle.maxSize ?? 0.1), 0, geometry).x - point(0, 0, geometry).x
+            let size: Double = scaledSize > 30 ? 30 : scaledSize
+
+            Path { path in
+                
+                path.move(to: CGPoint(x: center.x + size*cos(angle.start.radians), y: center.y - size*sin(angle.start.radians)))
+                
+                if abs(Int(angle.end.degrees) % 360 - Int(angle.start.degrees) % 360) % 180 == 90 {
+                    path.addLine(to: CGPoint(x: center.x + size*cos(angle.start.radians) + size*cos(angle.end.radians), y: center.y - size*sin(angle.start.radians) - size*sin(angle.end.radians)))
+                    path.addLine(to: CGPoint(x: center.x + size*cos(angle.end.radians), y: center.y - size*sin(angle.end.radians)))
+                } else {
+                    path.addArc(center: point(angle.center.x, angle.center.y, geometry), radius: size, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
+                }
+            }
+            .stroke(color(angle.color, edit: true), lineWidth: 1)
+            
+            if let string = angle.string {
+                Text(string)
+                    .font(.system(size: size/2))
+                    .fontWeight(.bold)
+                    .position(x: center.x + size*cos(angle.start.radians) + size*cos(angle.end.radians), y: center.y - size*sin(angle.start.radians) - size*sin(angle.end.radians))
             }
         }
     }

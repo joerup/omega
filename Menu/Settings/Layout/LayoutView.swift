@@ -100,7 +100,6 @@ struct LayoutView: View {
             .padding()
             .navigationTitle("Layout")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: MenuX())
             .sheet(item: self.$displayVariant) { type in
                 LayoutEditor(displayType: type.orientation, variant: type.variant)
             }

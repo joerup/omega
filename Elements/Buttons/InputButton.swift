@@ -167,12 +167,9 @@ class Input {
         "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
     ])
     static var shortScroll = Input([
-        "π", "e", "/",
-        "^", "√", "EXP",
-        "%", "log", "ln",
-        "sin", "cos", "tan",
-        "+", "-", "×",
-        "÷", "(", ")"
+        "/", "^", "√",
+        "π", "e", "3√",
+        "log", "ln", "EXP"
     ])
     static var shortFormatRow = Input([
         "+/-", "."

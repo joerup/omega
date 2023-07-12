@@ -27,7 +27,7 @@ struct OmegaCalculatorApp: App {
                 OmegaView(storeManager: storeManager, screenSize: geometry.size)
             }
             .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-            .onAppear(perform: {
+            .onAppear {
                 // Get store products from App Store Connect
                 self.storeManager.getProducts(productIDs: productIDs)
                 // Add store manager
@@ -44,7 +44,7 @@ struct OmegaCalculatorApp: App {
                 PersistenceController.shared.removeExpiredCalculations()
                 // Set up the queue
                 Calculation.current.refresh()
-            })
+            }
         }
         .onChange(of: scenePhase) { _ in
             PersistenceController.shared.save()

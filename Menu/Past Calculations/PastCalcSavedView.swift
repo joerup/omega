@@ -57,13 +57,18 @@ struct PastCalcSavedView: View {
                             ListDisplayTypePicker(displayType: $displayType)
                                 
                             Button(action: {
-                                self.editFolder.toggle()
-                                SoundManager.play(sound: .click3, haptic: .medium)
+                                withAnimation {
+                                    self.editFolder.toggle()
+                                    self.newFolderText = ""
+                                    SoundManager.play(sound: .click3, haptic: .medium)
+                                }
                             }) {
                                 HStack {
                                     
                                     SmallIconButton(symbol: "folder\(selectedFolder != nil ? ".fill" : "")", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true) {
-                                        self.editFolder.toggle()
+                                        withAnimation {
+                                            self.editFolder.toggle()
+                                        }
                                     }
 
                                     if let selectedFolder = selectedFolder {
@@ -85,7 +90,6 @@ struct PastCalcSavedView: View {
                                     Image(systemName: editFolder ? "chevron.up" : "chevron.down")
                                         .imageScale(.small)
                                         .foregroundColor(Color.init(white: 0.6))
-                                        .animation(.default)
                                         .padding(.horizontal, 5)
                                 }
                                 .frame(maxHeight: size == .large ? 50 : 40)
@@ -100,11 +104,13 @@ struct PastCalcSavedView: View {
                             HStack {
                                 
                                 SmallIconButton(symbol: "checkmark.circle\(selectedCalculations.isEmpty ? "" : ".fill")", color: Color.init(white: self.selectedAll ? 0.4 : 0.2), smallerLarge: true, action: {
-                                    if !selectedCalculations.isEmpty {
-                                        self.resetSelected()
-                                    } else {
-                                        self.selectedAll = true
-                                        self.selectedCalculations = getAllCalculations(limit: false).reversed()
+                                    withAnimation {
+                                        if !selectedCalculations.isEmpty {
+                                            self.resetSelected()
+                                        } else {
+                                            self.selectedAll = true
+                                            self.selectedCalculations = getAllCalculations(limit: false).reversed()
+                                        }
                                     }
                                 })
                                 
@@ -142,9 +148,11 @@ struct PastCalcSavedView: View {
                         }
                         
                         SmallTextButton(text: self.selectionMode ? "Cancel" : "Edit", color: Color.init(white: 0.15), circle: true, smallerLarge: true) {
-                            self.editFolder = false
-                            self.selectionMode.toggle()
-                            self.resetSelected()
+                            withAnimation {
+                                self.editFolder = false
+                                self.selectionMode.toggle()
+                                self.resetSelected()
+                            }
                         }
                     }
                 }
@@ -160,8 +168,10 @@ struct PastCalcSavedView: View {
                             VStack {
 
                                 Button(action: {
-                                    self.selectedFolder = nil
-                                    self.editFolder = false
+                                    withAnimation {
+                                        self.selectedFolder = nil
+                                        self.editFolder = false
+                                    }
                                     SoundManager.play(sound: .click3, haptic: .medium)
                                 }) {
                                     HStack {
@@ -182,8 +192,10 @@ struct PastCalcSavedView: View {
 
                                         HStack {
                                             Button(action: {
-                                                self.selectedFolder = folder
-                                                self.editFolder = false
+                                                withAnimation {
+                                                    self.selectedFolder = folder
+                                                    self.editFolder = false
+                                                }
                                                 SoundManager.play(sound: .click3, haptic: .medium)
                                             }) {
                                                 Text(folder)
@@ -220,18 +232,20 @@ struct PastCalcSavedView: View {
                                     }
                                     
                                     TextField(NSLocalizedString("New Folder", comment: ""), text: self.$newFolderText, onCommit: {
-                                        while self.newFolderText.last == " " {
-                                            self.newFolderText.removeLast()
+                                        withAnimation {
+                                            while self.newFolderText.last == " " {
+                                                self.newFolderText.removeLast()
+                                            }
+                                            while self.newFolderText.first == " " {
+                                                self.newFolderText.removeFirst()
+                                            }
+                                            if !self.newFolderText.isEmpty && !settings.folders.contains(newFolderText) {
+                                                self.selectedFolder = newFolderText
+                                                self.settings.folders.insert(newFolderText, at: 0)
+                                            }
+                                            self.newFolderText = ""
+                                            self.editFolder = false
                                         }
-                                        while self.newFolderText.first == " " {
-                                            self.newFolderText.removeFirst()
-                                        }
-                                        if !self.newFolderText.isEmpty && !settings.folders.contains(newFolderText) {
-                                            self.selectedFolder = newFolderText
-                                            self.settings.folders.insert(newFolderText, at: 0)
-                                        }
-                                        self.newFolderText.removeAll()
-                                        self.editFolder = false
                                         SoundManager.play(haptic: .light)
                                     })
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
@@ -327,7 +341,6 @@ struct PastCalcSavedView: View {
                                                 .foregroundColor(.init(white: calculation.saved ? 1 : 0.1))
                                                 .opacity(calculation.saved ? 1 : 0.6)
                                                 .font(.system(size: 50/2, weight: .black))
-                                                .animation(nil)
                                         }
                                         .padding(.horizontal, 5)
                                         .padding(.top, 5)
@@ -391,21 +404,22 @@ struct PastCalcSavedView: View {
                                 .padding(.horizontal, 7)
                                 .padding(5)
                                 .background(Color.init(white: calculation == selectedCalculation ? 0.25 : selectedCalculations.contains(calculation) ? 0.25 : 0.15).cornerRadius(20))
-                                .animation(nil)
                                 .padding(.horizontal, 10)
                                 .onTapGesture {
                                     SoundManager.play(haptic: .light)
-                                    if self.selectionMode {
-                                        self.selectedCalculation = nil
-                                        if selectedCalculations.contains(calculation) {
-                                            selectedCalculations.removeAll(where: { $0 == calculation })
+                                    withAnimation {
+                                        if self.selectionMode {
+                                            self.selectedCalculation = nil
+                                            if selectedCalculations.contains(calculation) {
+                                                selectedCalculations.removeAll(where: { $0 == calculation })
+                                            } else {
+                                                self.selectedCalculations += [calculation]
+                                            }
+                                        } else if selectedCalculation == calculation {
+                                            self.selectedCalculation = nil
                                         } else {
-                                            self.selectedCalculations += [calculation]
+                                            self.selectedCalculation = calculation
                                         }
-                                    } else if selectedCalculation == calculation {
-                                        self.selectedCalculation = nil
-                                    } else {
-                                        self.selectedCalculation = calculation
                                     }
                                 }
                                 .contextMenu {
@@ -425,7 +439,6 @@ struct PastCalcSavedView: View {
                                 .font(.footnote)
                                 .foregroundColor(Color.init(white: 0.6))
                                 .padding(10)
-                                .animation(nil)
                         }
                         
                         Spacer()
@@ -439,20 +452,12 @@ struct PastCalcSavedView: View {
                                 }
                         }
                     }
-                    .animation(nil)
                 }
                 .id(self.selectedFolder)
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
             .accentColor(color(self.settings.theme.color1, edit: true))
-            .simultaneousGesture(DragGesture(minimumDistance: 30)
-                .onChanged { value in
-                    if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                        settings.calculatorOverlay = .none
-                    }
-                }
-            )
             .overlay(
                 VStack {
                     if geometry.size.width > 650 {
@@ -485,29 +490,26 @@ struct PastCalcSavedView: View {
                 }
                 .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
                 .padding(.leading, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
-                .highPriorityGesture(DragGesture(minimumDistance: 30)
-                    .onChanged { value in
-                        if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                            self.selectedCalculation = nil
-                        }
-                    }
-                )
             )
             .onAppear {
                 self.calculations = []
                 self.calculations = getAllCalculations()
             }
             .onChange(of: displayType) { _ in
-                self.count = 50
-                self.calculations = []
-                self.calculations = getAllCalculations()
-                self.resetSelected()
+                withAnimation {
+                    self.count = 50
+                    self.calculations = []
+                    self.calculations = getAllCalculations()
+                    self.resetSelected()
+                }
             }
             .onChange(of: selectedFolder) { _ in
-                self.count = 50
-                self.calculations = []
-                self.calculations = getAllCalculations()
-                self.resetSelected()
+                withAnimation {
+                    self.count = 50
+                    self.calculations = []
+                    self.calculations = getAllCalculations()
+                    self.resetSelected()
+                }
             }
             .onChange(of: PastCalculation.refresh) { _ in
                 self.calculations = getAllCalculations()

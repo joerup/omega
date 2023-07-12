@@ -23,7 +23,9 @@ struct OverlayDismissArea: View {
                     .opacity(1e-6)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        settings.calculatorOverlay = .none
+                        withAnimation {
+                            settings.calculatorOverlay = .none
+                        }
                         SoundManager.play(haptic: .light)
                     }
                 

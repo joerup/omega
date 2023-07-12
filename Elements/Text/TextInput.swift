@@ -43,8 +43,10 @@ struct TextInput: View {
                     size: size,
                     opacity: queue.empty ? 0.3 : 1,
                     scrollable: scrollable,
+                    animations: false,
                     interaction: .none
         )
+        .transaction { $0.animation = nil }
         .overlay(
             Button(action: edit) {
                 Rectangle()
@@ -59,19 +61,18 @@ struct TextInput: View {
         var oldQueue = queue
         self.queue = Queue()
         SoundManager.play(haptic: .heavy)
-        settings.keypad = Keypad(queue: queue, type: .numbers,
-            onChange: { queue in
+        withAnimation {
+            settings.keypad = Keypad(queue: queue, type: .numbers, onChange: { queue in
                 self.queue = queue
                 self.strings = queue.strings
                 oldQueue = queue
                 onChange(queue.combined())
-            },
-            onDismiss: { queue in
+            }, onDismiss: { queue in
                 self.editing = false
                 queue.combineQueues(all: true)
                 if queue.empty { self.queue = oldQueue; self.strings = oldQueue.strings }
                 onDismiss(queue.combined())
-            }
-        )
+            })
+        }
     }
 }

@@ -38,11 +38,11 @@ struct ShortPadB: View {
             
             HStack(spacing:0) {
                 
-                ButtonView(button: InputButton("clear"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                ButtonView(button: InputButton("clear"), input: queue, backgroundColor: Color.init(white: 0.2), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                     .padding(.vertical, buttonHeight*0.025)
                     .padding(.horizontal, width*0.025/10)
             
-                ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: Color.init(white: 0.6), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: Color.init(white: 0.2), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                     .padding(.vertical, buttonHeight*0.025)
                     .padding(.horizontal, width*0.025/10)
                 

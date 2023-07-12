@@ -65,7 +65,6 @@ struct LayoutButtonPicker: View {
                 }
                 .navigationTitle("Replace Button")
                 .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(trailing: MenuX(sheet: true, presentationMode: self.presentationMode))
             }
             .accentColor(color(self.settings.theme.color1))
             .navigationViewStyle(StackNavigationViewStyle())

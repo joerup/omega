@@ -162,7 +162,6 @@ struct WhatsNew: View {
                         .frame(height: 30)
                 }
                 .padding(20)
-                .animation(nil)
             }
         }
         .onAppear {

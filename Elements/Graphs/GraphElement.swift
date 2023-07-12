@@ -80,6 +80,7 @@ class GraphAngle: GraphElement {
     var center: CGPoint
     var startAngle: Double
     var endAngle: Double
+    var maxSize: Double?
     var unit: ModeSettings.AngleUnit
     var string: String?
     
@@ -90,10 +91,11 @@ class GraphAngle: GraphElement {
         return unit == .deg ? Angle(degrees: endAngle) : Angle(radians: endAngle)
     }
     
-    init(center: CGPoint, startAngle: Double, endAngle: Double, unit: ModeSettings.AngleUnit, string: String? = nil, color: [CGFloat] = [255,255,255]) {
+    init(center: CGPoint, startAngle: Double, endAngle: Double, maxSize: Double? = nil, unit: ModeSettings.AngleUnit, string: String? = nil, color: [CGFloat] = [255,255,255]) {
         self.center = center
         self.startAngle = startAngle
         self.endAngle = endAngle
+        self.maxSize = maxSize
         self.unit = unit
         self.string = string
         super.init(color: color)

@@ -67,11 +67,13 @@ struct StoredVarList: View {
                         HStack {
 
                             SmallIconButton(symbol: "checkmark.circle\(selectedVars.isEmpty ? "" : ".fill")", color: Color.init(white: self.selectedAll ? 0.4 : 0.2), smallerLarge: true, action: {
-                                if !selectedVars.isEmpty {
-                                    self.resetSelected()
-                                } else {
-                                    self.selectedAll = true
-                                    self.selectedVars = self.vars
+                                withAnimation {
+                                    if !selectedVars.isEmpty {
+                                        self.resetSelected()
+                                    } else {
+                                        self.selectedAll = true
+                                        self.selectedVars = self.vars
+                                    }
                                 }
                             })
                             
@@ -101,9 +103,11 @@ struct StoredVarList: View {
                     }
                     
                     SmallTextButton(text: self.selectionMode ? "Cancel" : "Edit", color: Color.init(white: 0.15), circle: true, smallerLarge: true) {
-                        guard proCheckNotice(.variables) else { return }
-                        self.selectionMode.toggle()
-                        self.resetSelected()
+                        withAnimation {
+                            guard proCheckNotice(.variables) else { return }
+                            self.selectionMode.toggle()
+                            self.resetSelected()
+                        }
                     }
                 }
                 .padding(.horizontal, 10)
@@ -174,21 +178,22 @@ struct StoredVarList: View {
                                 .padding(.horizontal, 12)
                                 .background(Color.init(white: storedVar == selectedVar ? 0.25 : selectedVars.contains(storedVar) ? 0.25 : 0.15).cornerRadius(20))
                                 .padding(.horizontal, 10)
-                                .animation(nil)
                                 .onTapGesture {
                                     guard proCheckNotice(.variables) else { return }
                                     SoundManager.play(haptic: .light)
-                                    if self.selectionMode {
-                                        self.selectedVar = nil
-                                        if selectedVars.contains(storedVar) {
-                                            selectedVars.removeAll(where: { $0 == storedVar })
+                                    withAnimation {
+                                        if self.selectionMode {
+                                            self.selectedVar = nil
+                                            if selectedVars.contains(storedVar) {
+                                                selectedVars.removeAll(where: { $0 == storedVar })
+                                            } else {
+                                                self.selectedVars += [storedVar]
+                                            }
+                                        } else if selectedVar == storedVar {
+                                            self.selectedVar = nil
                                         } else {
-                                            self.selectedVars += [storedVar]
+                                            self.selectedVar = storedVar
                                         }
-                                    } else if selectedVar == storedVar {
-                                        self.selectedVar = nil
-                                    } else {
-                                        self.selectedVar = storedVar
                                     }
                                 }
                                 .contextMenu {
@@ -206,19 +211,11 @@ struct StoredVarList: View {
                         Spacer()
                             .frame(height: 50)
                     }
-                    .animation(nil)
                 }
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
             .accentColor(color(self.settings.theme.color1, edit: true))
-            .simultaneousGesture(DragGesture(minimumDistance: 30)
-                .onChanged { value in
-                    if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                        settings.calculatorOverlay = .none
-                    }
-                }
-            )
             .overlay(
                 VStack {
                     if geometry.size.width > 650 {
@@ -251,20 +248,15 @@ struct StoredVarList: View {
                 }
                 .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
                 .padding(.leading, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
-                .highPriorityGesture(DragGesture(minimumDistance: 30)
-                    .onChanged { value in
-                        if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                            self.selectedVar = nil
-                        }
-                    }
-                )
             )
             .onAppear {
                 self.vars = StoredVar.getAllVariables(type: displayType)
             }
             .onChange(of: self.displayType) { _ in
-                self.vars = StoredVar.getAllVariables(type: displayType)
-                self.resetSelected()
+                withAnimation {
+                    self.vars = StoredVar.getAllVariables(type: displayType)
+                    self.resetSelected()
+                }
             }
             .onChange(of: StoredVar.refresh) { _ in
                 self.vars = StoredVar.getAllVariables(type: displayType)

@@ -20,7 +20,9 @@ struct ListDisplayTypePicker: View {
             ForEach(ListDisplayType.allCases) { type in
                 Button(action: {
                     SoundManager.play(sound: .click3, haptic: .medium)
-                    self.displayType = type
+                    withAnimation {
+                        self.displayType = type
+                    }
                 }) {
                     Image(systemName: type.icon)
                     Text(LocalizedStringKey(type.rawValue))

@@ -69,12 +69,10 @@ struct ThemeGrouping: View {
                         }
                     }
                     .id(theme.id)
-                    .animation(nil)
                 }
             }
             .padding(.top, 10)
             .padding(.bottom, 5)
         }
-        .animation(nil)
     }
 }
