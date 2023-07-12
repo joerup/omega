@@ -45,7 +45,7 @@ struct MainMenuView: View {
                         if !proCheck() {
                             SettingsGroup {
                                 SettingsButtonContent {
-                                    settings.popUp(.list)
+                                    settings.popUp(.cycle)
                                 } content: {
                                     HStack {
                                         Image(systemName: "star.fill")

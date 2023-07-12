@@ -32,14 +32,15 @@ struct OmegaProLockFade: ViewModifier {
     }
 }
 
-func proCheck() -> Bool {
+func proCheck(maxFreeVersion: Int? = nil) -> Bool {
+    if let maxFreeVersion, Settings.settings.featureVersionIdentifier <= maxFreeVersion { return true }
     return Settings.settings.pro
 }
-func proCheckNotice(_ type: ProFeatureDisplay) -> Bool {
-    if !proCheck() {
+func proCheckNotice(_ type: ProFeatureDisplay, maxFreeVersion: Int? = nil) -> Bool {
+    if !proCheck(maxFreeVersion: maxFreeVersion) {
         Settings.settings.popUp(type)
     }
-    return proCheck()
+    return proCheck(maxFreeVersion: maxFreeVersion)
 }
 
 extension View {

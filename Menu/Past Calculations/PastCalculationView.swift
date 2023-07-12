@@ -229,10 +229,11 @@ struct PastCalculationView: View {
     }
     @ViewBuilder
     private var buttonRow2: some View {
-        LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")") {
+        LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")", locked: settings.featureVersionIdentifier > 0) {
+            guard proCheckNotice(.misc, maxFreeVersion: 0) else { return }
             calculation.save()
         }
-        LargeIconButton(text: "Assign", image: "character.textbox") {
+        LargeIconButton(text: "Assign", image: "character.textbox", locked: true) {
             guard proCheckNotice(.variables) else { return }
             calculation.store()
         }

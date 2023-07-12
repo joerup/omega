@@ -55,7 +55,13 @@ class Settings: ObservableObject {
     var pro: Bool {
         return proOverride ?? UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.PRO")
     }
-    @Published var proOverride: Bool? = true
+    @Published var proOverride: Bool? = nil
+    
+    @Published var featureVersionIdentifier: Int = UserDefaults.standard.integer(forKey: "featureVersionIdentifier") {
+        didSet {
+            UserDefaults.standard.set(self.featureVersionIdentifier, forKey: "featureVersionIdentifier")
+        }
+    }
     
     func popUp(_ displayType: ProFeatureDisplay) {
         self.proPopUpType = displayType
@@ -218,11 +224,12 @@ func defaultSettings() {
     
     if userDefaults.object(forKey: "calculatorType") == nil {
         settings.calculatorType = .calculator
+        settings.featureVersionIdentifier = 1
     }
     
-    // TRANSFER to new shrink setting, also update colorful unlocked! 2.1.1
+    // TRANSFER to new shrink setting, also allow old pro features to existing users! 2.2.0
     if let shrink = userDefaults.object(forKey: "shrink") as? Double {
-        userDefaults.set(true, forKey: "colorfulUnlocked")
+        userDefaults.set(true, forKey: "oldProFeatures")
         userDefaults.removeObject(forKey: "shrink")
         settings.minimumTextSize = (shrink > 0.7 ? 2 : shrink > 0.3 ? 1 : 0)
     }

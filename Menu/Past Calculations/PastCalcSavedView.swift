@@ -65,12 +65,12 @@ struct PastCalcSavedView: View {
                             }) {
                                 HStack {
                                     
-                                    SmallIconButton(symbol: "folder\(selectedFolder != nil ? ".fill" : "")", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true) {
+                                    SmallIconButton(symbol: "folder\(selectedFolder != nil ? ".fill" : "")", color: Color.init(white: editFolder ? 0.3 : 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true) {
                                         withAnimation {
                                             self.editFolder.toggle()
                                         }
                                     }
-
+                                    
                                     if let selectedFolder = selectedFolder {
                                         Text(selectedFolder)
                                             .font(Font.system(.headline, design: .rounded).weight(.semibold))
@@ -86,15 +86,15 @@ struct PastCalcSavedView: View {
                                     }
 
                                     Spacer()
-
-                                    Image(systemName: editFolder ? "chevron.up" : "chevron.down")
-                                        .imageScale(.small)
-                                        .foregroundColor(Color.init(white: 0.6))
-                                        .padding(.horizontal, 5)
+                                    
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true) {
+                                        withAnimation {
+                                            PastCalculation.exportSelected(getAllCalculations(limit: false))
+                                        }
+                                    }
                                 }
                                 .frame(maxHeight: size == .large ? 50 : 40)
                             }
-                            .padding(.trailing, 10)
                             .frame(maxHeight: size == .large ? 50 : 40)
                             .background(Color.init(white: 0.15))
                             .cornerRadius(25)
@@ -124,11 +124,11 @@ struct PastCalcSavedView: View {
 
                                 if !selectedCalculations.isEmpty {
 
-                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: settings.featureVersionIdentifier > 0, action: {
                                         PastCalculation.saveSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true, action: {
                                         PastCalculation.exportSelected(selectedCalculations)
                                     })
 

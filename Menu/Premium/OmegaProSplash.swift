@@ -51,7 +51,7 @@ struct OmegaProSplash: View {
                     .foregroundColor(Color.white)
                     .scaleEffect(introTitleScale)
                     .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
-                    .padding(.top, 30)
+                    .padding(.top, verticalSizeClass == .compact ? 10 : 30)
                 
                 if displayType != .list {
                     Text(text)
@@ -63,7 +63,7 @@ struct OmegaProSplash: View {
                         .scaleEffect(introSubtitleScale)
                         .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
                         .padding(.horizontal)
-                        .padding(.top, 10)
+                        .padding(.top, verticalSizeClass == .compact ? 0 : 10)
                         .padding(.top, -30)
                 }
                 
@@ -114,7 +114,7 @@ struct OmegaProSplash: View {
                                 settings.proPopUpType = .list
                             }
                         } label: {
-                            Text("See All Features")
+                            Text("See All Pro Features")
                                 .font(.system(.headline, design: .rounded).weight(.bold))
                                 .foregroundColor(.white.opacity(0.9))
                                 .minimumScaleFactor(0.5)
@@ -302,7 +302,7 @@ struct OmegaProSplash: View {
         case .list, .cycle:
             return "All Features"
         case .themes:
-            return "Customization to the extreme."
+            return "Customize your calculator."
         case .variables:
             return "A whole new set of capabilities."
         case .calculus:
@@ -310,7 +310,7 @@ struct OmegaProSplash: View {
         case .misc:
             return "Convenient tools and features."
         case .results:
-            return "Results taken a step further."
+            return "Results "
         }
     }
     
@@ -325,25 +325,24 @@ struct OmegaProSplash: View {
         case .calculus:
             return "Summation & Products. Derivatives & Integrals. More power to meet your needs."
         case .misc:
-            return "Edit your input with the interactive text pointer. Save & export unlimited calculations. And more."
+            return "Edit the input line with an interactive text pointer. Save & export your past calculations."
         case .results:
             return "There's more than one way to view your results – get equivalent forms and helpful visuals."
         }
     }
     
     private let features = [
-        "Over 30 interface themes",
-        "Variables & functions",
-        "Graphs & tables",
-        "Stored variables",
+        "Access to over 30 themes",
+        "Save & export calculations",
+        "Pointer to edit input line",
+        "Variables with stored values",
+        "Plug values into variable functions",
+        "Graphs & tables for functions",
         "Summation & products",
         "Derivatives & integrals",
         "Equivalent forms of results",
-        "Special trig & calculus visuals",
-        "Interactive text pointer",
-        "Export calculations to spreadsheet",
-        "Unlimited saved calculations",
-        "Saved calculation folders",
+        "Unit circle & calculus visuals",
+        "Past calculations last 365 days",
         "External keyboard support"
     ]
     
@@ -353,9 +352,8 @@ struct OmegaProSplash: View {
                 VStack {
                     Text("Take your calculator to the next level.")
                         .font(.system(.title2, design: .rounded).weight(.bold))
-                        .lineLimit(0)
-                        .minimumScaleFactor(0.5)
                         .foregroundColor(Color.white)
+                        .multilineTextAlignment(.center)
                         .padding(.horizontal)
                         .padding(.vertical, 15)
                     

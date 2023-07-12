@@ -146,11 +146,11 @@ struct PastCalcRecentView: View {
 
                                 if !selectedCalculations.isEmpty {
 
-                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: settings.featureVersionIdentifier > 0, action: {
                                         PastCalculation.saveSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true, action: {
                                         PastCalculation.exportSelected(selectedCalculations)
                                     })
 

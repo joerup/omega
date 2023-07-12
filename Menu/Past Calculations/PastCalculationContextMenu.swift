@@ -32,9 +32,11 @@ struct PastCalculationContextMenu: View {
             }
             
             Section {
-                Button(action: calculation.save) {
-                    Image(systemName: "folder\(calculation.saved ? ".fill" : "")")
-                    Text("Save")
+                if proCheck(maxFreeVersion: 0) {
+                    Button(action: calculation.save) {
+                        Image(systemName: "folder\(calculation.saved ? ".fill" : "")")
+                        Text("Save")
+                    }
                 }
                 if proCheck() {
                     Button(action: calculation.store) {
@@ -63,17 +65,21 @@ struct PastCalculationMultipleContextMenu: View {
         Group {
             
             Section {
-                Button(action: {
-                    PastCalculation.saveSelected(calculations)
-                }) {
-                    Image(systemName: "folder\(calculations.contains(where: { $0.saved }) ? ".fill" : "")")
-                    Text("Save")
+                if proCheck(maxFreeVersion: 0) {
+                    Button(action: {
+                        PastCalculation.saveSelected(calculations)
+                    }) {
+                        Image(systemName: "folder\(calculations.contains(where: { $0.saved }) ? ".fill" : "")")
+                        Text("Save")
+                    }
                 }
-                Button(action: {
-                    PastCalculation.exportSelected(calculations)
-                }) {
-                    Image(systemName: "square.and.arrow.up")
-                    Text("Export")
+                if proCheck() {
+                    Button(action: {
+                        PastCalculation.exportSelected(calculations)
+                    }) {
+                        Image(systemName: "square.and.arrow.up")
+                        Text("Export")
+                    }
                 }
             }
             

@@ -60,12 +60,10 @@ struct DetailButtonRow: View {
                                 textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
                                 width: size == .small ? 55 : 70,
                                 smallerSmall: orientation == .landscape,
-                                sound: .click3
+                                sound: .click3,
+                                locked: true
                 ) {
-                    guard proCheck() else {
-                        settings.popUp(.variables)
-                        return
-                    }
+                    guard proCheckNotice(.variables) else { return }
                     settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
                     settings.buttonUppercase = false
                     settings.detailOverlay = .none
@@ -119,12 +117,14 @@ struct DetailButtonRow: View {
                     
                     if calculation.queue.editing {
                         
-                        SmallIconButton(symbol: "chevron.backward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click2, proOnly: true) {
+                        SmallIconButton(symbol: "chevron.backward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click2, locked: true) {
+                            guard proCheckNotice(.misc) else { return }
                             Calculation.current.setUpInput()
                             Calculation.current.queue.backward()
                         }
                         
-                        SmallIconButton(symbol: "chevron.forward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click1, proOnly: !((Calculation.current.queue.queue2.first as? Parentheses)?.type == .hidden)) {
+                        SmallIconButton(symbol: "chevron.forward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click1, locked: !((Calculation.current.queue.queue2.first as? Parentheses)?.type == .hidden)) {
+                            guard proCheckNotice(.misc) else { return }
                             Calculation.current.setUpInput()
                             Calculation.current.queue.forward()
                         }
@@ -135,19 +135,19 @@ struct DetailButtonRow: View {
                         SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
                             pastCalculation?.copy()
                         }
-                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
+                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, locked: settings.featureVersionIdentifier > 0) {
+                            guard proCheckNotice(.misc, maxFreeVersion: 0) else { return }
                             pastCalculation?.save()
                         }
-                        if proCheck() {
-                            SmallIconButton(symbol: "character.textbox", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, proOnly: true) {
-                                pastCalculation?.store()
-                            }
+                        SmallIconButton(symbol: "character.textbox", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, locked: true) {
+                            guard proCheckNotice(.variables) else { return }
+                            pastCalculation?.store()
                         }
                     }
                     
                     if calculation.completed {
                         
-                        SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape) {
+                        SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape, locked: true) {
                             guard proCheckNotice(.results) else { return }
                             settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
                         }

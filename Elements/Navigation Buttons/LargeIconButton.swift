@@ -14,14 +14,13 @@ struct LargeIconButton: View {
     var image: String
     var width: CGFloat = .infinity
     var height: CGFloat = 50
-    var proOnly: Bool = false
+    var locked: Bool = false
     
     var action: () -> Void
     
     var body: some View {
         
         Button(action: {
-            guard !proOnly || proCheckNotice(.misc) else { return }
             SoundManager.play(sound: .click3, haptic: .light)
             action()
         }) {
@@ -39,7 +38,7 @@ struct LargeIconButton: View {
             .padding(10)
             .frame(maxWidth: width, maxHeight: height)
             .background(Color.init(white: 0.2))
-            .overlay(Color.init(white: 0.2).opacity(!proOnly || proCheck() ? 0 : 0.8))
+            .overlay(Color.init(white: 0.2).opacity(!locked || proCheck() ? 0 : 0.6))
             .cornerRadius(20)
         }
     }

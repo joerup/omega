@@ -48,7 +48,7 @@ extension PastCalculation {
     // MARK: Expiration
     
     static var expirationDays: Double {
-        return Settings.settings.pro ? 180 : 14
+        return Settings.settings.pro ? 365 : 14
     }
     static var expirationLength: Double {
         return expirationDays * 86400

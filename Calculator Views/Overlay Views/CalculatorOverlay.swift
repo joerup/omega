@@ -19,7 +19,8 @@ struct CalculatorOverlay: View {
     @State private var selectedDate: Date = Date()
     @State private var selectedFolder: String? = nil
     
-    @State private var gestureOffset: CGFloat = 0
+    @State private var offset: CGFloat = 0
+    @GestureState private var gestureOffset: CGFloat = 0
     
     var body: some View {
         
@@ -57,22 +58,25 @@ struct CalculatorOverlay: View {
                     .shadow(radius: 10)
                     .edgesIgnoringSafeArea(.bottom)
                 )
-                .offset(y: gestureOffset)
-                .gesture(DragGesture(minimumDistance: 30)
-                    .onChanged { value in
+                .offset(y: offset + gestureOffset)
+                .highPriorityGesture(DragGesture()
+                    .updating($gestureOffset) { value, gestureOffset, _ in
                         if value.translation.height > 0 {
                             gestureOffset = value.translation.height
                         }
                     }
                     .onEnded { value in
-                        if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
-                            withAnimation {
-                                print("close")
-                                settings.calculatorOverlay = .none
-                            }
+                        if value.translation.height > 0 {
+                            offset = value.translation.height
                         }
                         withAnimation {
-                            gestureOffset = 0
+                            offset = 0
+                        }
+                        SoundManager.play(haptic: .medium)
+                        if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
+                            withAnimation {
+                                settings.calculatorOverlay = .none
+                            }
                         }
                     }
                 )

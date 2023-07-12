@@ -90,7 +90,7 @@ struct TableMenuView: View {
                         .background(Color.init(white: 0.1).cornerRadius(20))
                         .frame(maxWidth: 300)
                         
-                        Spacer(minLength: 0)
+                        Spacer(minLength: 10)
                         
                         XButton {
                             presentationMode.wrappedValue.dismiss()

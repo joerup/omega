@@ -34,10 +34,10 @@ class Theme: ObservableObject, Codable {
         !proCheck()
         // not in Basic category
         && category != "Basic"
-        // not unlocked via individual purchase (only existed pre-2.0.2)
+        // not unlocked via individual purchase
         && !UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.ThemeSet\(ThemeData.categoryID(for: category))")
-        // not in Colorful category (if downloaded pre-2.1.1)
-        && !(category == "Colorful" && UserDefaults.standard.bool(forKey: "colorfulUnlocked"))
+        // not in Colorful category (if feature version id 0)
+        && !(category == "Colorful" && Settings.settings.featureVersionIdentifier == 0)
     }
     
     init(id: Int, name: String, category: String, color1: [CGFloat], color2: [CGFloat], color3: [CGFloat]) {

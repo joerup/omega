@@ -52,7 +52,8 @@ struct StoredVarList: View {
                             
                             Spacer()
                         
-                            SmallIconButton(symbol: "plus", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, proOnly: true) {
+                            SmallIconButton(symbol: "plus", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true) {
+                                guard proCheckNotice(.variables) else { return }
                                 self.settings.popUp = AnyView(
                                     StoredVarSetView()
                                 )

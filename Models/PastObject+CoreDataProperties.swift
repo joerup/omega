@@ -48,17 +48,19 @@ extension PastObject {
     // MARK: Save
     
     func save() {
+        guard proCheck(maxFreeVersion: 0) else { return }
         Settings.settings.popUp = AnyView(
             PastCalcSaveView(calculation: self)
         )
     }
     static func saveSelected(_ calculations: [PastObject]) {
-        guard !calculations.isEmpty else { return }
+        guard !calculations.isEmpty, proCheckNotice(.misc, maxFreeVersion: 0) else { return }
         Settings.settings.popUp = AnyView(
             PastCalcMultipleSaveView(calculations: calculations)
         )
     }
     func confirmSave(to folder: String) {
+        guard proCheckNotice(.misc, maxFreeVersion: 0) else { return }
         self.folder = folder
         Settings.settings.folders = Settings.settings.folders.filter { $0 == folder } + Settings.settings.folders.filter { $0 != folder }
         PersistenceController.shared.save()

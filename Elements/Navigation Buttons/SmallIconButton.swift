@@ -20,7 +20,7 @@ struct SmallIconButton: View {
     var smallerSmall: Bool = false
     var scale: CGFloat = 1.0
     var sound: SoundManager.Sound? = nil
-    var proOnly: Bool = false
+    var locked: Bool = false
     
     var action: () -> Void
     
@@ -31,7 +31,6 @@ struct SmallIconButton: View {
     var body: some View {
         
         Button(action: {
-            guard !proOnly || proCheckNotice(.misc) else { return }
             SoundManager.play(sound: sound, haptic: .light)
             action()
         }) {
@@ -44,7 +43,7 @@ struct SmallIconButton: View {
                     .font(.system(size: size == .large ? (smallerLarge ? 21 : 22) : (smallerSmall ? 15 : 18), weight: .bold))
                     .foregroundColor(textColor)
             }
-            .overlay(Color.init(white: 0.2).cornerRadius(100).opacity(!proOnly || proCheck() ? 0 : 0.8))
+            .overlay(color.cornerRadius(100).opacity(!locked || proCheck() ? 0 : 0.6))
         }
         .buttonStyle(CalculatorButtonStyle())
         .scaleEffect(scale)

@@ -81,19 +81,24 @@ struct CalculatorModel: View {
     }
     
     var topSafeArea: CGFloat {
-        return (!flippedOrientation ? UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0 : UIApplication.shared.windows.first?.safeAreaInsets.left ?? 0) * scale
+        return (!flippedOrientation ? safeAreaInsets.top : safeAreaInsets.left) * scale
     }
     var bottomSafeArea: CGFloat {
-        return (!flippedOrientation ? UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0 : UIApplication.shared.windows.first?.safeAreaInsets.right ?? 0) * scale
+        return (!flippedOrientation ? safeAreaInsets.bottom : safeAreaInsets.right) * scale
     }
     var leftSafeArea: CGFloat {
-        return (!flippedOrientation ? UIApplication.shared.windows.first?.safeAreaInsets.left ?? 0 : UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0) * scale
+        return (!flippedOrientation ? safeAreaInsets.left : safeAreaInsets.top) * scale
     }
     var rightSafeArea: CGFloat {
-        return (!flippedOrientation ? UIApplication.shared.windows.first?.safeAreaInsets.right ?? 0 : UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0) * scale
+        return (!flippedOrientation ? safeAreaInsets.right : safeAreaInsets.top) * scale
     }
     var safeSize: CGSize {
         return CGSize(width: modelSize.width - leftSafeArea - rightSafeArea, height: modelSize.height - topSafeArea - bottomSafeArea)
+    }
+    
+    private var safeAreaInsets: UIEdgeInsets {
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        return scene?.windows.first?.safeAreaInsets ?? .zero
     }
     
     var ignoreSafeArea: Bool {
