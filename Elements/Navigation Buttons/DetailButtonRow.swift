@@ -26,77 +26,86 @@ struct DetailButtonRow: View {
             
         HStack(spacing: 0) {
             
-            HStack {
+            ScrollView(.horizontal) {
                 
-                if orientation == .landscape || size == .large {
-                    SmallTextButton(text: "MAT",
-                                    color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                    textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .small ? 55 : 70,
-                                    smallerSmall: orientation == .landscape,
-                                    sound: .click3
-                    ) {
-                        settings.buttonDisplayMode = .basic
-                        settings.buttonUppercase = false
-                        settings.detailOverlay = .none
+                HStack(spacing: 0) {
+                    
+                    HStack {
+                        
+                        if orientation == .landscape || size == .large {
+                            SmallTextButton(text: "MAT",
+                                            color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                            textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
+                                            width: size == .small ? 55 : 70,
+                                            smallerSmall: orientation == .landscape,
+                                            sound: .click3
+                            ) {
+                                settings.buttonDisplayMode = .basic
+                                settings.buttonUppercase = false
+                                settings.detailOverlay = .none
+                            }
+                        } else {
+                            SmallTextButton(text: "MAT",
+                                            color: settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                            textColor: settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
+                                            width: size == .small ? 55 : 70,
+                                            smallerSmall: orientation == .landscape,
+                                            sound: .click3
+                            ) {
+                                settings.buttonDisplayMode = settings.buttonDisplayMode == .funcs ? .basic : .funcs
+                                settings.buttonUppercase = false
+                                settings.detailOverlay = .none
+                            }
+                        }
+                        
+                        SmallTextButton(text: "VAR",
+                                        color: settings.buttonDisplayMode == .vars ? color(settings.theme.color3) : Color.init(white: 0.15),
+                                        textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
+                                        width: size == .small ? 55 : 70,
+                                        smallerSmall: orientation == .landscape,
+                                        sound: .click3,
+                                        locked: true
+                        ) {
+                            guard proCheckNotice(.variables) else { return }
+                            settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
+                            settings.buttonUppercase = false
+                            settings.detailOverlay = .none
+                        }
+                        
+                        //                SmallTextButton(text: "UNIT",
+                        //                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
+                        //                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
+                        //                                width: size == .small ? 50 : 65,
+                        //                                smallerSmall: orientation == .landscape,
+                        //                                sound: .click3
+                        //                ) {
+                        //                    guard proCheck() else {
+                        //                        settings.popUp(.misc)
+                        //                        return
+                        //                    }
+                        //                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
+                        //                    settings.buttonUppercase = false
+                        //                    settings.detailOverlay = .none
+                        //                }
+                    }
+                    
+                    if orientation == .landscape || size == .large {
+                        if settings.buttonDisplayMode == .basic {
+                            HStack {
+                                matButtons
+                            }
+                            .padding(.leading, 20)
+                        }
+                        else if settings.buttonDisplayMode == .vars {
+                            HStack {
+                                varButtons
+                            }
+                            .padding(.leading, 20)
+                        }
                     }
                 }
-                else {
-                    SmallTextButton(text: "MAT",
-                                    color: settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                    textColor: settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
-                                    width: size == .small ? 55 : 70,
-                                    smallerSmall: orientation == .landscape,
-                                    sound: .click3
-                    ) {
-                        settings.buttonDisplayMode = settings.buttonDisplayMode == .funcs ? .basic : .funcs
-                        settings.buttonUppercase = false
-                        settings.detailOverlay = .none
-                    }
-                }
-                
-                SmallTextButton(text: "VAR",
-                                color: settings.buttonDisplayMode == .vars ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
-                                width: size == .small ? 55 : 70,
-                                smallerSmall: orientation == .landscape,
-                                sound: .click3,
-                                locked: true
-                ) {
-                    guard proCheckNotice(.variables) else { return }
-                    settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
-                    settings.buttonUppercase = false
-                    settings.detailOverlay = .none
-                }
-                
-//                SmallTextButton(text: "UNIT",
-//                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
-//                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
-//                                width: size == .small ? 50 : 65,
-//                                smallerSmall: orientation == .landscape,
-//                                sound: .click3
-//                ) {
-//                    guard proCheck() else {
-//                        settings.popUp(.misc)
-//                        return
-//                    }
-//                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
-//                    settings.buttonUppercase = false
-//                    settings.detailOverlay = .none
-//                }
             }
-            
-            HStack {
-                if orientation == .landscape || size == .large {
-                    if settings.buttonDisplayMode == .basic {
-                        matButtons
-                    }
-                    else if settings.buttonDisplayMode == .vars {
-                        varButtons
-                    }
-                }
-            }
-            .padding(.leading, 20)
+            .padding(.trailing, 10)
             
             Spacer(minLength: 0)
             
@@ -110,7 +119,7 @@ struct DetailButtonRow: View {
                     }
                 }
             }
-                
+            
             if settings.buttonDisplayMode == .basic || size == .large || orientation == .landscape {
                 
                 HStack {
@@ -123,8 +132,7 @@ struct DetailButtonRow: View {
                             Calculation.current.queue.backward()
                         }
                         
-                        SmallIconButton(symbol: "chevron.forward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click1, locked: !((Calculation.current.queue.queue2.first as? Parentheses)?.type == .hidden)) {
-                            guard proCheckNotice(.misc) else { return }
+                        SmallIconButton(symbol: "chevron.forward", textColor: Color.init(white: 0.7), smallerSmall: orientation == .landscape, sound: .click1, locked: false) {
                             Calculation.current.setUpInput()
                             Calculation.current.queue.forward()
                         }

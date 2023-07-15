@@ -74,7 +74,7 @@ struct CalculationVisuals: View {
             else if !ignoreIfEmpty {
                 CalculationVisualSquare(text: "None", width: width, height: height) {
                     ZStack {
-                        Color.init(white: 0.15).cornerRadius(20)
+                        Color.init(white: 0.125).cornerRadius(20)
                         Text("No Preview")
                             .foregroundColor(.gray)
                     }
@@ -96,7 +96,7 @@ struct CalculationVisualSquare<Content: View>: View {
     var body: some View {
         
         content()
-            .background(Color.init(white: 0.15))
+            .background(Color.init(white: 0.12))
             .frame(width: width, height: height)
             .cornerRadius(20)
             .proLock()

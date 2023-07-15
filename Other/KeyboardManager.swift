@@ -95,7 +95,7 @@ extension KeyEquivalent {
         
         if let button = button {
             
-            guard !button.disabled || proCheckNotice(.list) else { return }
+            guard !button.disabled || proCheckNotice() else { return }
             
             // Play the sound
             button.playSound()

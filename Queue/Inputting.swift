@@ -929,7 +929,7 @@ extension Queue {
         else if !readyForOperation() {
             
             // Add automatic parentheses
-            autoParentheses()
+            autoParentheses(numberInput: queue.count == 1 && queue.items.first is Number, afterCof: true)
             
             // Add the items
             if [.sub,.mlt,.div].contains((queue1.last as? Operation)?.operation ?? .add) && queue.items.contains(where: { ($0 as? Operation)?.isPrimary ?? false }) {

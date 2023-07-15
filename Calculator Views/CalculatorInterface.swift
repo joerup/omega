@@ -25,6 +25,8 @@ struct CalculatorInterface: View {
     
     @State private var fullOverlay: Bool = false
     
+    @State private var test: String = ""
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -37,6 +39,7 @@ struct CalculatorInterface: View {
                         .frame(maxHeight: min(size == .large ? max(geometry.size.height*0.2, 190) : geometry.size.height*(orientation == .landscape ? 0.3 : 0.22), geometry.size.width*0.5))
                         .padding(.top, orientation == .landscape ? 2 : standardSize + 2)
                         .border(Color.red, width: settings.guidelines ? 1 : 0)
+                        .ignoresSafeArea(.keyboard)
                 }
                 .overlay(OverlayDismissArea())
                 
@@ -44,15 +47,13 @@ struct CalculatorInterface: View {
                     
                     DetailButtonRow(size: size, orientation: orientation)
                         .padding(.horizontal, horizontalPadding)
-                        .padding(.bottom, size == .small && orientation == .landscape ? 0 : 2)
+                        .padding(.bottom, size == .large && orientation == .landscape ? 2 : (size == .small && orientation == .portrait ? 2 : 0))
                         .padding(.top, size == .small && orientation == .landscape ? 0 : 5)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
                         .padding(.horizontal, 2)
                         .border(Color.blue, width: settings.guidelines ? 1 : 0)
-//                        .overlay(DetailOverlay().padding(.trailing, orientation == .landscape ? geometry.size.width*4/11 : 0).padding(.horizontal, 2).padding(.bottom, orientation == .landscape ? 0 : geometry.size.height*buttonHeight*0.8+verticalPadding))
-//                        .overlay(orientation == .landscape ? SecondDetailOverlay().padding(.leading, geometry.size.width*7/11).padding(.horizontal, 2).padding(.bottom, geometry.size.height*buttonHeight+verticalPadding) : nil)
                 }
                 .keypadShift()
                 .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay() } else {}})
@@ -63,6 +64,9 @@ struct CalculatorInterface: View {
             .background(Color.init(white: 0.07).edgesIgnoringSafeArea(.all))
             .accentColor(color(self.settings.theme.color1))
             .ignoresSafeArea(.keyboard)
+            .onChange(of: geometry.size) { _ in
+                Calculation.current.refresh()
+            }
         }
     }
 }

@@ -189,7 +189,9 @@ class Calculation: ObservableObject, Equatable {
         // Remove the overlay
         if self == Calculation.current {
             settings.showMenu = false
-            settings.calculatorOverlay = .none
+            withAnimation {
+                settings.calculatorOverlay = .none
+            }
             settings.detailOverlay = .none
             settings.buttonDisplayMode = .basic
             settings.buttonUppercase = false

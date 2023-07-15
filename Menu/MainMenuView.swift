@@ -45,7 +45,7 @@ struct MainMenuView: View {
                         if !proCheck() {
                             SettingsGroup {
                                 SettingsButtonContent {
-                                    settings.popUp(.cycle)
+                                    settings.popUp()
                                 } content: {
                                     HStack {
                                         Image(systemName: "star.fill")
@@ -106,7 +106,7 @@ struct MainMenuView: View {
                                          url: URL(string: "https://omegacalculator.com/privacy")!
                             )
                             SettingsButton(title: "Pro Features") {
-                                settings.popUp(.list)
+                                settings.popUp()
                             }
                         }
                         
@@ -158,12 +158,6 @@ struct MainMenuView: View {
             }
             .sheet(isPresented: self.$showShare) {
                 ActivityViewController(activityItems: [URL(string: "https://apps.apple.com/us/app/omega-calculator/id1528068503")!])
-            }
-            .sheet(isPresented: self.$settings.purchaseConfirmation) {
-                PurchaseConfirmation()
-            }
-            .sheet(isPresented: self.$settings.restoreConfirmation) {
-                PurchaseConfirmation(restore: true)
             }
         }
         .contentOverlay()

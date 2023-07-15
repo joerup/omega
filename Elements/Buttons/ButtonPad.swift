@@ -27,8 +27,8 @@ struct ButtonPad: View {
         
         if orientation == .portrait {
             
-            VStack(spacing:0) {
-            
+            VStack(spacing: 0) {
+                
                 if size == .small {
                     
                     let width = self.width*0.98
@@ -42,10 +42,12 @@ struct ButtonPad: View {
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height*(4.8/5), active: active, showText: showText))
                     .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                     
-                    ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
+                    ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 4, active: active, showText: showText)
                         .padding(.top, self.width*0.0025)
                     
-                } else {
+                }
+                
+                else {
                     
                     let width = self.width*0.98
                     let height = min(buttonHeight, width*0.95/8)
@@ -61,7 +63,7 @@ struct ButtonPad: View {
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height))
                     .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                     
-                    ControlPad(width: width, buttonHeight: height*0.8, active: active, showText: showText)
+                    ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 8, active: active, showText: showText)
                         .padding(.top, self.width*0.0025)
                 }
             }
@@ -77,14 +79,14 @@ struct ButtonPad: View {
             
             HStack(spacing:0) {
                 
-                LandscapePad(width: width*7/11, buttonHeight: height, theme: theme, active: active, showText: showText)
+                LandscapePad(width: width*7/11, buttonHeight: height, size: size, theme: theme, active: active, showText: showText)
                     .overlay(ButtonOverlay(size: size, orientation: orientation, width: width*7/11, buttonHeight: height))
                     .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
                 
                 VStack(spacing:0) {
                     NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active, showText: showText)
                         .overlay(SecondDetailOverlay(size: size, orientation: orientation, active: active))
-                    ControlPad(width: width*4/11, buttonHeight: height, active: active, showText: showText)
+                    ControlPad(width: width*4/11, buttonHeight: height, equivalentRowAmount: 4, active: active, showText: showText)
                 }
             }
             .padding(.horizontal, size == .large ? self.width*0.005 : 0)

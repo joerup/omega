@@ -30,6 +30,10 @@ struct TextView: View {
         
             VStack(spacing: 0) {
                 
+                if size == .large || orientation == .portrait {
+                    Spacer().frame(maxHeight: 10)
+                }
+                
                 if calculation.queue.editing {
                     
                     Spacer().frame(maxHeight: smallSize(geometry))

@@ -25,7 +25,7 @@ struct OmegaView: View {
         return screenSize.width > screenSize.height ? .landscape : .portrait
     }
     var size: Size {
-        return verticalSizeClass == .compact || horizontalSizeClass == .compact ? .small : .large
+        return verticalSizeClass == .compact || (horizontalSizeClass == .compact) ? .small : .large
     }
     
     var buttonHeight: CGFloat {
@@ -39,13 +39,12 @@ struct OmegaView: View {
         return size == .small && orientation == .landscape ? size.smallerSmallSize : size.standardSize
     }
     var horizontalPadding: CGFloat {
-        return size == .small && orientation == .landscape ? 5 : 10
+        return size == .small && orientation == .landscape ? 5 : (screenSize.width > 1000 && orientation == .portrait || screenSize.width > 1250) ? 15 : 10
     }
     var verticalPadding: CGFloat {
         return size == .small ? 5 : 10
     }
     
-    @State private var welcome = false
     @State private var newsUpdate = false
     
     @ViewBuilder var body: some View {
@@ -74,9 +73,6 @@ struct OmegaView: View {
         .sheet(isPresented: self.$settings.showMenu) {
             MainMenuView(storeManager: storeManager)
         }
-        .sheet(isPresented: self.$welcome) {
-            Welcome()
-        }
         .sheet(isPresented: self.$settings.showProPopUp) {
             OmegaProSplash(storeManager: storeManager)
         }
@@ -91,12 +87,11 @@ struct OmegaView: View {
         if !UserDefaults.standard.bool(forKey: "welcome") {
             UserDefaults.standard.set(true, forKey: "welcome")
             UserDefaults.standard.set(version, forKey: "version")
-            self.welcome.toggle()
         }
         // Omega Pro Ad
         else if !UserDefaults.standard.bool(forKey: "seenProAd") && !settings.pro {
             UserDefaults.standard.set(true, forKey: "seenProAd")
-            settings.popUp(.cycle)
+            settings.popUp()
         }
         // News Update
         else if storedVersion != version {
@@ -109,7 +104,7 @@ struct OmegaView: View {
         else {
             // Omega Pro Pop Up
             if Int.random(in: 0...7) == 7 && !settings.pro {
-                settings.popUp(.cycle)
+                settings.popUp()
             }
         }
         

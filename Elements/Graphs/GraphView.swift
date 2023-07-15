@@ -170,20 +170,6 @@ struct GraphView: View {
                 }
                 
             }
-                
-//                    else if gridStyle == .polar {
-//
-//                        for θ in 0...23 {
-//                            path.move(to: point(0, 0, geometry))
-//                            path.addLine(to: point((xf-xi)/2*cos(Double(θ) * .pi/12), (xf-xi)/2*sin(Double(θ) * .pi/12), geometry))
-//                        }
-//
-//                        for r in adjustDisplayRange(range: 0...(xf-xi)/2) {
-//                            path.move(to: point(r, 0, geometry))
-//                            path.addArc(center: point(0, 0, geometry), radius: point(r, 0, geometry).x - point(0, 0, geometry).x, startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: true)
-//                            path.addArc(center: point(0, 0, geometry), radius: point(r, 0, geometry).x - point(0, 0, geometry).x, startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: false)
-//                        }
-//                    }
         }
         .stroke(Color.gray.opacity(0.1), lineWidth: 1)
     }

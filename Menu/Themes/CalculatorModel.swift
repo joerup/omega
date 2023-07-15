@@ -20,6 +20,9 @@ struct CalculatorModel: View {
     var deviceSize: CGSize {
         return UIScreen.main.bounds.size
     }
+    var deviceType: UIUserInterfaceIdiom {
+        return UIDevice.current.userInterfaceIdiom
+    }
     
     var setOrientation: Orientation?
     var setSize: Size?
@@ -28,7 +31,7 @@ struct CalculatorModel: View {
         return setOrientation ?? (deviceSize.width > deviceSize.height ? .landscape : .portrait)
     }
     var size: Size {
-        return setSize ?? (verticalSizeClass == .compact || horizontalSizeClass == .compact ? .small : .large)
+        return setSize ?? (deviceType == .phone ? .small : .large)
     }
     
     var buttonHeight: CGFloat {

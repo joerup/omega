@@ -16,6 +16,7 @@ struct ControlPad: View {
     
     var width: CGFloat
     var buttonHeight: CGFloat
+    var equivalentRowAmount: Int
     
     var active: Bool = true
     var showText: Bool = true
@@ -26,16 +27,18 @@ struct ControlPad: View {
         HStack(spacing:0) {
             
             let color = Color.init(white: 0.12)
+            let occupiedFraction: CGFloat = 1 - 0.05*3/CGFloat(equivalentRowAmount)
+            let relativeSize = equivalentRowAmount > 4 ? 0.3 : 0.4
             
-            ButtonView(button: InputButton("clear"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
-                .padding(.horizontal, width*0.025/3)
+            ButtonView(button: InputButton("clear"), input: queue, backgroundColor: color, width: width*occupiedFraction/3, height: buttonHeight, relativeSize: relativeSize, active: active, showText: showText, onChange: onChange)
+                .padding(.horizontal, width*0.025/CGFloat(equivalentRowAmount))
                 .keyboardShortcut("c")
             
-            ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
-                .padding(.horizontal, width*0.025/3)
+            ButtonView(button: InputButton("backspace"), input: queue, backgroundColor: color, width: width*occupiedFraction/3, height: buttonHeight, relativeSize: relativeSize, active: active, showText: showText, onChange: onChange)
+                .padding(.horizontal, width*0.025/CGFloat(equivalentRowAmount))
             
-            ButtonView(button: InputButton("enter"), input: queue, backgroundColor: color, width: width*0.95/3, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
-                .padding(.horizontal, width*0.025/3)
+            ButtonView(button: InputButton("enter"), input: queue, backgroundColor: color, width: width*occupiedFraction/3, height: buttonHeight, relativeSize: relativeSize, active: active, showText: showText, onChange: onChange)
+                .padding(.horizontal, width*0.025/CGFloat(equivalentRowAmount))
             
         }
         .frame(width: width)

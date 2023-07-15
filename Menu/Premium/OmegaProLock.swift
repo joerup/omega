@@ -26,7 +26,7 @@ struct OmegaProLockFade: ViewModifier {
                     .foregroundColor(Color.init(white: 0.5))
             }
             .onTapGesture {
-                let _ = proCheckNotice(.cycle)
+                let _ = proCheckNotice()
             }
         }
     }
@@ -36,7 +36,7 @@ func proCheck(maxFreeVersion: Int? = nil) -> Bool {
     if let maxFreeVersion, Settings.settings.featureVersionIdentifier <= maxFreeVersion { return true }
     return Settings.settings.pro
 }
-func proCheckNotice(_ type: ProFeatureDisplay, maxFreeVersion: Int? = nil) -> Bool {
+func proCheckNotice(_ type: ProFeatureDisplay? = nil, maxFreeVersion: Int? = nil) -> Bool {
     if !proCheck(maxFreeVersion: maxFreeVersion) {
         Settings.settings.popUp(type)
     }

@@ -63,7 +63,7 @@ class Settings: ObservableObject {
         }
     }
     
-    func popUp(_ displayType: ProFeatureDisplay) {
+    func popUp(_ displayType: ProFeatureDisplay? = nil) {
         self.proPopUpType = displayType
         self.showProPopUp = true
     }

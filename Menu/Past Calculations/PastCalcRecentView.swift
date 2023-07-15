@@ -34,8 +34,6 @@ struct PastCalcRecentView: View {
 
     @State private var editCalendar = false
     
-    @AppStorage("lastOpenedRecentCalcs") private var lastOpened: Double = Date().timeIntervalSince1970
-    
     var prevDate: Date {
         return selectedDate.advanced(by: -86400)
     }
@@ -403,11 +401,6 @@ struct PastCalcRecentView: View {
                 // Set the calculations
                 self.calculations = []
                 self.calculations = getAllCalculations()
-                // Reset the date after 15 minutes
-                if Date().timeIntervalSince1970 - lastOpened > 900 {
-                    self.selectedDate = Date()
-                }
-                self.lastOpened = Date().timeIntervalSince1970
             }
             .onChange(of: displayType) { _ in
                 withAnimation {

@@ -37,7 +37,7 @@ struct NumPad: View {
             }
             .frame(width: width*3/4)
             
-            VStack(spacing:0) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 1), spacing: 0) {
                 
                 ForEach(Input.opPad.buttons, id: \.id) { button in
                     ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color2), width: width*0.95/4, height: buttonHeight, relativeSize: 0.5, active: active, showText: showText, onChange: onChange)

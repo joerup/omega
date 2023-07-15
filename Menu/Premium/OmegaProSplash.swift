@@ -17,10 +17,6 @@ struct OmegaProSplash: View {
     
     @StateObject var storeManager: StoreManager
     
-    private var displayType: ProFeatureDisplay {
-        return settings.proPopUpType ?? .list
-    }
-    
     @State private var theme: Theme = ThemeData.allThemes[4...].randomElement()!
     @State private var otherTheme1: Theme = ThemeData.allThemes[4...].randomElement()!
     @State private var otherTheme2: Theme = ThemeData.allThemes[4...].randomElement()!
@@ -38,203 +34,44 @@ struct OmegaProSplash: View {
     @State private var displayTimer: Timer? = nil
     @State private var themeTimer: Timer? = nil
     
+    var allDisplays: [ProFeatureDisplay] {
+        let type = settings.proPopUpType ?? .random()
+        return [type] + ProFeatureDisplay.allCases.filter({ $0 != type }).shuffled()
+    }
+    
+    
     var body: some View {
         
         GeometryReader { geometry in
         
-            VStack {
+            VStack(spacing: 0) {
                 
                 Text("OMEGA PRO")
                     .font(.system(size: 50, weight: .heavy, design: .rounded))
                     .lineLimit(0)
                     .minimumScaleFactor(0.5)
                     .foregroundColor(Color.white)
-                    .scaleEffect(introTitleScale)
                     .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
                     .padding(.top, verticalSizeClass == .compact ? 10 : 30)
                 
-                if displayType != .list {
-                    Text(text)
-                        .font(.system(.title2, design: .rounded).weight(.bold))
-                        .lineLimit(0)
-                        .minimumScaleFactor(0.5)
-                        .foregroundColor(Color.white)
-                        .opacity(cycleContentOpacity)
-                        .scaleEffect(introSubtitleScale)
-                        .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
-                        .padding(.horizontal)
-                        .padding(.top, verticalSizeClass == .compact ? 0 : 10)
-                        .padding(.top, -30)
+                TabView {
+                    ForEach(allDisplays, id: \.self) { display in
+                        page(displayType: display, size: geometry.size)
+//                            .tag(display)
+//                            .onAppear {
+//                                cycleTheme()
+//                            }
+                    }
                 }
+                .tabViewStyle(.page)
                 
-                VStack {
-                    
-                    Spacer(minLength: 0)
-                    
-                    VStack {
-                        if verticalSizeClass == .regular || displayType == .list {
-                            switch displayType {
-                            case .list, .cycle:
-                                featureList()
-                            case .themes:
-                                themeDisplay()
-                            case .variables:
-                                variableDisplay()
-                            case .calculus:
-                                calculusDisplay()
-                            case .misc:
-                                miscDisplay()
-                            case .results:
-                                resultsDisplay()
-                            }
-                        }
-                    }
-                    .frame(maxWidth: geometry.size.height > 800 ? .infinity : 500)
-                    .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
-                    
-                    Spacer(minLength: 0)
-                    
-                    if displayType != .list {
-                        Text(desc)
-                            .font(.callout.weight(.semibold))
-                            .foregroundColor(.white.opacity(0.9))
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.5)
-                            .multilineTextAlignment(.center)
-                            .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
-                            .frame(maxWidth: 500)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal)
-                            .opacity(cycleContentOpacity)
-                    }
-                    
-                    if displayType != .list {
-                        Button {
-                            withAnimation {
-                                settings.proPopUpType = .list
-                            }
-                        } label: {
-                            Text("See All Pro Features")
-                                .font(.system(.headline, design: .rounded).weight(.bold))
-                                .foregroundColor(.white.opacity(0.9))
-                                .minimumScaleFactor(0.5)
-                                .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
-                        }
-                    }
-                }
+                purchaseButtons(size: geometry.size)
                 
-                VStack {
-                    
-                    if settings.pro {
-                        
-                        Button(action: {
-                            self.presentationMode.wrappedValue.dismiss()
-                        }) {
-                            HStack {
-                                Text("Unlocked")
-                                    .font(Font.system(.title2, design: .rounded).weight(.bold))
-                                    .foregroundColor(.white)
-                                    .lineLimit(0)
-                                    .minimumScaleFactor(0.5)
-                                    .shadow(color: .init(white: 0.4), radius: 15)
-                                Image(systemName: "checkmark")
-                                    .imageScale(.large)
-                                    .minimumScaleFactor(0.5)
-                                    .foregroundColor(.white)
-                                    .shadow(color: .init(white: 0.4), radius: 15)
-                            }
-                            .frame(height: 100)
-                            .frame(maxWidth: .infinity)
-                            .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: scale*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme.color1).opacity(0.6)))
-                            .cornerRadius(20)
-                            .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
-                        }
-                        .frame(maxWidth: 500)
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
-                        .padding(.top, 20)
-                        .scaleEffect(scale*1.05)
-                        
-                    } else if let product = storeManager.myProducts.first(where: { $0.productIdentifier == "com.rupertusapps.OmegaCalc.PRO" }) {
-                        
-                        Button(action: {
-                            storeManager.purchaseProduct(product: product)
-                            print("Buying \(product.localizedTitle)")
-                        }) {
-                            VStack {
-                                Text("Purchase for \(product.localizedPrice)")
-                                    .font(Font.system(.title2, design: .rounded).weight(.bold))
-                                    .lineLimit(0)
-                                    .minimumScaleFactor(0.5)
-                                    .foregroundColor(.white)
-                                Text("One-Time Payment")
-                                    .font(Font.system(.footnote, design: .rounded).weight(.bold))
-                                    .lineLimit(0)
-                                    .minimumScaleFactor(0.5)
-                                    .foregroundColor(.white)
-                            }
-                            .shadow(color: .init(white: 0.4), radius: 15)
-                            .frame(height: 100)
-                            .frame(maxWidth: .infinity)
-                            .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: scale*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme.color1).opacity(0.6)))
-                            .cornerRadius(20)
-                            .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
-                        }
-                        .frame(maxWidth: 500)
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
-                        .padding(.top, 20)
-                        .scaleEffect(scale*1.05)
-                        
-                    } else {
-                        
-                        VStack {
-                            Text("Loading")
-                                .font(Font.system(.title2, design: .rounded).weight(.bold))
-                                .lineLimit(0)
-                                .minimumScaleFactor(0.5)
-                                .foregroundColor(.white)
-                                .frame(height: 100)
-                                .frame(maxWidth: .infinity)
-                                .background(Color.white.opacity(0.4))
-                                .cornerRadius(20)
-                                .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
-                        }
-                        .frame(maxWidth: 500)
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
-                        .padding(.top, 20)
-                        .scaleEffect(scale*1.05)
-                    }
-                    
-                    Button(action: {
-                        self.storeManager.restoreProducts()
-                    }) {
-                        Text("Restore Purchases")
-                            .font(Font.system(.subheadline, design: .rounded).weight(.bold))
-                            .foregroundColor(.black.opacity(0.5))
-                            .shadow(color: .init(white: 0.3), radius: 20)
-                            .padding(.top, -10)
-                            .padding(.bottom, 5)
-                    }
-                    
-                    Button(action: {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Not Now")
-                            .font(Font.system(.subheadline, design: .rounded).weight(.bold))
-                            .foregroundColor(.black.opacity(0.5))
-                            .shadow(color: .init(white: 0.3), radius: 20)
-                            .padding(.bottom, 10)
-                    }
-                }
-                .frame(width: geometry.size.width)
-                .background(Color.white.opacity(0.3).frame(maxWidth: .infinity).cornerRadius(10).edgesIgnoringSafeArea(.all))
             }
             .frame(width: geometry.size.width)
             .background(
                 ZStack {
-                    LinearGradient(colors: [.init(white: 0.7), .init(white: 0.4)], startPoint: .top, endPoint: .bottom)
+                    LinearGradient(colors: [.init(white: 0.4), .init(white: 0.3)], startPoint: .top, endPoint: .bottom)
                         .overlay(color(theme.color1).opacity(0.6))
                         .edgesIgnoringSafeArea(.all)
 //                    ForEach(starPositions.indices, id: \.self) { i in
@@ -251,6 +88,12 @@ struct OmegaProSplash: View {
                 starScales = (0..<50).map { _ in CGFloat(Double.random(in: 0.5..<2)) }
                 starPositions = (0..<50).map { _ in CGPoint(x: Double.random(in: 0..<max(size.width, 1)), y: Double.random(in: 0..<max(size.height, 1))) }
             }
+        }
+        .sheet(isPresented: self.$settings.purchaseConfirmation) {
+            PurchaseConfirmation()
+        }
+        .sheet(isPresented: self.$settings.restoreConfirmation) {
+            PurchaseConfirmation(restore: true)
         }
         .onAppear {
             // Run the cycles
@@ -280,55 +123,21 @@ struct OmegaProSplash: View {
     
     private func runCycles() {
     
-        // Cycle Displays
-        displayTimer?.invalidate()
-        if displayType == .cycle {
-            settings.proPopUpType = ProFeatureDisplay.random()
-            displayTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
-                cycleDisplay()
-            }
-        }
+//        // Cycle Displays
+//        displayTimer?.invalidate()
+//        if displayType == .cycle {
+//            settings.proPopUpType = ProFeatureDisplay.random()
+//            displayTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
+//                cycleDisplay()
+//            }
+//        }
         
-        // Cycle Themes
-        themeTimer?.invalidate()
-        recentThemeIDs = [theme.id, otherTheme1.id, otherTheme2.id]
-        themeTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
-            cycleTheme()
-        }
-    }
-    
-    private var text: String {
-        switch displayType {
-        case .list, .cycle:
-            return "All Features"
-        case .themes:
-            return "Customize your calculator."
-        case .variables:
-            return "A whole new set of capabilities."
-        case .calculus:
-            return "Advanced functions made simple."
-        case .misc:
-            return "Convenient tools and features."
-        case .results:
-            return "Results "
-        }
-    }
-    
-    private var desc: String {
-        switch displayType {
-        case .list, .cycle:
-            return ""
-        case .themes:
-            return "Access to over 30 themes. With so many colorful options, there's a look for everyone."
-        case .variables:
-            return "Variables. Functions. Graphs. Tables. Make quick computations and analyze relationships."
-        case .calculus:
-            return "Summation & Products. Derivatives & Integrals. More power to meet your needs."
-        case .misc:
-            return "Edit the input line with an interactive text pointer. Save & export your past calculations."
-        case .results:
-            return "There's more than one way to view your results – get equivalent forms and helpful visuals."
-        }
+//        // Cycle Themes
+//        themeTimer?.invalidate()
+//        recentThemeIDs = [theme.id, otherTheme1.id, otherTheme2.id]
+//        themeTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true) { _ in
+//            cycleTheme()
+//        }
     }
     
     private let features = [
@@ -345,6 +154,168 @@ struct OmegaProSplash: View {
         "Past calculations last 365 days",
         "External keyboard support"
     ]
+    
+    private func page(displayType: ProFeatureDisplay, size: CGSize) -> some View {
+        VStack {
+            
+            Text(displayType.text)
+                .font(.system(.title2, design: .rounded).weight(.bold))
+                .lineLimit(0)
+                .minimumScaleFactor(0.5)
+                .foregroundColor(Color.white)
+                .opacity(cycleContentOpacity)
+                .scaleEffect(introSubtitleScale)
+                .shadow(color: .init(white: 0.05).opacity(0.5), radius: 10)
+                .padding(.horizontal)
+                .padding(.top, verticalSizeClass == .compact ? 0 : 10)
+            
+            Spacer(minLength: 0)
+            
+            VStack {
+                if verticalSizeClass == .regular {
+                    switch displayType {
+                    case .themes:
+                        themeDisplay()
+                    case .variables:
+                        variableDisplay()
+                    case .calculus:
+                        calculusDisplay()
+                    case .misc:
+                        miscDisplay()
+                    case .results:
+                        resultsDisplay()
+                    }
+                }
+            }
+            .frame(maxWidth: size.height > 800 ? .infinity : 500)
+            .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
+            
+            Spacer(minLength: 0)
+            
+            Text(displayType.description)
+                .font(.callout.weight(.semibold))
+                .foregroundColor(.white.opacity(0.9))
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
+                .multilineTextAlignment(.center)
+                .shadow(color: .init(white: 0.05).opacity(0.5), radius: 20)
+                .frame(maxWidth: 500)
+                .padding(.vertical, 5)
+                .padding(.horizontal)
+                .opacity(cycleContentOpacity)
+                .padding(.bottom, 40)
+        }
+    }
+    
+    private func purchaseButtons(size: CGSize) -> some View {
+        VStack {
+            
+            if settings.pro {
+                
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Text("Unlocked")
+                            .font(Font.system(.title2, design: .rounded).weight(.bold))
+                            .foregroundColor(.white)
+                            .lineLimit(0)
+                            .minimumScaleFactor(0.5)
+                            .shadow(color: .init(white: 0.4), radius: 15)
+                        Image(systemName: "checkmark")
+                            .imageScale(.large)
+                            .minimumScaleFactor(0.5)
+                            .foregroundColor(.white)
+                            .shadow(color: .init(white: 0.4), radius: 15)
+                    }
+                    .frame(height: 100)
+                    .frame(maxWidth: .infinity)
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: scale*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme.color1).opacity(0.6)))
+                    .cornerRadius(20)
+                    .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
+                }
+                .frame(maxWidth: 500)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+                .padding(.top, 20)
+                .scaleEffect(scale*1.05)
+                
+            } else if let product = storeManager.myProducts.first(where: { $0.productIdentifier == "com.rupertusapps.OmegaCalc.PRO" }) {
+                
+                Button(action: {
+                    storeManager.purchaseProduct(product: product)
+                    print("Buying \(product.localizedTitle)")
+                }) {
+                    VStack {
+                        Text("Purchase for \(product.localizedPrice)")
+                            .font(Font.system(.title2, design: .rounded).weight(.bold))
+                            .lineLimit(0)
+                            .minimumScaleFactor(0.5)
+                            .foregroundColor(.white)
+                        Text("One-Time Payment")
+                            .font(Font.system(.footnote, design: .rounded).weight(.bold))
+                            .lineLimit(0)
+                            .minimumScaleFactor(0.5)
+                            .foregroundColor(.white)
+                    }
+                    .shadow(color: .init(white: 0.4), radius: 15)
+                    .frame(height: 100)
+                    .frame(maxWidth: .infinity)
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: scale*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme.color1).opacity(0.6)))
+                    .cornerRadius(20)
+                    .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
+                }
+                .frame(maxWidth: 500)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+                .padding(.top, 20)
+                .scaleEffect(scale*1.05)
+                
+            } else {
+                
+                VStack {
+                    Text("Loading")
+                        .font(Font.system(.title2, design: .rounded).weight(.bold))
+                        .lineLimit(0)
+                        .minimumScaleFactor(0.5)
+                        .foregroundColor(.white)
+                        .frame(height: 100)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.white.opacity(0.4))
+                        .cornerRadius(20)
+                        .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
+                }
+                .frame(maxWidth: 500)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+                .padding(.top, 20)
+                .scaleEffect(scale*1.05)
+            }
+            
+            Button(action: {
+                self.storeManager.restoreProducts()
+            }) {
+                Text("Restore Purchases")
+                    .font(Font.system(.subheadline, design: .rounded).weight(.bold))
+                    .foregroundColor(.black.opacity(0.5))
+                    .shadow(color: .init(white: 0.3), radius: 20)
+                    .padding(.top, -10)
+                    .padding(.bottom, 5)
+            }
+            
+            Button(action: {
+                self.presentationMode.wrappedValue.dismiss()
+            }) {
+                Text("Not Now")
+                    .font(Font.system(.subheadline, design: .rounded).weight(.bold))
+                    .foregroundColor(.black.opacity(0.5))
+                    .shadow(color: .init(white: 0.3), radius: 20)
+                    .padding(.bottom, 15)
+            }
+        }
+        .frame(width: size.width)
+        .background(Color.white.opacity(0.3).frame(maxWidth: .infinity).cornerRadius(10).edgesIgnoringSafeArea(.all))
+    }
     
     private func featureList() -> some View {
         GeometryReader { geometry in
@@ -382,20 +353,6 @@ struct OmegaProSplash: View {
                     }
                     
                     Spacer(minLength: 0)
-                    
-                    Button {
-                        withAnimation {
-                            settings.proPopUpType = .cycle
-                            runCycles()
-                        }
-                    } label: {
-                        Text("See Preview")
-                            .font(.system(.headline, design: .rounded).weight(.bold))
-                            .foregroundColor(.white.opacity(0.9))
-                            .minimumScaleFactor(0.5)
-                    }
-                    .padding(10)
-                    .padding(.bottom, 3)
                 }
                 .padding(.horizontal, 20)
                 .frame(minHeight: geometry.size.height)
@@ -689,33 +646,11 @@ struct OmegaProSplash: View {
         withAnimation(.easeIn(duration: 0.4).delay(0.6)) {
             cycleContentOpacity = 1.0
         }
-        
-        // Cycle to the next display
-        withAnimation(.easeInOut(duration: 1.0)) {
-            switch displayType {
-            case .list:
-                settings.proPopUpType = .list
-            case .cycle:
-                settings.proPopUpType = ProFeatureDisplay.random()
-            case .themes:
-                settings.proPopUpType = .variables
-            case .variables:
-                settings.proPopUpType = .misc
-            case .misc:
-                settings.proPopUpType = .results
-            case .results:
-                settings.proPopUpType = .calculus
-            case .calculus:
-                settings.proPopUpType = .themes
-            }
-        }
     }
 }
 
 
-enum ProFeatureDisplay: String, Identifiable {
-    case list
-    case cycle
+enum ProFeatureDisplay: String, Identifiable, CaseIterable {
     
     case themes
     case variables
@@ -738,6 +673,36 @@ enum ProFeatureDisplay: String, Identifiable {
             return .variables
         } else {
             return .calculus
+        }
+    }
+    
+    var text: String {
+        switch self {
+        case .themes:
+            return "Customize your calculator."
+        case .variables:
+            return "A whole new set of capabilities."
+        case .calculus:
+            return "Advanced functions made simple."
+        case .misc:
+            return "Convenient tools and features."
+        case .results:
+            return "Results to the next level."
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .themes:
+            return "Access to over 30 themes. With so many colorful options, there's a look for everyone."
+        case .variables:
+            return "Variables. Functions. Graphs. Tables. Make quick computations and analyze relationships."
+        case .calculus:
+            return "Summation & Products. Derivatives & Integrals. More power to meet your needs."
+        case .misc:
+            return "Edit the input line with an interactive text pointer. Save & export your past calculations."
+        case .results:
+            return "There's more than one way to view your results – get equivalent forms and helpful visuals."
         }
     }
 }
@@ -806,3 +771,4 @@ struct FeatureBubble<Content: View>: View {
         }
     }
 }
+

@@ -41,7 +41,7 @@ struct ResultOverlay: View {
                     } else {
                         ZStack {
                             RoundedRectangle(cornerRadius: 20)
-                                .fill(Color.init(white: 0.15))
+                                .fill(Color.init(white: 0.12))
                             ScrollView {
                                 VStack(spacing: 0) {
                                     if let pastCalculation = pastCalculation, !pastCalculation.extraResults.isEmpty {
@@ -70,7 +70,7 @@ struct ResultOverlay: View {
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.init(white: 0.15))
+                            .fill(Color.init(white: 0.12))
                         ScrollView {
                             VStack(spacing: 0) {
                                 if let pastCalculation = pastCalculation {
