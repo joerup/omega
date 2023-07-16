@@ -10,6 +10,8 @@ import SwiftUI
 
 struct PurchaseConfirmation: View {
     
+    @ObservedObject var settings = Settings.settings
+    
     @Environment(\.presentationMode) var presentationMode
     
     var restore: Bool = false
@@ -45,6 +47,7 @@ struct PurchaseConfirmation: View {
                 .padding()
             
             Button(action: {
+                settings.showProPopUp = false
                 self.presentationMode.wrappedValue.dismiss()
             }) {
                 Text("Continue")

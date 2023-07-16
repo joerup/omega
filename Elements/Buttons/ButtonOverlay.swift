@@ -27,7 +27,7 @@ struct ButtonOverlay: View {
     
     var body: some View {
         
-        if active {
+        if active || display != nil {
             
             if (display ?? settings.buttonDisplayMode) == .funcs && orientation == .portrait && size == .small {
                 VStack(spacing: 0) {

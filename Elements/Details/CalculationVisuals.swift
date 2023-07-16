@@ -99,7 +99,6 @@ struct CalculationVisualSquare<Content: View>: View {
             .background(Color.init(white: 0.12))
             .frame(width: width, height: height)
             .cornerRadius(20)
-            .proLock()
     }
 }
 

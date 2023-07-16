@@ -14,6 +14,8 @@ struct ButtonPad: View {
     
     var size: Size
     var orientation: Orientation
+    var display: ButtonDisplayMode? = nil
+    var overlay: AnyView? = nil
     
     var width: CGFloat
     var buttonHeight: CGFloat
@@ -39,8 +41,7 @@ struct ButtonPad: View {
                             .padding(.bottom, self.width*0.005)
                         NumPad(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
                     }
-                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height*(4.8/5), active: active, showText: showText))
-                    .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
+                    .overlay(contentOverlay(width: width, buttonHeight: height*4.8/5))
                     
                     ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 4, active: active, showText: showText)
                         .padding(.top, self.width*0.0025)
@@ -60,8 +61,7 @@ struct ButtonPad: View {
                             NumPad(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
                         }
                     }
-                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width, buttonHeight: height))
-                    .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
+                    .overlay(contentOverlay(width: width, buttonHeight: height))
                     
                     ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 8, active: active, showText: showText)
                         .padding(.top, self.width*0.0025)
@@ -80,8 +80,7 @@ struct ButtonPad: View {
             HStack(spacing:0) {
                 
                 LandscapePad(width: width*7/11, buttonHeight: height, size: size, theme: theme, active: active, showText: showText)
-                    .overlay(ButtonOverlay(size: size, orientation: orientation, width: width*7/11, buttonHeight: height))
-                    .overlay(DetailOverlay(size: size, orientation: orientation, active: active))
+                    .overlay(contentOverlay(width: width*7/11, buttonHeight: height))
                 
                 VStack(spacing:0) {
                     NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active, showText: showText)
@@ -92,6 +91,16 @@ struct ButtonPad: View {
             .padding(.horizontal, size == .large ? self.width*0.005 : 0)
             .padding(.top, self.width*0.005)
             .padding(.bottom, size == .large ? self.width*0.005 : 0)
+        }
+    }
+    
+    private func contentOverlay(width: CGFloat, buttonHeight: CGFloat) -> some View {
+        ZStack {
+            ButtonOverlay(size: size, orientation: orientation, display: display, width: width, buttonHeight: buttonHeight, theme: theme, active: active, showText: showText)
+            DetailOverlay(size: size, orientation: orientation, active: active)
+            if let overlay {
+                overlay
+            }
         }
     }
 }

@@ -143,7 +143,6 @@ struct StoredVarView: View {
                 self.name = storedVar.name ?? ""
             }
         }
-        .proLock()
     }
     
     func dateString(_ date: Date?, dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style) -> String {

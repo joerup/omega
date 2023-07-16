@@ -97,3 +97,12 @@ class StoreManager: NSObject, ObservableObject, SKProductsRequestDelegate, SKPay
         UserDefaults.standard.setValue(true, forKey: id)
     }
 }
+
+extension SKProduct {
+    var localizedPrice: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = priceLocale
+        return formatter.string(from: price)!
+    }
+}

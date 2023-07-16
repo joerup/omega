@@ -256,7 +256,7 @@ struct PastCalcSavedView: View {
                                     
                                 } else {
                                     Button(action: {
-                                        guard proCheckNotice(.misc) else { return }
+                                        guard proCheckNotice(.save) else { return }
                                     }) {
                                         HStack {
                                             Text("New Folder")

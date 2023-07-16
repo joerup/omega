@@ -45,9 +45,6 @@ struct CalculatorOverlay: View {
                     else if settings.calculatorOverlay == .variables {
                         StoredVarList(displayType: $storedVarDisplayType)
                     }
-                    else if settings.calculatorOverlay == .reference {
-                        ReferenceList()
-                    }
                     
                     Spacer()
                     
@@ -92,6 +89,5 @@ enum CalculatorOverlayType {
     case calculations
     case saved
     case variables
-    case reference
 }
 

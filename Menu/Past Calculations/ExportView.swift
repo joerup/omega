@@ -199,7 +199,6 @@ struct ExportView: View {
                 self.calculations = getCalculations()
             }
         }
-        .proLock()
     }
     
     func createCSVFile() -> CSVFile {

@@ -162,7 +162,6 @@ struct PastCalculationView: View {
                                 .background(Color.init(white: 0.2))
                                 .cornerRadius(20)
                                 .id(Calculation.current.update)
-                                .proLock()
                         }
                         
                         // Substitute
@@ -172,7 +171,6 @@ struct PastCalculationView: View {
                                 .background(Color.init(white: 0.2))
                                 .cornerRadius(20)
                                 .id(Calculation.current.update)
-                                .proLock()
                         }
                         
                         // Squares
@@ -230,7 +228,7 @@ struct PastCalculationView: View {
     @ViewBuilder
     private var buttonRow2: some View {
         LargeIconButton(text: "Save", image: "folder\(calculation.saved ? ".fill" : "")", locked: settings.featureVersionIdentifier > 0) {
-            guard proCheckNotice(.misc, maxFreeVersion: 0) else { return }
+            guard proCheckNotice(.save, maxFreeVersion: 0) else { return }
             calculation.save()
         }
         LargeIconButton(text: "Assign", image: "character.textbox", locked: true) {

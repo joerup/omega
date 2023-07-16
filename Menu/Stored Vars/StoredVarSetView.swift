@@ -156,7 +156,6 @@ struct StoredVarSetView: View {
                 }
             }
         }
-        .proLock()
     }
     
     func setVariable() {

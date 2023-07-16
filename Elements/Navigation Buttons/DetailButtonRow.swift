@@ -66,7 +66,7 @@ struct DetailButtonRow: View {
                                         sound: .click3,
                                         locked: true
                         ) {
-                            guard proCheckNotice(.variables) else { return }
+                            guard proCheckNotice([.functions, .variables].randomElement()!) else { return }
                             settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
                             settings.buttonUppercase = false
                             settings.detailOverlay = .none
@@ -144,7 +144,7 @@ struct DetailButtonRow: View {
                             pastCalculation?.copy()
                         }
                         SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, locked: settings.featureVersionIdentifier > 0) {
-                            guard proCheckNotice(.misc, maxFreeVersion: 0) else { return }
+                            guard proCheckNotice(.save, maxFreeVersion: 0) else { return }
                             pastCalculation?.save()
                         }
                         SmallIconButton(symbol: "character.textbox", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, locked: true) {
@@ -156,7 +156,7 @@ struct DetailButtonRow: View {
                     if calculation.completed {
                         
                         SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape, locked: true) {
-                            guard proCheckNotice(.results) else { return }
+                            guard proCheckNotice(.misc) else { return }
                             settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
                         }
                         .onAppear {

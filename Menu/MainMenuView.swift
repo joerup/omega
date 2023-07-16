@@ -49,20 +49,17 @@ struct MainMenuView: View {
                                 } content: {
                                     HStack {
                                         Image(systemName: "star.fill")
-                                            .font(.largeTitle)
+                                            .font(.system(size: 60))
                                             .foregroundColor(color(settings.theme.color1))
-                                            .padding(.trailing, 5)
+                                            .padding(7.5)
+                                            .frame(width: 75)
+                                            .padding(.trailing, 10)
                                         VStack(alignment: .leading) {
                                             Text("OMEGA PRO")
-                                                .font(.system(.title2, design: .rounded).weight(.heavy))
+                                                .font(.system(.title, design: .rounded).weight(.heavy))
                                                 .lineLimit(0)
                                                 .minimumScaleFactor(0.5)
                                                 .foregroundColor(Color.white)
-                                            Text("Take your calculator to the next level.")
-                                                .font(.system(.callout, design: .rounded).weight(.medium))
-                                                .lineLimit(0)
-                                                .minimumScaleFactor(0.5)
-                                                .foregroundColor(Color.init(white: 0.7))
                                         }
                                         .padding(.vertical, 10)
                                         
@@ -88,7 +85,7 @@ struct MainMenuView: View {
                         
                         SettingsGroup {
                             SettingsButton(title: "Export Calculations", icon: "square.and.arrow.up") {
-                                guard proCheckNotice(.misc) else { return }
+                                guard proCheckNotice(.save) else { return }
                                 self.showExport.toggle()
                             }
                         }
@@ -191,4 +188,18 @@ struct NavigationHeader: View {
         }
         .padding(10)
     }
+}
+
+struct ActivityViewController: UIViewControllerRepresentable {
+
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {}
+
 }
