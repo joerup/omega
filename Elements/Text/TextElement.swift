@@ -26,9 +26,9 @@ class TextElement: Equatable {
     var rightPad: CGFloat = 0
     
     var aspectRatio: CGFloat = 1
-    var textOffset: CGFloat = 0
+    var verticalOffset: CGFloat = 0
+    var horizontalOffset: CGFloat = 0
     
-    var font: String = "PingFangTC-Medium"
     var color: Color = .white
     var opacity: CGFloat = 1
     
@@ -37,7 +37,6 @@ class TextElement: Equatable {
     init(_ text: String) {
         self.text = text
         self.display = text
-        self.font = TextFormatting.getFont()
     }
     
     init(_ text: String, copy: TextElement) {
@@ -48,16 +47,18 @@ class TextElement: Equatable {
         self.leftPad = copy.leftPad
         self.rightPad = copy.rightPad
         self.aspectRatio = copy.aspectRatio
-        self.textOffset = copy.textOffset
+        self.verticalOffset = copy.verticalOffset
+        self.horizontalOffset = copy.horizontalOffset
         self.color = copy.color
         self.opacity = copy.opacity
         self.queueIndex = copy.queueIndex
     }
     
     var width: CGFloat {
+        guard size > 0 else { return 0 }
         let label = UILabel()
         label.text = display
-        label.font = UIFont(name: font, size: size)
+        label.font = UIFont.rounded(size: size, weight: .medium)
         label.textAlignment = .center
         label.numberOfLines = 1
         return label.intrinsicContentSize.width
@@ -93,7 +94,8 @@ class TextElement: Equatable {
         self.midline *= factor
         self.leftPad *= factor
         self.rightPad *= factor
-        self.textOffset *= factor
+        self.verticalOffset *= factor
+        self.horizontalOffset *= factor
     }
     
     func shrink(_ factor: Double) {
@@ -154,5 +156,19 @@ class Vinculum: TextElement {
     override func multiply(_ factor: Double) {
         super.multiply(factor)
         self.vinculumWidth *= factor
+    }
+}
+
+extension UIFont {
+    class func rounded(size: CGFloat, weight: UIFont.Weight) -> UIFont {
+        let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
+        let font: UIFont
+        
+        if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
+            font = UIFont(descriptor: descriptor, size: size)
+        } else {
+            font = systemFont
+        }
+        return font
     }
 }

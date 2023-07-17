@@ -21,9 +21,8 @@ struct TextLabel: View {
     var interaction: InteractionType = .none
     
     var body: some View {
-        
         Text(element.display)
-            .font(Font(UIFont(name: element.font, size: element.size) ?? UIFont()))
+            .font(.system(size: element.size, weight: .medium, design: .rounded))
             .foregroundColor(color ?? element.color)
             .opacity((opacity ?? 1)*element.opacity)
             .if(interaction == .edit && (element.text == "#|" || element.text == "■"), transform: { view in

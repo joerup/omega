@@ -55,7 +55,7 @@ class Settings: ObservableObject {
     var pro: Bool {
         return proOverride ?? UserDefaults.standard.bool(forKey: "com.rupertusapps.OmegaCalc.PRO")
     }
-    @Published var proOverride: Bool? = nil
+    @Published var proOverride: Bool? = true
     
     @Published var featureVersionIdentifier: Int = UserDefaults.standard.integer(forKey: "featureVersionIdentifier") {
         didSet {

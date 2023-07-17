@@ -48,7 +48,7 @@ struct TextSequence: View {
                         
                         if element is Vinculum {
                             
-                            Rectangle()
+                            RoundedRectangle(cornerRadius: 0.5*element.size)
                                 .fill(color ?? element.color)
                                 .opacity(opacity ?? element.opacity)
                                 .frame(width: element.width, height: element.size)
@@ -57,7 +57,7 @@ struct TextSequence: View {
                             
                             TextLabel(element: element, color: color, opacity: opacity, interaction: interaction)
                                 .frame(width: element.width, height: element.height)
-                                .offset(y: -element.textOffset)
+                                .offset(x: element.horizontalOffset, y: -element.verticalOffset)
                                 .scaleEffect(x: 1, y: element.aspectRatio)
                                 .border(Color.green, width: settings.guidelines ? 1 : 0)
                                 .background(Color.blue.opacity(settings.guidelines ? 0.3 : 0))
@@ -74,7 +74,7 @@ struct TextSequence: View {
                             
                             TextLabel(element: element, color: color, opacity: opacity)
                                 .frame(width: element.width, height: element.height)
-                                .offset(y: -element.textOffset)
+                                .offset(x: element.horizontalOffset, y: -element.verticalOffset)
                                 .scaleEffect(x: 1, y: element.aspectRatio)
                                 .border(Color.green, width: settings.guidelines ? 1 : 0)
                         }

@@ -95,16 +95,19 @@ class TextFormatting {
                 element.display = String(element.text.dropFirst())
                 element.color = Color.init(white: 0.7)
                 element.multiply(0.8)
-                element.textOffset -= element.size*0.1
+                element.verticalOffset -= element.size*0.1
             }
             
-            // MARK: Open Parentheses
+            // MARK: Parentheses
             else if element.text == "(" {
                 
                 let index1 = nextIndex(start: index, parentheses: 1)
                 
                 element.rightPad -= element.size*0.1
                 elements[index1].leftPad -= element.size*0.1
+                
+                element.leftPad -= element.size*0.05
+                elements[index1].rightPad -= element.size*0.05
                 
                 if elements[index1].text == "\\)" {
                     elements[index1].display = ")"
@@ -121,6 +124,9 @@ class TextFormatting {
                 element.midline += (height.top+height.bottom)/2
                 elements[index1].midline += (height.top+height.bottom)/2
                 
+                element.verticalOffset += element.size*0.078
+                elements[index1].verticalOffset += element.size*0.078
+                
                 index = index1
             }
             
@@ -133,8 +139,8 @@ class TextFormatting {
             else if element.text == "□" || element.text == "■" {
                 
                 element.display = "■"
-                element.font = TextFormatting.getFont(.helvetica)
                 element.color = element.text == "■" ? color((theme ?? settings.theme).color1) : Color.init(white: 0.4)
+                element.verticalOffset -= element.size*0.05
                 element.opacity = 0.4
             }
             
@@ -145,16 +151,9 @@ class TextFormatting {
                 element.color = color((theme ?? settings.theme).color1)
                 element.opacity = 0.7
                 
-                if Double(prev?.text ?? "") != nil {
-                    element.leftPad -= element.width*1.2
-                } else {
-                    element.leftPad -= element.width*0.8
-                }
-                if Double(next?.text ?? "") != nil {
-                    element.rightPad -= element.width*1.2
-                } else {
-                    element.rightPad -= element.width*0.8
-                }
+                element.leftPad -= element.width*0.75
+                element.rightPad -= element.width*0.75
+                element.verticalOffset += element.size*0.078
             }
  
             // MARK: Other Invisible Items
@@ -247,11 +246,11 @@ class TextFormatting {
                 
                 for e in elements[index1..<index] {
                     e.multiply(0.45)
-                    e.midline += element.size*0.25
+                    e.midline += element.size*0.35
                 }
                 
                 element.leftPad -= element.size*0.41
-                element.rightPad -= element.size*0.155
+                element.rightPad -= element.size*0.3
                 
                 let radicandHeight = getTotalHeight(elements[index+1...index2].map{$0})
                 let radicandWidth = getTotalWidth(elements[index+1...index2].map{$0})
@@ -265,10 +264,10 @@ class TextFormatting {
                 vinculum.color = Color.init(white: 0.8)
                 elements.insert(vinculum, at: index+1)
                 
-                element.font = TextFormatting.getFont(.avenir)
                 element.aspectRatio *= (vinculum.topPosition-radicandHeight.bottom)/element.size
                 element.midline += (vinculum.topPosition+radicandHeight.bottom)/2
-                element.textOffset += element.size*0.032
+                element.verticalOffset += element.size*0.12
+                
                 for e in elements[index1..<index] {
                     e.midline += element.midline - element.height*0.08
                 }
@@ -365,14 +364,11 @@ class TextFormatting {
                 element.display = "/"
                 
                 for e in elements[index1..<index] {
-                    e.midline += element.size*0.15
-                }
-                for e in elements[(index+1)...index2] {
-                    e.midline -= element.size*0
+                    e.midline += element.size*0.05
                 }
                 
                 element.leftPad -= element.size*0.2
-                element.rightPad -= element.size*0.2
+                element.rightPad -= element.size*0.15
                 
                 index = index2+1
             }
@@ -390,7 +386,7 @@ class TextFormatting {
                     e.midline -= element.size*0.35
                 }
                 
-                if elements[index+1].size != 0 {
+                if !(next2?.text.contains("#") ?? false) {
                     elements[index+1].leftPad -= element.size*0.125
                     elements[index1].rightPad -= element.size*0.125
                 } else {
@@ -498,6 +494,9 @@ class TextFormatting {
                 element.midline += (height.top+height.bottom)/2
                 elements[index1+1].midline += (height.top+height.bottom)/2
                 
+                element.verticalOffset += element.size*0.078
+                elements[index1+1].verticalOffset += element.size*0.078
+                
                 index = index1+1
             }
             
@@ -536,11 +535,11 @@ class TextFormatting {
                 let index2 = nextIndex(start: index1+1)
                 let index3 = nextIndex(start: index2)
                 
-                element.font = TextFormatting.getFont(.palatino)
-                
                 for e in elements[index+1...index2]+elements[index2+1...index3] {
                     e.multiply(0.35)
                 }
+                
+                element.verticalOffset += element.size*0.05
                 
                 let lowerHeight = getTotalHeight(elements[index+1...index2].map{$0})
                 let upperHeight = getTotalHeight(elements[index2+1...index3].map{$0})
@@ -606,7 +605,6 @@ class TextFormatting {
                 elements[index1+1].size = element.size
                 elements[index1+1].opacity = element.opacity
                 elements[index1+1].color = element.color
-                elements[index1+1].font = element.font
                 for element in elements[index+1...index1].reversed() {
                     elements.insert(TextElement(element.text, copy: element), at: index2+1)
                 }
@@ -664,9 +662,13 @@ class TextFormatting {
                     elements.insert(TextElement(elements[varIndex].display, copy: elements[index4+2]), at: index4+2)
                     elements[index4+2].opacity = elements[varIndex].opacity
                     elements[index4+2].color = elements[varIndex].color
-                    elements[index4+2].font = elements[varIndex].font
                     elements[index4+2].queueIndex = elements[varIndex].queueIndex
+                    
                     elements.insert(TextElement("|", copy: elements[index4+3]), at: index4+2)
+                    elements[index4+2].verticalOffset += elements[index4+2].size*0.078
+                    elements[index4+2].leftPad -= elements[index4+2].width*0.5
+                    elements[index4+2].rightPad -= elements[index4+2].width*0.3
+                    elements[index4+2].aspectRatio *= 1.2
                     
                     let index5 = nextIndex(start: index4+4)
 
@@ -692,7 +694,6 @@ class TextFormatting {
                 elements.insert(TextElement("d", copy: elements[index1+2 < elements.count ? index1+2 : index2]), at: index1+1)
                 elements[index1+1].opacity = element.opacity
                 elements[index1+1].color = element.color
-                elements[index1+1].font = element.font
                 
                 let integrandHeight = getTotalHeight(elements[index+1...index1].map{$0})
                 
@@ -700,8 +701,7 @@ class TextFormatting {
                 elements[index1+1].leftPad -= element.size*0.1
                 elements[index1+1].rightPad -= element.size*0.15
                 
-                element.font = TextFormatting.getFont(.avenir)
-                element.textOffset += element.size*0.1
+                element.verticalOffset += element.size*0.1
                 element.leftPad -= element.size*0.1
                 element.aspectRatio *= (integrandHeight.top-integrandHeight.bottom)/element.size
                 element.size *= 1.25
@@ -721,7 +721,6 @@ class TextFormatting {
                 elements.insert(TextElement("d", copy: elements[index3+2 < elements.count ? index3+2 : index4]), at: index3+1)
                 elements[index3+1].opacity = element.opacity
                 elements[index3+1].color = element.color
-                elements[index3+1].font = element.font
                 
                 let integrandHeight = getTotalHeight(elements[index2+1...index3].map{$0})
                 
@@ -737,8 +736,8 @@ class TextFormatting {
                 let lowerWidth = getTotalWidth(elements[index+1...index1].map{$0})
                 let upperWidth = getTotalWidth(elements[index1+1...index2].map{$0})
                 
-                elements[index+1].leftPad -= element.size*0.4
-                elements[index1+1].leftPad -= lowerWidth - element.size*0.15
+                elements[index+1].leftPad -= element.size*0.3
+                elements[index1+1].leftPad -= lowerWidth - element.size*0.2
                 elements[index2].rightPad -= element.size*0.1
                 if lowerWidth >= upperWidth {
                     elements[index2].rightPad += lowerWidth-upperWidth
@@ -748,11 +747,10 @@ class TextFormatting {
                 elements[index3+1].rightPad -= element.size*0.15
                 
                 element.display = "∫"
-                element.font = TextFormatting.getFont(.avenir)
-                element.textOffset += element.size*0.05
+                element.aspectRatio *= 1.4
+                element.verticalOffset += element.size*0.078
                 element.leftPad -= element.size*0.1
                 element.aspectRatio *= (integrandHeight.top-integrandHeight.bottom)/element.size
-                element.size *= 1.25
                 element.midline += (integrandHeight.top+integrandHeight.bottom)/2
                 
                 index = index4+1
@@ -840,30 +838,4 @@ class TextFormatting {
     func strokeSize(_ size: CGFloat) -> CGFloat {
         return size * 0.1
     }
-    
-    // Get the font
-    static func getFont(_ style: FontStyle? = nil) -> String {
-        
-        var font: String
-        
-        switch style {
-        case .helvetica:
-            font = "HelveticaNeue"
-        case .avenir:
-            font = "AvenirNext-Medium"
-        case .palatino:
-            font = "Palatino Bold Italic"
-        default:
-            font = "PingFangSC-Medium"
-        }
-        
-        return font
-    }
-}
-
-enum FontStyle {
-    case pingfang
-    case helvetica
-    case avenir
-    case palatino
 }

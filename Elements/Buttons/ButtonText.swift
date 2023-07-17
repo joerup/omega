@@ -93,16 +93,8 @@ struct ButtonText: View {
         return nil
     }
     
-    var font: String {
-        if ["∑","∏"].contains(button.name) {
-            return TextFormatting.getFont(.palatino)
-        } else {
-            return TextFormatting.getFont()
-        }
-    }
-    
     var offset: CGFloat {
-        if Operation.primary.contains(button.name) || button.name == "enter" {
+        if Operation.primary.contains(button.name) || ["enter","(",")","∑","∏"].contains(button.name) {
             return fontSize*0.125
         }
         return 0
@@ -129,7 +121,7 @@ struct ButtonText: View {
             TextSequence(textElements: elements, color: .white)
         } else {
             Text(name)
-                .font(Font(UIFont(name: font, size: fontSize*relativeSize) ?? UIFont()))
+                .font(.system(size: fontSize*relativeSize, weight: .medium, design: .rounded))
                 .baselineOffset(offset)
         }
     }

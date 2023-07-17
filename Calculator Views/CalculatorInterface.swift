@@ -50,6 +50,7 @@ struct CalculatorInterface: View {
                         .padding(.bottom, size == .large && orientation == .landscape ? 2 : (size == .small && orientation == .portrait ? 2 : 0))
                         .padding(.top, size == .small && orientation == .landscape ? 0 : 5)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
+                        .zIndex(1)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
                         .padding(.horizontal, 2)
