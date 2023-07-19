@@ -43,14 +43,14 @@ struct SettingsGroup<Content: View>: View {
                 .padding(.horizontal, 10)
                 .padding(.bottom, -1)
                 .background(Color.init(white: light))
-                .cornerRadius(10)
+                .cornerRadius(20)
                 .padding(.horizontal, 10)
             } else {
                 VStack(spacing: 0, content: content)
                     .padding(.horizontal, 10)
                     .padding(.bottom, -1)
                     .background(Color.init(white: light))
-                    .cornerRadius(10)
+                    .cornerRadius(20)
                     .padding(.horizontal, 10)
             }
         }

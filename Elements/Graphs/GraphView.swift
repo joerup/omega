@@ -53,7 +53,7 @@ struct GraphView: View {
     
     @State var showPopUpGraph: Bool = false
     
-    init(_ elements: [GraphElement], width: CGFloat = 21, centerX: CGFloat = 0, centerY: CGFloat = 0, horizontalAxis: Letter = Letter("x"), verticalAxis: Letter = Letter("y"), gridLines: Bool = true, gridStyle: CoordinateSystem = .cartesian, interactive: Bool = true, popUpGraph: Bool = false, lightBackground: Bool = false, precision: Int = 1000) {
+    init(_ elements: [GraphElement], width: CGFloat = 21, centerX: CGFloat = 0, centerY: CGFloat = 0, horizontalAxis: Letter = Letter("x"), verticalAxis: Letter = Letter("y"), gridLines: Bool = true, gridStyle: CoordinateSystem = .cartesian, interactive: Bool = true, popUpGraph: Bool = false, lightBackground: Bool = false, precision: Int = 2000) {
         self.elements = elements
         self.width = interactive ? width : width/2
         self.centerX = centerX
@@ -75,12 +75,12 @@ struct GraphView: View {
                 
             ZStack {
                 
-                axesView(geometry)
-                gridLinesView(geometry)
-                gridLabelsView(geometry)
-                linesView(geometry)
-                guidelinesView(geometry)
-                graphAnglesView(geometry)
+                axesView(size: geometry.size)
+                gridLinesView(size: geometry.size)
+                guidelinesView(size: geometry.size)
+                graphAnglesView(size: geometry.size)
+                linesView(size: geometry.size)
+                gridLabelsView(size: geometry.size)
                 
                 Rectangle()
                     .opacity(1e-10)
@@ -93,7 +93,7 @@ struct GraphView: View {
                 ZStack {
                     if popUpGraph {
                         Rectangle()
-                            .fill(Color.init(white: 0.6))
+                            .fill(Color.init(white: 0.75))
                             .opacity(lightBackground ? 0.1 : 1e-6)
                             .onTapGesture {
                                 SoundManager.play(haptic: .medium)
@@ -107,7 +107,7 @@ struct GraphView: View {
                     self.offset = interactive ? value.translation : offset
                 }
                 .onEnded { value in
-                    let translation = coordinates(x: value.translation.width, y: value.translation.height, geometry)
+                    let translation = coordinates(x: value.translation.width, y: value.translation.height, size: geometry.size)
                     move(translation)
                 }
             )
@@ -129,44 +129,44 @@ struct GraphView: View {
                 .background(Color.init(white: 0.05).edgesIgnoringSafeArea(.all))
             }
             .onAppear {
-                setInitialBounds(geometry)
+                setInitialBounds(size: geometry.size)
                 setPoints()
             }
-            .onChange(of: geometry.size) { _ in
-                setInitialBounds(geometry)
+            .onChange(of: geometry.size) { size in
+                setInitialBounds(size: size)
                 setPoints()
             }
         }
     }
     
     @ViewBuilder
-    private func axesView(_ geometry: GeometryProxy) -> some View {
+    private func axesView(size: CGSize) -> some View {
         Path { path in
             
-            path.move(to: point(0, yi, geometry))
-            path.addLine(to: point(0, yf, geometry))
+            path.move(to: point(0, yi, size: size))
+            path.addLine(to: point(0, yf, size: size))
 
-            path.move(to: point(xi, 0, geometry))
-            path.addLine(to: point(xf, 0, geometry))
+            path.move(to: point(xi, 0, size: size))
+            path.addLine(to: point(xf, 0, size: size))
 
         }
         .stroke(Color.gray.opacity(0.3), lineWidth: 1)
     }
     
     @ViewBuilder
-    private func gridLinesView(_ geometry: GeometryProxy) -> some View {
+    private func gridLinesView(size: CGSize) -> some View {
         Path { path in
             
             if xf > xi, yf > yi {
                 
-                for x in adjustDisplayRange(range: xi...xf) {
-                    path.move(to: point(Double(x), yi, geometry))
-                    path.addLine(to: point(Double(x), yf, geometry))
+                for x in adjustDisplayRange(range: xi...xf, size: size) {
+                    path.move(to: point(Double(x), yi, size: size))
+                    path.addLine(to: point(Double(x), yf, size: size))
                 }
                 
-                for y in adjustDisplayRange(range: yi...yf) {
-                    path.move(to: point(xi, Double(y), geometry))
-                    path.addLine(to: point(xf, Double(y), geometry))
+                for y in adjustDisplayRange(range: yi...yf, size: size) {
+                    path.move(to: point(xi, Double(y), size: size))
+                    path.addLine(to: point(xf, Double(y), size: size))
                 }
                 
             }
@@ -175,70 +175,72 @@ struct GraphView: View {
     }
     
     @ViewBuilder
-    private func gridLabelsView(_ geometry: GeometryProxy) -> some View {
+    private func gridLabelsView(size: CGSize) -> some View {
         if xf > xi, yf > yi {
             
             // Numbers
-            ForEach(adjustDisplayRange(range: xi...xf, number: true), id: \.self) { num in
+            ForEach(adjustDisplayRange(range: xi...xf, number: true, size: size), id: \.self) { num in
                 Text(formatNum(num))
-                    .font(.caption)
+                    .font(.system(.caption, design: .rounded))
                     .fontWeight(.bold)
                     .foregroundColor(.gray)
-                    .position(point(Double(num), 0, geometry, limitY: true, num: num))
+                    .position(point(Double(num), 0, size: size, limitY: true, num: num))
             }
-            ForEach(adjustDisplayRange(range: yi...yf, number: true), id: \.self) { num in
+            ForEach(adjustDisplayRange(range: yi...yf, number: true, size: size), id: \.self) { num in
                 Text(formatNum(num))
-                    .font(.caption)
+                    .font(.system(.caption, design: .rounded))
                     .fontWeight(.bold)
                     .foregroundColor(.gray)
-                    .position(point(0, Double(num), geometry, limitX: true, num: num))
+                    .position(point(0, Double(num), size: size, limitX: true, num: num))
             }
         }
     }
     
     @ViewBuilder
-    private func linesView(_ geometry: GeometryProxy) -> some View {
+    private func linesView(size: CGSize) -> some View {
         ForEach(self.lines.indices, id: \.self) { l in
             
             let line = self.lines[l]
 
             if let shape = line as? LineShape {
 
-                LinePlot(line: shape, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
-                    return point(x, y, geometry)
+                LinePlot(line: shape, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, size: size) { x, y, geometry in
+                    return point(x, y, size: size)
                 }
                 .fill(color(shape.color, edit: true))
                 .opacity(shape.opacity)
 
             } else {
 
-                LinePlot(line: line, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, geometry: geometry) { x, y, geometry in
-                    return point(x, y, geometry)
+                LinePlot(line: line, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, size: size) { x, y, geometry in
+                    return point(x, y, size: size)
                 }
-                .stroke(color(line.color, edit: true), lineWidth: 2)
+                .stroke(color(line.color, edit: true), lineWidth: 3)
+                .shadow(radius: 4)
+                .zIndex(1)
             }
         }
     }
     
     @ViewBuilder
-    private func guidelinesView(_ geometry: GeometryProxy) -> some View {
+    private func guidelinesView(size: CGSize) -> some View {
         ForEach(self.guidelines.indices, id: \.self) { l in
 
             let guideline = self.guidelines[l]
 
             Path { path in
 
-                path.move(to: point(guideline.start.x, guideline.start.y, geometry))
+                path.move(to: point(guideline.start.x, guideline.start.y, size: size))
                 
                 if guideline.circle {
-                    path.addArc(center: point(guideline.end.x, guideline.end.y, geometry),
-                                radius: point(guideline.start.x, 0, geometry).x - point(guideline.end.x, 0, geometry).x,
+                    path.addArc(center: point(guideline.end.x, guideline.end.y, size: size),
+                                radius: point(guideline.start.x, 0, size: size).x - point(guideline.end.x, 0, size: size).x,
                                 startAngle: Angle(radians: 0), endAngle: Angle(radians: .pi), clockwise: true)
-                    path.addArc(center: point(guideline.end.x, guideline.end.y, geometry),
-                                radius: point(guideline.start.x, 0, geometry).x - point(guideline.end.x, 0, geometry).x,
+                    path.addArc(center: point(guideline.end.x, guideline.end.y, size: size),
+                                radius: point(guideline.start.x, 0, size: size).x - point(guideline.end.x, 0, size: size).x,
                                 startAngle: Angle(radians: .pi), endAngle: Angle(radians: .pi*2), clockwise: true)
                 } else {
-                    path.addLine(to: point(guideline.end.x, guideline.end.y, geometry))
+                    path.addLine(to: point(guideline.end.x, guideline.end.y, size: size))
                 }
             }
             .stroke(color(guideline.color, edit: true), lineWidth: 1)
@@ -246,41 +248,41 @@ struct GraphView: View {
     }
     
     @ViewBuilder
-    private func graphAnglesView(_ geometry: GeometryProxy) -> some View {
+    private func graphAnglesView(size: CGSize) -> some View {
         ForEach(self.angles.indices, id: \.self) { a in
             
             let angle = self.angles[a]
             
-            let center = point(angle.center.x, angle.center.y, geometry)
-            let scaledSize: Double = point(min(0.1, angle.maxSize ?? 0.1), 0, geometry).x - point(0, 0, geometry).x
-            let size: Double = scaledSize > 30 ? 30 : scaledSize
+            let center = point(angle.center.x, angle.center.y, size: size)
+            let scaledSize: Double = point(min(0.1, angle.maxSize ?? 0.1), 0, size: size).x - point(0, 0, size: size).x
+            let angleSize: Double = scaledSize > 30 ? 30 : scaledSize
 
             Path { path in
                 
-                path.move(to: CGPoint(x: center.x + size*cos(angle.start.radians), y: center.y - size*sin(angle.start.radians)))
+                path.move(to: CGPoint(x: center.x + angleSize*cos(angle.start.radians), y: center.y - angleSize*sin(angle.start.radians)))
                 
                 if abs(Int(angle.end.degrees) % 360 - Int(angle.start.degrees) % 360) % 180 == 90 {
-                    path.addLine(to: CGPoint(x: center.x + size*cos(angle.start.radians) + size*cos(angle.end.radians), y: center.y - size*sin(angle.start.radians) - size*sin(angle.end.radians)))
-                    path.addLine(to: CGPoint(x: center.x + size*cos(angle.end.radians), y: center.y - size*sin(angle.end.radians)))
+                    path.addLine(to: CGPoint(x: center.x + angleSize*cos(angle.start.radians) + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.start.radians) - angleSize*sin(angle.end.radians)))
+                    path.addLine(to: CGPoint(x: center.x + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.end.radians)))
                 } else {
-                    path.addArc(center: point(angle.center.x, angle.center.y, geometry), radius: size, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
+                    path.addArc(center: point(angle.center.x, angle.center.y, size: size), radius: angleSize, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
                 }
             }
             .stroke(color(angle.color, edit: true), lineWidth: 1)
             
             if let string = angle.string {
                 Text(string)
-                    .font(.system(size: size/2))
+                    .font(.system(size: angleSize/2))
                     .fontWeight(.bold)
-                    .position(x: center.x + size*cos(angle.start.radians) + size*cos(angle.end.radians), y: center.y - size*sin(angle.start.radians) - size*sin(angle.end.radians))
+                    .position(x: center.x + angleSize*cos(angle.start.radians) + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.start.radians) - angleSize*sin(angle.end.radians))
             }
         }
     }
     
-    func point(_ x: Double, _ y: Double, _ geometry: GeometryProxy, limitX: Bool = false, limitY: Bool = false, num: Double? = nil) -> CGPoint {
+    func point(_ x: Double, _ y: Double, size: CGSize, limitX: Bool = false, limitY: Bool = false, num: Double? = nil) -> CGPoint {
         
-        var xPos = CGFloat(x - xi) * geometry.size.width/(CGFloat(xf-xi)/(2*scale))
-        var yPos = CGFloat(yf - y) * geometry.size.height/(CGFloat(yf-yi)/(2*scale))
+        var xPos = CGFloat(x - xi) * size.width/(CGFloat(xf-xi)/(2*scale))
+        var yPos = CGFloat(yf - y) * size.height/(CGFloat(yf-yi)/(2*scale))
         
         if limitX {
             var labelWidth: CGFloat {
@@ -290,42 +292,42 @@ struct GraphView: View {
                 label.font = UIFont.preferredFont(forTextStyle: .caption1)
                 return label.intrinsicContentSize.width
             }
-            if xPos + offset.width - 5 - labelWidth/2 < geometry.size.width*(scale-1/2) {
-                xPos = geometry.size.width*(scale-1/2) - offset.width + 5 + labelWidth/2
-            } else if xPos + offset.width + 5 + labelWidth/2 > geometry.size.width*(scale+1/2) {
-                xPos = geometry.size.width*(scale+1/2) - offset.width - 5 - labelWidth/2
+            if xPos + offset.width - 5 - labelWidth/2 < size.width*(scale-1/2) {
+                xPos = size.width*(scale-1/2) - offset.width + 5 + labelWidth/2
+            } else if xPos + offset.width + 5 + labelWidth/2 > size.width*(scale+1/2) {
+                xPos = size.width*(scale+1/2) - offset.width - 5 - labelWidth/2
             }
         }
         if limitY {
-            if yPos + offset.height - 10 < geometry.size.height*(scale-1/2) {
-                yPos = geometry.size.height*(scale-1/2) - offset.height + 10
-            } else if yPos + offset.height + 10 > geometry.size.height*(scale+1/2) {
-                yPos = geometry.size.height*(scale+1/2) - offset.height - 10
+            if yPos + offset.height - 10 < size.height*(scale-1/2) {
+                yPos = size.height*(scale-1/2) - offset.height + 10
+            } else if yPos + offset.height + 10 > size.height*(scale+1/2) {
+                yPos = size.height*(scale+1/2) - offset.height - 10
             }
         }
         
         return CGPoint(x: xPos, y: yPos)
     }
     
-    func coordinates(x: CGFloat, y: CGFloat, _ geometry: GeometryProxy) -> CGPoint {
+    func coordinates(x: CGFloat, y: CGFloat, size: CGSize) -> CGPoint {
         
-        let xPos = x / (geometry.size.width/(CGFloat(xf-xi)/(2*scale)))
-        let yPos = y / (geometry.size.height/(CGFloat(yf-yi)/(2*scale)))
+        let xPos = x / (size.width/(CGFloat(xf-xi)/(2*scale)))
+        let yPos = y / (size.height/(CGFloat(yf-yi)/(2*scale)))
         
         return CGPoint(x: xPos, y: yPos)
     }
     
-    func setInitialBounds(_ geometry: GeometryProxy) {
-        if geometry.size.height > geometry.size.width {
+    func setInitialBounds(size: CGSize) {
+        if size.height > size.width {
             self.xi = centerX-width
             self.xf = centerX+width
-            self.yi = (centerY-width) * Double(geometry.size.height/geometry.size.width)
-            self.yf = (centerY+width) * Double(geometry.size.height/geometry.size.width)
+            self.yi = (centerY-width) * Double(size.height/size.width)
+            self.yf = (centerY+width) * Double(size.height/size.width)
         } else {
             self.yi = centerY-width
             self.yf = centerY+width
-            self.xi = (centerX-width) * Double(geometry.size.width/geometry.size.height)
-            self.xf = (centerX+width) * Double(geometry.size.width/geometry.size.height)
+            self.xi = (centerX-width) * Double(size.width/size.height)
+            self.xf = (centerX+width) * Double(size.width/size.height)
         }
     }
     
@@ -380,7 +382,7 @@ struct GraphView: View {
         }
     }
     
-    func adjustDisplayRange(range: ClosedRange<Double>, number: Bool = false) -> [Double] {
+    func adjustDisplayRange(range: ClosedRange<Double>, number: Bool = false, size: CGSize) -> [Double] {
         
         var numbers: [Double] = []
         
@@ -440,7 +442,7 @@ struct GraphView: View {
         // Negative
         while num >= range.lowerBound {
             numbers.insert(num, at: 0)
-            num -= difference * (number ? 1 : 0.25) * (UIScreen.main.bounds.width > 1000 ? 0.5 : 1)
+            num -= difference * (number ? 1 : 0.25) * (size.width > 1000 ? 0.5 : 1)
         }
         
         num = start
@@ -448,7 +450,7 @@ struct GraphView: View {
         // Positive
         while num <= range.upperBound {
             numbers.append(num)
-            num += difference * (number ? 1 : 0.25) * (UIScreen.main.bounds.width > 1000 ? 0.5 : 1)
+            num += difference * (number ? 1 : 0.25) * (size.width > 1000 ? 0.5 : 1)
         }
         
         return numbers

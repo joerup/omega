@@ -40,11 +40,11 @@
 					<string>caterpillar</string>
 				</array>
 			</dict>
-			<key>Classic Blue</key>
+			<key>Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>classicblue</string>
+					<string>classic</string>
 				</array>
 			</dict>
 			<key>Classic Pink</key>
@@ -178,6 +178,13 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>mountain</string>
+				</array>
+			</dict>
+			<key>Orange</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>orange</string>
 				</array>
 			</dict>
 			<key>Pastel</key>

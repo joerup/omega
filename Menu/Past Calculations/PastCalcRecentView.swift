@@ -279,7 +279,7 @@ struct PastCalcRecentView: View {
                                                     .foregroundColor(color(settings.theme.color1))
                                                     .frame(height: 36)
                                             } else {
-                                                TextDisplay(strings: calculation.queue.strings, modes: calculation.modes, size: 24, opacity: 0.7, equals: !calculation.result.error)
+                                                TextDisplay(strings: calculation.queue.strings, modes: calculation.modes, size: 24, colorContext: .secondary, equals: !calculation.result.error)
                                                     .frame(height: 36)
                                             }
                                             
@@ -305,8 +305,8 @@ struct PastCalcRecentView: View {
                                     
                                     if !self.selectionMode {
                                         Image(systemName: "plus.circle")
+                                            .font(.headline.weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.8))
-                                            .imageScale(.large)
                                             .frame(maxHeight: .infinity)
                                             .onTapGesture {
                                                 calculation.insert()

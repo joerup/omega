@@ -92,10 +92,9 @@ struct StoredVarSetView: View {
                         
                         if !letter.isEmpty {
                             HStack {
-                                TextDisplay(strings: ["»"+letter], size: 45, color: color(settings.theme.color1, edit: true))
-                                TextDisplay(strings: ["="], size: 36, opacity: 0.5)
+                                TextDisplay(strings: ["»"+letter], size: 45)
+                                TextDisplay(strings: ["="], size: 36, colorContext: .secondary)
                             }
-                            .frame(width: 80)
                             .transaction { $0.animation = nil }
                         }
 

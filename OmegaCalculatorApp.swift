@@ -24,6 +24,7 @@ struct OmegaCalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             GeometryReader { geometry in
+//                ThemeTestingView()
                 OmegaView(storeManager: storeManager, screenSize: geometry.size)
             }
             .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)

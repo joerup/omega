@@ -170,7 +170,7 @@ extension Queue {
             continueResult()
             
             // Make a new num
-            newNum(allowSoloNegative: true)
+            newNum(allowSoloNegative: false)
             
             // Exit the grouping
             exitGrouping(exitFunctions: false, noNumber: true)
@@ -189,7 +189,7 @@ extension Queue {
                 // Queue a placeholder
                 queue1 += [Placeholder(true)]
             }
-            else if let number = current.first as? Number, number.negative, num.isEmpty {
+            else if let number = current.first as? Number, number.negative, !number.string.contains("#"), num.isEmpty {
                 
                 // Remove the negative
                 current.removeFirst()
@@ -257,7 +257,8 @@ extension Queue {
                             // Add the negative
                             current[0] = number * Number(-1)
                         }
-                        else {
+                        else if !(current.count == 1 && (current[0] as? Number)?.negative ?? false) {
+                            
                             // Add automatic parentheses
                             autoParentheses()
                             
@@ -1453,7 +1454,7 @@ extension Queue {
             queue1.removeLast()
             if number.string == "#-1" {
                 num = num.first != "-" ? ("-" + num) : String(num.dropFirst())
-            } else {
+            } else if !num.contains("-") {
                 num = number.string + num
             }
         }
@@ -1921,13 +1922,6 @@ extension Queue {
                         queue.remove(at: index)
                         queue.insert(contentsOf: expression.value, at: index)
                     }
-                    
-//                    // Split up expressions before non value with operations
-//                    if let opIndex = expression.value.firstIndex(where: { $0 is Operation }), expression.grouping == .temporary, let nextNonValue = nextNonValue(after: index, in: queue), nextNonValue.afterFakePar {
-//                        queue.remove(at: index)
-//                        queue.insert(Expression(Array(expression.value[(opIndex+1)...]), grouping: expression.grouping, pattern: expression.pattern), at: index)
-//                        queue.insert(contentsOf: expression.value[0...opIndex], at: index)
-//                    }
                 }
             }
             
@@ -1948,7 +1942,7 @@ extension Queue {
                     queue.insert(Operation(.con), at: index+1)
                 }
                 // Multiply
-                else if num2.string.contains("#") {
+                else if num2.string.contains("#") || num2.string.first == "-" {
                     queue.insert(Operation(.mlt), at: index+1)
                 }
                 // Combine the numbers

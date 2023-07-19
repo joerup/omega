@@ -22,8 +22,7 @@ struct TextDisplay: View {
     
     var size: CGFloat
     var height: CGFloat
-    var color: Color?
-    var opacity: CGFloat?
+    var colorContext: ColorContext
     
     var equals: Bool
     var scrollable: Bool
@@ -50,12 +49,11 @@ struct TextDisplay: View {
     @State private var position: CGFloat = 0
     @State private var scroll: CGFloat = 0
     
-    init(strings: [String], map: [[Int]] = [], modes: ModeSettings? = nil, calculation: Calculation = Calculation.current, size: CGFloat = 50, height: CGFloat? = nil, color: Color? = nil, opacity: CGFloat? = nil, equals: Bool = false, scrollable: Bool = false, animations: Bool = false, theme: Theme? = nil, interaction: InteractionType = .none) {
+    init(strings: [String], map: [[Int]] = [], modes: ModeSettings? = nil, calculation: Calculation = Calculation.current, size: CGFloat = 50, height: CGFloat? = nil, colorContext: ColorContext = .primary, equals: Bool = false, scrollable: Bool = false, animations: Bool = false, theme: Theme? = nil, interaction: InteractionType = .none) {
         self.data = RawTextData(strings: strings, map: map, modes: modes)
         self.calculation = calculation
         self.size = size
-        self.color = color
-        self.opacity = opacity
+        self.colorContext = colorContext
         self.height = height ?? size*1.2
         self.equals = equals
         self.scrollable = scrollable
@@ -90,7 +88,7 @@ struct TextDisplay: View {
                                 }
                             }
                         
-                        TextSequence(textElements: textElements, color: color, opacity: opacity, calculation: calculation, animations: animations, interaction: interaction)
+                        TextSequence(textElements: textElements, colorContext: colorContext, calculation: calculation, animations: animations, interaction: interaction)
                             .frame(width: totalWidth, height: totalHeight)
                         
                         Rectangle()
@@ -184,16 +182,16 @@ struct TextDisplay: View {
             
             GeometryReader { geometry in
             
-                TextSequence(textElements: textElements, color: color, opacity: opacity, calculation: calculation, interaction: interaction)
+                TextSequence(textElements: textElements, colorContext: colorContext, calculation: calculation, interaction: interaction)
                     .border(Color.white, width: settings.guidelines ? 1 : 0)
                     .onAppear {
-                        setElements(data.strings, map: data.map, modes: data.modes, maxWidth: geometry.size.width, maxHeight: totalHeight)
+                        setElements(data.strings, map: data.map, modes: data.modes, maxWidth: geometry.size.width, maxHeight: geometry.size.height)
                     }
                     .onChange(of: self.data) { data in
-                        setElements(data.strings, map: data.map, modes: data.modes, maxWidth: geometry.size.width, maxHeight: totalHeight)
+                        setElements(data.strings, map: data.map, modes: data.modes, maxWidth: geometry.size.width, maxHeight: geometry.size.height)
                     }
+                    .id(calculation.update)
             }
-            .id(calculation.update)
             .frame(maxWidth: textElements.last?.endPosition)
             .environment(\.layoutDirection, .leftToRight)
         }

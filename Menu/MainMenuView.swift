@@ -49,21 +49,15 @@ struct MainMenuView: View {
                                 } content: {
                                     HStack {
                                         Image(systemName: "star.fill")
-                                            .font(.system(size: 60))
                                             .foregroundColor(color(settings.theme.color1))
-                                            .padding(7.5)
-                                            .frame(width: 75)
-                                            .padding(.trailing, 10)
-                                        VStack(alignment: .leading) {
-                                            Text("OMEGA PRO")
-                                                .font(.system(.title, design: .rounded).weight(.heavy))
-                                                .lineLimit(0)
-                                                .minimumScaleFactor(0.5)
-                                                .foregroundColor(Color.white)
-                                        }
-                                        .padding(.vertical, 10)
-                                        
-                                        Spacer()
+                                            .font(.system(.title2, design: .rounded).weight(.heavy))
+                                            .padding(.bottom, 1)
+                                        Text("OMEGA PRO")
+                                            .font(.system(.title2, design: .rounded).weight(.heavy))
+                                            .lineLimit(0)
+                                            .minimumScaleFactor(0.5)
+                                            .foregroundColor(Color.white)
+                                            .padding(.vertical, 10)
                                     }
                                 }
                             }

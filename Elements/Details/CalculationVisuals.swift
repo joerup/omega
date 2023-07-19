@@ -33,7 +33,7 @@ struct CalculationVisuals: View {
                     GraphView([line], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), gridStyle: variable.name != "θ" ? .cartesian : .polar, interactive: false, popUpGraph: true, lightBackground: lightBackground, precision: 500)
                 }
                 CalculationVisualSquare(text: "Table", width: width-10-height, height: height) {
-                    TableView(equation: calculation.queue, horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), lowerBound: .constant(height > 400 ? -10 : -7), upperBound: .constant(height > 400 ? 10 : 7), centerValue: .constant(0), increment: .constant(1), fullTable: false, popUpTable: true, lightBackground: lightBackground, fontSize: height > 400 ? (height-52)/(21*1.2) : (height-40)/(15*1.2))
+                    TableView(equation: calculation.queue, horizontalAxis: variable, verticalAxis: Letter("f(\(variable.name)"), lowerBound: .constant(height > 400 ? -10 : -7), upperBound: .constant(height > 400 ? 10 : 7), centerValue: .constant(0), increment: .constant(1), fullTable: false, popUpTable: true, lightBackground: lightBackground, fontSize: height > 400 ? height/(21*1.2) : height/(15*1.2))
                 }
             }
 

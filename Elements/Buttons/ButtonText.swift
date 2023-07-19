@@ -118,7 +118,7 @@ struct ButtonText: View {
     var body: some View {
         
         if let elements = elements {
-            TextSequence(textElements: elements, color: .white)
+            TextSequence(textElements: elements, colorContext: .none)
         } else {
             Text(name)
                 .font(.system(size: fontSize*relativeSize, weight: .medium, design: .rounded))

@@ -44,7 +44,7 @@ struct TableMenuView: View {
                     HStack {
                         
                         HStack(spacing: 0) {
-                            TextDisplay(strings: ["∆","*",horizontalAxis.text,"="], size: 25, opacity: 0.6)
+                            TextDisplay(strings: ["∆","*",horizontalAxis.text,"="], size: 25, colorContext: .secondary)
                             TextInput(queue: dx, defaultValue: Queue([Number(1)]), size: 25, scrollable: true, onDismiss: { dx in
                                 let items = dx.final.items
                                 if items.count == 1, let first = items.first, let increment = first as? Number, increment.value > 0 {
@@ -66,7 +66,7 @@ struct TableMenuView: View {
                         .frame(maxWidth: 300)
                         
                         HStack(spacing: 0) {
-                            TextDisplay(strings: [horizontalAxis.text,"="], size: 25, opacity: 0.6)
+                            TextDisplay(strings: [horizontalAxis.text,"="], size: 25, colorContext: .secondary)
                             TextInput(queue: x, defaultValue: Queue([Number(0)]), size: 25, scrollable: true, onDismiss: { x in
                                 let items = x.final.items
                                 if items.count == 1, let first = items.first, let center = first as? Number {

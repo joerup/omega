@@ -18,7 +18,8 @@ struct ThemeDescription: View {
         
         HStack {
             
-            ThemeIcon(theme: theme, size: 75, selected: true)
+            ThemeIcon(theme: theme, selected: true)
+                .frame(maxHeight: 80)
             
             VStack(alignment: .leading, spacing: 0) {
                 Text("Theme")
@@ -32,10 +33,11 @@ struct ThemeDescription: View {
                     .padding(.horizontal, 2)
                     .padding(.vertical, 5)
             }
-            .padding(.leading, 10)
+            .padding(.leading, 5)
             
             Spacer()
         }
         .padding(.vertical, 5)
+        .padding(.horizontal, 1)
     }
 }

@@ -41,7 +41,7 @@ struct TextInput: View {
         
         TextDisplay(strings: editing ? strings.isEmpty ? ["#|"] : strings : queue.empty ? placeholder : queue.final.strings,
                     size: size,
-                    opacity: queue.empty ? 0.3 : 1,
+                    colorContext: queue.empty ? .secondary : .primary,
                     scrollable: scrollable,
                     animations: false,
                     interaction: .none

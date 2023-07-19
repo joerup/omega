@@ -19,9 +19,9 @@ struct LinePlot: Shape {
     
     var precision: Int
     
-    var geometry: GeometryProxy
+    var size: CGSize
     
-    var point: (Double, Double, GeometryProxy) -> CGPoint
+    var point: (Double, Double, CGSize) -> CGPoint
     
     func path(in rect: CGRect) -> Path {
         
@@ -43,28 +43,28 @@ struct LinePlot: Shape {
                     
                     var location: CGPoint? {
                         if yi...yf ~= y {
-                            return point(x, y, geometry)
+                            return point(x, y, size)
                         }
                         else if !y.isFinite {
                             return nil
                         }
                         else if y > yf, let yp = line.points[xi+Double(i-1)*dx], yp <= yf {
-                            return point(x-(y-yf)*dx/(y-yp), yf, geometry)
+                            return point(x-(y-yf)*dx/(y-yp), yf, size)
                         }
                         else if y > yf, let yn = line.points[xi+Double(i+1)*dx], yn <= yf {
-                            return point(x+(y-yf)*dx/(y-yn), yf, geometry)
+                            return point(x+(y-yf)*dx/(y-yn), yf, size)
                         }
                         else if y < yi, let yp = line.points[xi+Double(i-1)*dx], yp >= yi {
-                            return point(x-(y-yi)*dx/(y-yp), yi, geometry)
+                            return point(x-(y-yi)*dx/(y-yp), yi, size)
                         }
                         else if y < yi, let yn = line.points[xi+Double(i+1)*dx], yn >= yi {
-                            return point(x+(y-yi)*dx/(y-yn), yi, geometry)
+                            return point(x+(y-yi)*dx/(y-yn), yi, size)
                         }
                         else if line is LineShape, y > yf {
-                            return point(x, yf, geometry)
+                            return point(x, yf, size)
                         }
                         else if line is LineShape, y < yi {
-                            return point(x, yi, geometry)
+                            return point(x, yi, size)
                         }
                         return nil
                     }
@@ -98,8 +98,8 @@ struct LinePlot: Shape {
                     }
                 }
                 
-                path.addLine(to: point(upper, end, geometry))
-                path.addLine(to: point(lower, end, geometry))
+                path.addLine(to: point(upper, end, size))
+                path.addLine(to: point(lower, end, size))
                 
                 path.closeSubpath()
             }
@@ -122,16 +122,16 @@ struct LinePlot: Shape {
                     
                     var location: CGPoint? {
                         if yi...yf ~= y {
-                            return point(x, y, geometry)
+                            return point(x, y, size)
                         }
                         else if !y.isFinite {
                             return nil
                         }
                         else if line is LineShape, y > yf {
-                            return point(x, yf, geometry)
+                            return point(x, yf, size)
                         }
                         else if line is LineShape, y < yi {
-                            return point(x, yi, geometry)
+                            return point(x, yi, size)
                         }
                         return nil
                     }
@@ -150,7 +150,7 @@ struct LinePlot: Shape {
             }
             
             if line is LineShape {
-                path.addLine(to: point(0, 0, geometry))
+                path.addLine(to: point(0, 0, size))
                 path.closeSubpath()
             }
         }

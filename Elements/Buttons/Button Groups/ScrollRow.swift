@@ -42,7 +42,7 @@ struct ScrollRow: View {
                 }
             }
             .frame(width: width*(1-2*0.025/5), height: buttonHeight, alignment: .center)
-            .background(color((theme ?? self.settings.theme).color3).darker(by: 0.05))
+            .background(color((theme ?? self.settings.theme).color3).opacity(0.9))
             .clipShape(RoundedRectangle(cornerRadius: 0.42*buttonHeight, style: .continuous))
             .padding(.horizontal, width*0.025/5)
             .padding(.vertical, buttonHeight*0.025)

@@ -43,23 +43,35 @@ struct PastCalculationView: View {
                         
                         Spacer()
 
-                        VStack(alignment: .leading, spacing: 0) {
-
-                            TextField(NSLocalizedString("Calculation", comment: ""), text: self.$name, onCommit: {
-                                while self.name.last == " " {
-                                    self.name.removeLast()
-                                }
-                                while self.name.first == " " {
-                                    self.name.removeFirst()
-                                }
-                                if self.name == "" {
-                                    self.name = ""
-                                }
-                                calculation.rename(to: name)
-                            })
-                            .font(Font.system(.title2, design: .rounded).weight(.bold))
-                            .foregroundColor(color(self.settings.theme.color1, edit: true))
+                        VStack(alignment: .leading, spacing: 2) {
+                            
+                            ZStack(alignment: .leading) {
+                                Text("Calculation")
+                                    .font(Font.system(.title2, design: .rounded).weight(.bold))
+                                    .lineLimit(0).opacity(0)
+                                Text(self.name)
+                                    .font(Font.system(.title2, design: .rounded).weight(.bold))
+                                    .lineLimit(0).opacity(0)
+                            }
+                            .padding(.trailing, 15)
+                            .overlay {
+                                TextField(NSLocalizedString("Calculation", comment: ""), text: self.$name, onCommit: {
+                                    while self.name.last == " " {
+                                        self.name.removeLast()
+                                    }
+                                    while self.name.first == " " {
+                                        self.name.removeFirst()
+                                    }
+                                    if self.name == "" {
+                                        self.name = ""
+                                    }
+                                    calculation.rename(to: name)
+                                })
+                                .font(Font.system(.title2, design: .rounded).weight(.bold))
+                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                            }
                             .padding(.top, -3)
+                            .padding(.trailing, 30)
 
                             HStack(spacing: 5) {
                                 
@@ -74,6 +86,8 @@ struct PastCalculationView: View {
                                 Text(self.dateString(self.calculation.date ?? Date(), dateStyle: .none, timeStyle: .short))
                                     .font(Font.system(.subheadline, design: .rounded))
                                     .foregroundColor(Color.init(white: 0.6))
+                                
+                                Spacer()
                             }
                             .padding(.leading, 0.5)
                             .padding(.bottom, 2)
@@ -123,7 +137,7 @@ struct PastCalculationView: View {
                         
                         if calculation.showResult {
                             
-                            TextDisplay(strings: calculation.queue.strings, modes: calculation.modes, size: 35, opacity: 0.7, equals: !calculation.result.error, scrollable: true)
+                            TextDisplay(strings: calculation.queue.strings, modes: calculation.modes, size: 35, colorContext: .secondary, equals: !calculation.result.error, scrollable: true)
                             
                             TextDisplay(strings: calculation.result.strings, modes: calculation.modes, size: 55, scrollable: true)
                             

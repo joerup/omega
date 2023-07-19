@@ -89,7 +89,7 @@ struct TableView: View {
 
                             HStack {
                                 Spacer(minLength: 0)
-                                TextDisplay(strings: xStrings, size: fontSize)
+                                TextDisplay(strings: xStrings, size: fontSize, colorContext: .none)
                                     .opacity(0.6)
                             }
                             .frame(maxWidth: geometry.size.width*(fullTable ? 0.3 : 0.2), maxHeight: fontSize*1.2)
@@ -99,7 +99,7 @@ struct TableView: View {
                             let yStrings = number is Expression ? (number as! Expression).queue.strings : Queue([number]).strings
 
                             HStack {
-                                TextDisplay(strings: yStrings, size: fontSize)
+                                TextDisplay(strings: yStrings, size: fontSize, colorContext: .none)
                                 Spacer(minLength: 0)
                             }
                             .frame(minWidth: geometry.size.width*(fullTable ? 0.3 : 0.2))
@@ -158,7 +158,7 @@ struct TableView: View {
                     ZStack {
                         if popUpTable {
                             Rectangle()
-                                .fill(Color.init(white: 0.6))
+                                .fill(Color.init(white: 0.75))
                                 .opacity(lightBackground ? 0.1 : 1e-6)
                                 .onTapGesture {
                                     SoundManager.play(haptic: .medium)

@@ -32,7 +32,7 @@ struct OmegaView: View {
         if size == .large {
             return orientation == .portrait ? 1/11.5 : 1/9
         } else {
-            return orientation == .portrait ? 1/9 : 1/8
+            return orientation == .portrait ? 1/8.9 : 1/8
         }
     }
     var standardSize: CGFloat {

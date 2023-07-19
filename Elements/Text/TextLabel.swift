@@ -15,16 +15,14 @@ struct TextLabel: View {
     
     var element: TextElement
     
-    var color: Color? = nil
-    var opacity: CGFloat? = nil
+    var colorContext: ColorContext
     
     var interaction: InteractionType = .none
     
     var body: some View {
         Text(element.display)
             .font(.system(size: element.size, weight: .medium, design: .rounded))
-            .foregroundColor(color ?? element.color)
-            .opacity((opacity ?? 1)*element.opacity)
+            .foregroundColor(element.color.inContext(colorContext))
             .if(interaction == .edit && (element.text == "#|" || element.text == "■"), transform: { view in
                 view
                     .contextMenu {

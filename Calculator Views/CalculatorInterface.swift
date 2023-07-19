@@ -43,14 +43,12 @@ struct CalculatorInterface: View {
                 }
                 .overlay(OverlayDismissArea())
                 
-                VStack(spacing: 0) {
+                VStack(spacing: 2) {
                     
                     DetailButtonRow(size: size, orientation: orientation)
                         .padding(.horizontal, horizontalPadding)
-                        .padding(.bottom, size == .large && orientation == .landscape ? 2 : (size == .small && orientation == .portrait ? 2 : 0))
-                        .padding(.top, size == .small && orientation == .landscape ? 0 : 5)
+                        .padding(.top, 2)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
-                        .zIndex(1)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
                         .padding(.horizontal, 2)

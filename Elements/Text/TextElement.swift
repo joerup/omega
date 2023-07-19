@@ -29,8 +29,7 @@ class TextElement: Equatable {
     var verticalOffset: CGFloat = 0
     var horizontalOffset: CGFloat = 0
     
-    var color: Color = .white
-    var opacity: CGFloat = 1
+    var color: TextColor = .general
     
     var queueIndex: [Int] = []
     
@@ -50,7 +49,6 @@ class TextElement: Equatable {
         self.verticalOffset = copy.verticalOffset
         self.horizontalOffset = copy.horizontalOffset
         self.color = copy.color
-        self.opacity = copy.opacity
         self.queueIndex = copy.queueIndex
     }
     
@@ -95,7 +93,6 @@ class TextElement: Equatable {
         self.leftPad *= factor
         self.rightPad *= factor
         self.verticalOffset *= factor
-        self.horizontalOffset *= factor
     }
     
     func shrink(_ factor: Double) {
@@ -159,6 +156,18 @@ class Vinculum: TextElement {
     }
 }
 
+class Radical: TextElement {
+    
+    init(size: CGFloat) {
+        super.init("RADICAL")
+        self.size = size
+    }
+    
+    override var width: CGFloat {
+        return size*0.5
+    }
+}
+
 extension UIFont {
     class func rounded(size: CGFloat, weight: UIFont.Weight) -> UIFont {
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
@@ -171,4 +180,67 @@ extension UIFont {
         }
         return font
     }
+}
+
+enum TextColor {
+    case theme
+    case prominent
+    case general
+    case gray1
+    case gray2
+    case gray3
+    case invisible
+    
+    func inContext(_ context: ColorContext) -> Color {
+        switch context {
+        case .primary:
+            return primaryColor
+        case .secondary:
+            return secondaryColor
+        case .theme:
+            return themeColor
+        case .none:
+            return noColor
+        }
+    }
+    
+    var primaryColor: Color {
+        switch self {
+        case .theme: return themeColor.opacity(0.7)
+        case .prominent: return .white
+        case .general: return .init(white: 0.8)
+        case .gray1: return .init(white: 0.4)
+        case .gray2: return .init(white: 0.3)
+        case .gray3: return .init(white: 0.2)
+        case .invisible: return .clear
+        }
+    }
+    var secondaryColor: Color {
+        switch self {
+        case .theme: return themeColor.opacity(0.5)
+        case .prominent: return .init(white: 0.6)
+        case .general: return .init(white: 0.5)
+        case .gray1: return .init(white: 0.35)
+        case .gray2: return .init(white: 0.25)
+        case .gray3: return .init(white: 0.15)
+        case .invisible: return .clear
+        }
+    }
+    var themeColor: Color {
+        return color(Settings.settings.theme.color1)
+    }
+    var noColor: Color {
+        switch self {
+        case .prominent, .general, .gray1: return .white
+        case .theme, .gray2, .gray3: return .white.opacity(0.4)
+        case .invisible: return .clear
+        }
+    }
+}
+
+enum ColorContext {
+    case primary
+    case secondary
+    case theme
+    case none
 }

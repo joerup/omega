@@ -56,20 +56,20 @@ struct CalculatorOverlay: View {
                     .edgesIgnoringSafeArea(.bottom)
                 )
                 .offset(y: offset + gestureOffset)
-                .highPriorityGesture(DragGesture()
+                .simultaneousGesture(DragGesture()
                     .updating($gestureOffset) { value, gestureOffset, _ in
-                        if value.translation.height > 0 {
+                        if value.translation.height > 20 {
                             gestureOffset = value.translation.height
                         }
                     }
                     .onEnded { value in
                         if value.translation.height > 0 {
                             offset = value.translation.height
+                            SoundManager.play(haptic: .medium)
                         }
                         withAnimation {
                             offset = 0
                         }
-                        SoundManager.play(haptic: .medium)
                         if abs(value.translation.height) > abs(value.translation.width) && value.translation.height > 50 {
                             withAnimation {
                                 settings.calculatorOverlay = .none

@@ -268,7 +268,7 @@ struct CalculatorModel: View {
                                                             }
                                                             VStack(spacing: 0) {
                                                                 if i < inputs.count {
-                                                                    TextDisplay(strings: inputs[i].strings, size: safeSize.height*0.03, opacity: 0.8, equals: true, scrollable: true)
+                                                                    TextDisplay(strings: inputs[i].strings, size: safeSize.height*0.03, colorContext: .secondary, equals: true, scrollable: true)
                                                                 }
                                                                 TextDisplay(strings: outputs[i].strings, size: safeSize.height*0.045, scrollable: true)
                                                             }
@@ -290,7 +290,7 @@ struct CalculatorModel: View {
                         case .extraResults(let result, let function, let angle, let extraResults):
                             VStack {
                                 VStack(spacing: 2) {
-                                    TextDisplay(strings: Queue([function,Expression(angle, grouping: .hidden)]).strings, modes: .init(), size: safeSize.height*0.06, opacity: 0.8, equals: true, scrollable: true, theme: theme)
+                                    TextDisplay(strings: Queue([function,Expression(angle, grouping: .hidden)]).strings, modes: .init(), size: safeSize.height*0.06, colorContext: .secondary, equals: true, scrollable: true, theme: theme)
                                         .padding(.top, 2*scale)
                                     TextDisplay(strings: result.strings, size: safeSize.height*0.09, scrollable: true, theme: theme)
                                 }
@@ -328,7 +328,7 @@ struct CalculatorModel: View {
                                         VStack(spacing: safeSize.height*0.02) {
                                             ForEach(variables.indices, id: \.self) { i in
                                                 HStack(spacing: 2) {
-                                                    TextDisplay(strings: [variables[i].name], size: safeSize.height*0.05, color: color(theme.color1, edit: true))
+                                                    TextDisplay(strings: [variables[i].name], size: safeSize.height*0.05)
                                                         .frame(width: safeSize.width*0.12, height: safeSize.height*0.06)
                                                     TextDisplay(strings: values[i].strings, size: safeSize.height*0.045, scrollable: true)
                                                         .frame(height: safeSize.height*0.06)

@@ -44,7 +44,6 @@ struct TextView: View {
                                 calculation: calculation,
                                 size: largeSize(geometry)*0.9,
                                 height: largeSize(geometry),
-                                opacity: 1,
                                 scrollable: true,
                                 animations: true,
                                 interaction: .edit
@@ -58,7 +57,7 @@ struct TextView: View {
                                 calculation: calculation,
                                 size: smallSize(geometry)*0.9,
                                 height: smallSize(geometry),
-                                opacity: 0.5,
+                                colorContext: .secondary,
                                 equals: !calculation.result.error,
                                 scrollable: true,
                                 animations: true,
@@ -73,7 +72,6 @@ struct TextView: View {
                                 calculation: calculation,
                                 size: largeSize(geometry)*0.9,
                                 height: largeSize(geometry),
-                                opacity: 1,
                                 scrollable: true,
                                 animations: true,
                                 interaction: .edit
@@ -91,7 +89,6 @@ struct TextView: View {
                                 calculation: calculation,
                                 size: largeSize(geometry)*0.9,
                                 height: largeSize(geometry),
-                                opacity: 1,
                                 scrollable: true,
                                 animations: true,
                                 interaction: .edit

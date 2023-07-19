@@ -41,7 +41,7 @@ class TextFormatting {
             let next = index+1 < elements.count ? elements[index+1] : nil
             let next2 = index+2 < elements.count ? elements[index+2] : nil
             
-            element.color = Color.init(white: 0.8)
+            element.color = .general
             
             // MARK: Numbers
             if Double(element.text) != nil {
@@ -60,14 +60,14 @@ class TextFormatting {
                     }
                 }
                 element.display = string
-                element.color = Color.white
+                element.color = .prominent
             }
             
             // MARK: Negatives
             else if element.text == "#-1" {
                 element.display = "-"
                 element.rightPad -= element.size*0.1
-                element.color = Color.white
+                element.color = .prominent
             }
             
             // MARK: Variables
@@ -77,7 +77,7 @@ class TextFormatting {
                 if prev?.text == "*" && prev2?.text != "#-1" || prev?.text == "#(" && prev2?.text == "*" && prev3?.text != "#-1" {
                     element.leftPad -= element.size*0.075
                 } 
-                element.color = Color.white
+                element.color = .prominent
                 
                 // Subscript
                 if element.display.count == 2, let sub = element.display.last {
@@ -93,7 +93,7 @@ class TextFormatting {
             // MARK: Units
             else if element.text.first == "_" {
                 element.display = String(element.text.dropFirst())
-                element.color = Color.init(white: 0.7)
+                element.color = .general
                 element.multiply(0.8)
                 element.verticalOffset -= element.size*0.1
             }
@@ -111,8 +111,7 @@ class TextFormatting {
                 
                 if elements[index1].text == "\\)" {
                     elements[index1].display = ")"
-                    elements[index1].color = Color.init(white: 0.6)
-                    elements[index1].opacity = 0.5
+                    elements[index1].color = .gray2
                 }
                 
                 let height = getTotalHeight(elements[index...index1].map{$0})
@@ -137,29 +136,24 @@ class TextFormatting {
             
             // MARK: Placeholders
             else if element.text == "□" || element.text == "■" {
-                
                 element.display = "■"
-                element.color = element.text == "■" ? color((theme ?? settings.theme).color1) : Color.init(white: 0.4)
-                element.verticalOffset -= element.size*0.05
-                element.opacity = 0.4
+                element.color = element.text == "■" ? .theme : .gray3
             }
             
             // MARK: Pointers
             else if element.text == "#|" {
-                
                 element.display = "|"
-                element.color = color((theme ?? settings.theme).color1)
-                element.opacity = 0.7
-                
-                element.leftPad -= element.width*0.75
-                element.rightPad -= element.width*0.75
+                element.color = .theme
+            
+                element.leftPad -= element.width * (prev != nil ? 0.8 : 0.5)
+                element.rightPad -= element.width * (next != nil ? 0.8 : 0.5)
                 element.verticalOffset += element.size*0.078
             }
  
             // MARK: Other Invisible Items
             else if element.text.contains("#") {
                 element.display = element.text.replacingOccurrences(of: "#", with: "")
-                element.opacity = 0
+                element.color = .invisible
                 if element.text != "#2" {
                     element.size = 0
                 }
@@ -173,8 +167,7 @@ class TextFormatting {
             
             // MARK: Errors
             else if element.text == "ERROR" {
-                element.color = Color.init(white: 0.6)
-                element.opacity = 0.6
+                element.color = .gray2
                 element.multiply(0.8)
             }
             
@@ -202,9 +195,13 @@ class TextFormatting {
             
             // MARK: Operations
             else if ["+","-","×","÷"].contains(element.text) {
-                element.leftPad -= element.size*0.05
-                element.rightPad -= element.size*0.05
-                element.color = Color.init(white: 0.4)
+                if let prev, prev.text != "#|" {
+                    element.leftPad -= element.size*0.15
+                }
+                if let next, next.text != "#|" {
+                    element.rightPad -= element.size*0.15
+                }
+                element.color = .gray1
             }
             
             // MARK: Connectors
@@ -245,28 +242,30 @@ class TextFormatting {
                 let index2 = nextIndex(start: index)
                 
                 for e in elements[index1..<index] {
-                    e.multiply(0.45)
-                    e.midline += element.size*0.35
+                    e.multiply(0.42)
+                    e.midline += element.size*0.37
                 }
                 
-                element.leftPad -= element.size*0.41
-                element.rightPad -= element.size*0.3
+                let radical = Radical(size: element.size)
+                radical.leftPad -= element.size*0.3
+                radical.rightPad -= element.size*0.27
+                radical.color = .general
+                elements[index] = radical
                 
                 let radicandHeight = getTotalHeight(elements[index+1...index2].map{$0})
                 let radicandWidth = getTotalWidth(elements[index+1...index2].map{$0})
                 
-                elements[index1].leftPad += element.size*0.05
-                elements[index2].rightPad += element.size*0.1
+                elements[index1].leftPad += elements[index].size*0.05
+                elements[index2].rightPad += elements[index].size*0.1
                 
                 let vinculum = Vinculum(width: radicandWidth, thickness: strokeSize(element.size))
                 vinculum.rightPad -= radicandWidth
-                vinculum.midline += radicandHeight.top + strokeSize(element.size)
-                vinculum.color = Color.init(white: 0.8)
+                vinculum.midline += radicandHeight.top + strokeSize(element.size)/2
+                vinculum.color = .general
                 elements.insert(vinculum, at: index+1)
                 
-                element.aspectRatio *= (vinculum.topPosition-radicandHeight.bottom)/element.size
-                element.midline += (vinculum.topPosition+radicandHeight.bottom)/2
-                element.verticalOffset += element.size*0.12
+                elements[index].aspectRatio *= (vinculum.topPosition-radicandHeight.bottom)/element.size
+                elements[index].midline += (vinculum.topPosition+radicandHeight.bottom)/2
                 
                 for e in elements[index1..<index] {
                     e.midline += element.midline - element.height*0.08
@@ -359,16 +358,17 @@ class TextFormatting {
                 let index2 = nextIndex(start: index)
 
                 for e in elements[index1...index2] {
-                    e.multiply(0.85)
+                    e.multiply(0.95)
                 }
                 element.display = "/"
+                element.midline += element.size*0.05
                 
                 for e in elements[index1..<index] {
                     e.midline += element.size*0.05
                 }
                 
-                element.leftPad -= element.size*0.2
-                element.rightPad -= element.size*0.15
+                element.leftPad -= element.size*0.05
+                element.rightPad -= element.size*0.2
                 
                 index = index2+1
             }
@@ -539,16 +539,16 @@ class TextFormatting {
                     e.multiply(0.35)
                 }
                 
-                element.verticalOffset += element.size*0.05
+                element.verticalOffset += element.size*0.078
                 
                 let lowerHeight = getTotalHeight(elements[index+1...index2].map{$0})
                 let upperHeight = getTotalHeight(elements[index2+1...index3].map{$0})
                 
                 for e in elements[index+1...index2] {
-                    e.midline -= element.size/2 + lowerHeight.top + element.size*0.01
+                    e.midline -= element.size/2 + lowerHeight.top - element.size*0.05
                 }
                 for e in elements[index2+1...index3] {
-                    e.midline += element.size/2 - upperHeight.bottom + element.size*0.01
+                    e.midline += element.size/2 - upperHeight.bottom
                 }
                 
                 let lowerWidth = getTotalWidth(elements[index+1...index2].map{$0})
@@ -562,6 +562,8 @@ class TextFormatting {
                 if lowerWidth >= element.width {
                     element.leftPad += (lowerWidth-element.width)/2
                 }
+                
+                elements[index3+1].leftPad -= element.size*0.1
                 
                 index = index3
             }
@@ -603,7 +605,6 @@ class TextFormatting {
                 let index2 = nextIndex(start: index1) + 1
                 elements.insert(TextElement("d", copy: elements[index1+1]), at: index1+1)
                 elements[index1+1].size = element.size
-                elements[index1+1].opacity = element.opacity
                 elements[index1+1].color = element.color
                 for element in elements[index+1...index1].reversed() {
                     elements.insert(TextElement(element.text, copy: element), at: index2+1)
@@ -660,7 +661,6 @@ class TextFormatting {
                     
                     elements.insert(TextElement("=", copy: elements[index4+2]), at: index4+2)
                     elements.insert(TextElement(elements[varIndex].display, copy: elements[index4+2]), at: index4+2)
-                    elements[index4+2].opacity = elements[varIndex].opacity
                     elements[index4+2].color = elements[varIndex].color
                     elements[index4+2].queueIndex = elements[varIndex].queueIndex
                     
@@ -692,7 +692,6 @@ class TextFormatting {
                 let index2 = nextIndex(start: index1)
                 
                 elements.insert(TextElement("d", copy: elements[index1+2 < elements.count ? index1+2 : index2]), at: index1+1)
-                elements[index1+1].opacity = element.opacity
                 elements[index1+1].color = element.color
                 
                 let integrandHeight = getTotalHeight(elements[index+1...index1].map{$0})
@@ -719,7 +718,6 @@ class TextFormatting {
                 let index4 = nextIndex(start: index3)
                 
                 elements.insert(TextElement("d", copy: elements[index3+2 < elements.count ? index3+2 : index4]), at: index3+1)
-                elements[index3+1].opacity = element.opacity
                 elements[index3+1].color = element.color
                 
                 let integrandHeight = getTotalHeight(elements[index2+1...index3].map{$0})

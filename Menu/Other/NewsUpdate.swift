@@ -125,7 +125,7 @@ struct NewsUpdate: View {
                             }
                             Spacer()
                             VStack(alignment: .trailing, spacing: 0) {
-                                    TextDisplay(strings: ["#2","√","#(","25","+","3","#)","+","8"], size: 24, opacity: 0.7, equals: true)
+                                TextDisplay(strings: ["#2","√","#(","25","+","3","#)","+","8"], size: 24, colorContext: .secondary, equals: true)
                                         .frame(height: 36)
                                     TextDisplay(strings: ["15.912512668"], size: 36)
                                         .frame(height: 45)
@@ -186,7 +186,7 @@ struct NewsUpdate: View {
                             VStack(alignment: .leading, spacing: 20) {
                                 TextDisplay(strings: ["0.5","*","»x","^","2","-","3"], size: 30)
                                 HStack {
-                                    TextDisplay(strings: ["»x"], size: 28, color: color(settings.theme.color1))
+                                    TextDisplay(strings: ["»x"], size: 28)
                                         .frame(width: 28)
                                     HStack {
                                         Text("UNKNOWN VAR")

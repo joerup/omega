@@ -30,7 +30,7 @@ struct ExtraResultView: View {
                     }
                     Spacer()
                     
-                    TextDisplay(strings: ["="]+result.strings, size: 30, color: .white, scrollable: true)
+                    TextDisplay(strings: ["="]+result.strings, size: 30, scrollable: true)
                 }
                 .padding(.vertical, 5)
             }

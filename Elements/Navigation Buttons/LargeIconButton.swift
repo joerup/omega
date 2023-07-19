@@ -26,7 +26,7 @@ struct LargeIconButton: View {
         }) {
             VStack(spacing: 0) {
                 Image(systemName: image)
-                    .font(.system(size: height*0.35, weight: .bold))
+                    .font(.system(size: height*0.35, weight: .semibold))
                     .frame(height: height*0.35)
                     .foregroundColor(color(Settings.settings.theme.color1, edit: true))
                     .padding(.vertical, height*0.05)

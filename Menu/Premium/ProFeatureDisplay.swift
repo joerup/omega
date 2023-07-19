@@ -73,7 +73,7 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
     var paragraph: String? {
         switch self {
         case .final:
-            return "We're committed to providing Omega Calculator at no cost – and with no advertisements – for everyone. We just want to give you the best calculator experience. Your purchase of Omega Pro helps us do that."
+            return "We're committed to providing this app at no cost – and with no ads – for everyone. We just want to give you the best calculator experience. Your purchase of Omega Pro helps us do that."
         default:
             return nil
         }

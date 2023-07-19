@@ -41,14 +41,16 @@ struct ThemeGrouping: View {
                     
                     Button(action: { }) {
                         VStack {
-                            ThemeIcon(theme: theme, size: size, locked: theme.locked, selected: self.settings.theme.name == theme.name)
+                            ThemeIcon(theme: theme, locked: theme.locked, selected: self.settings.theme.name == theme.name)
+                                .padding(.horizontal, 5)
 
                             Text(theme.name)
                                 .font(Font.system(.footnote, design: .rounded).weight(.bold))
                                 .lineLimit(0)
                                 .minimumScaleFactor(0.5)
-                                .foregroundColor(Color.init(white: 0.7))
-                                .frame(width: 70, height: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
+                                .foregroundColor(.white)
+                            
+                            ThemeCircles(theme: theme)
                                 .padding(.bottom, 5)
                         }
                         .onTapGesture {

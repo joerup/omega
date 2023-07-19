@@ -33,28 +33,39 @@ struct StoredVarView: View {
                                 .foregroundColor(Color.init(white: 0.2))
                                 .frame(width: 85, height: 85)
                                 .cornerRadius(85/4)
-                            TextDisplay(strings: [storedVar.variable.text], size: 50, color: color(settings.theme.color1, edit: true))
+                            TextDisplay(strings: [storedVar.variable.text], size: 50, colorContext: .theme)
                         }
                         .padding(.top, -3)
 
                         Spacer()
                         
-                        VStack(alignment: .leading, spacing: 0) {
-
-                            TextField(NSLocalizedString("Variable", comment: ""), text: self.$name, onCommit: {
-                                while self.name.last == " " {
-                                    self.name.removeLast()
-                                }
-                                while self.name.first == " " {
-                                    self.name.removeFirst()
-                                }
-                                if self.name == "" {
-                                    self.name = ""
-                                }
-                                storedVar.rename(to: name)
-                            })
-                            .font(Font.system(.title2, design: .rounded).weight(.bold))
-                            .foregroundColor(color(self.settings.theme.color1, edit: true))
+                        VStack(alignment: .leading, spacing: 2) {
+                            
+                            ZStack(alignment: .leading) {
+                                Text("Variable")
+                                    .font(Font.system(.title2, design: .rounded).weight(.bold))
+                                    .lineLimit(0).opacity(0)
+                                Text(self.name)
+                                    .font(Font.system(.title2, design: .rounded).weight(.bold))
+                                    .lineLimit(0).opacity(0)
+                            }
+                            .padding(.trailing, 15)
+                            .overlay {
+                                TextField(NSLocalizedString("Variable", comment: ""), text: self.$name, onCommit: {
+                                    while self.name.last == " " {
+                                        self.name.removeLast()
+                                    }
+                                    while self.name.first == " " {
+                                        self.name.removeFirst()
+                                    }
+                                    if self.name == "" {
+                                        self.name = ""
+                                    }
+                                    storedVar.rename(to: name)
+                                })
+                                .font(Font.system(.title2, design: .rounded).weight(.bold))
+                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                            }
                             .padding(.top, -3)
 
                             HStack(spacing: 5) {
@@ -70,6 +81,8 @@ struct StoredVarView: View {
                                 Text(self.dateString(self.storedVar.date ?? Date(), dateStyle: .none, timeStyle: .short))
                                     .font(Font.system(.subheadline, design: .rounded))
                                     .foregroundColor(Color.init(white: 0.6))
+                                
+                                Spacer()
                             }
                             .padding(.leading, 0.5)
                             .padding(.bottom, 2)

@@ -72,21 +72,21 @@ struct DetailButtonRow: View {
                             settings.detailOverlay = .none
                         }
                         
-                        //                SmallTextButton(text: "UNIT",
-                        //                                color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
-                        //                                textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
-                        //                                width: size == .small ? 50 : 65,
-                        //                                smallerSmall: orientation == .landscape,
-                        //                                sound: .click3
-                        //                ) {
-                        //                    guard proCheck() else {
-                        //                        settings.popUp(.misc)
-                        //                        return
-                        //                    }
-                        //                    settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
-                        //                    settings.buttonUppercase = false
-                        //                    settings.detailOverlay = .none
-                        //                }
+//                                        SmallTextButton(text: "UNIT",
+//                                                        color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
+//                                                        textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
+//                                                        width: size == .small ? 50 : 65,
+//                                                        smallerSmall: orientation == .landscape,
+//                                                        sound: .click3
+//                                        ) {
+//                                            guard proCheck() else {
+//                                                settings.popUp(.misc)
+//                                                return
+//                                            }
+//                                            settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
+//                                            settings.buttonUppercase = false
+//                                            settings.detailOverlay = .none
+//                                        }
                     }
                     
                     if orientation == .landscape || size == .large {

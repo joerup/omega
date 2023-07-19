@@ -106,7 +106,7 @@ struct OmegaProSplash: View {
             
             if let paragraph = displayType.paragraph {
                 Text(paragraph)
-                    .font(.callout.weight(.semibold))
+                    .font(.footnote.weight(.semibold))
                     .foregroundColor(.white.opacity(0.9))
                     .minimumScaleFactor(0.5)
                     .multilineTextAlignment(.center)

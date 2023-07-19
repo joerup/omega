@@ -34,6 +34,8 @@ class ThemeData {
             return 5
         case "Gemstones":
             return 6
+        case "Monochrome":
+            return 7
         default:
             return -1
         }
@@ -44,35 +46,35 @@ class ThemeData {
         ThemeCategory(id: 0, name: "Basic", themes: [
             
                 Theme(id: 0,
-                      name: "Classic Blue",
+                      name: "Classic",
                       category: "Basic",
-                      color1: [040,130,240], // Light Blue
-                      color2: [230,120,020], // Orange
-                      color3: [030,080,180] // Dark Blue
+                      color1: [40,130,240],
+                      color2: [230,119,20],
+                      color3: [47,69,188]
                 ),
             
                 Theme(id: 1,
-                      name: "Classic Pink",
+                      name: "Special",
                       category: "Basic",
-                      color1: [245,135,208], // Light Pink
-                      color2: [255,144,070], // Orange
-                      color3: [229,037,210] // Hot Pink
+                      color1: [245,131,204],
+                      color2: [254,141,79],
+                      color3: [229,33,169]
                 ),
                 
                 Theme(id: 2,
-                      name: "Light",
+                      name: "Grayscale",
                       category: "Basic",
-                      color1: [200,200,200], // White
-                      color2: [100,100,100], // Dark Gray
-                      color3: [150,150,150] // Gray
+                      color1: [170,178,177],
+                      color2: [96,98,110],
+                      color3: [131,140,142]
                 ),
                 
                 Theme(id: 3,
                       name: "Dark",
                       category: "Basic",
-                      color1: [055,055,055], // Dark Gray
-                      color2: [032,032,032], // Black
-                      color3: [073,073,073] // Gray
+                      color1: [80,80,80],
+                      color2: [53,55,55],
+                      color3: [132,136,136]
                 ),
             ]
         ),
@@ -82,33 +84,33 @@ class ThemeData {
                 Theme(id: 4,
                       name: "Warm",
                       category: "Colorful",
-                      color1: [244,061,063], // Pinkish Red
-                      color2: [232,094,024], // Orange
-                      color3: [156,014,010] // Dark Red
+                      color1: [243,32,44],
+                      color2: [237,121,20],
+                      color3: [185,42,67]
                 ),
                 
                 Theme(id: 5,
                       name: "Cool",
                       category: "Colorful",
-                      color1: [180,230,240], // Light Blue
-                      color2: [200,020,200], // Magenta
-                      color3: [000,180,200] // Light Blue
+                      color1: [85,192,218],
+                      color2: [192,90,210],
+                      color3: [133,139,215]
                 ),
                 
                 Theme(id: 6,
                       name: "Life",
                       category: "Colorful",
-                      color1: [075,200,102], // Bright Green
-                      color2: [040,177,190], // Blue
-                      color3: [015,115,050] // Dark Green
+                      color1: [74,200,101],
+                      color2: [37,178,175],
+                      color3: [14,115,59]
                 ),
                 
                 Theme(id: 7,
                       name: "Pastel",
                       category: "Colorful",
-                      color1: [200,225,176], // Light Green
-                      color2: [176,176,225], // Light Blue
-                      color3: [225,200,176] // Light Orange
+                      color1: [164,205,150],
+                      color2: [160,151,215],
+                      color3: [207,157,137]
                 ),
             ]
         ),
@@ -118,33 +120,33 @@ class ThemeData {
                 Theme(id: 8,
                       name: "Grassy",
                       category: "The Land",
-                      color1: [065,233,087], // Lime Green
-                      color2: [240,210,087], // Yellow
-                      color3: [034,132,047] // Dark Green
+                      color1: [95,193,44],
+                      color2: [177,201,27],
+                      color3: [57,132,43]
                 ),
                 
                 Theme(id: 9,
                       name: "Mountain",
                       category: "The Land",
-                      color1: [201,169,218], // Light Purple
-                      color2: [101,141,159], // Dark Teal
-                      color3: [095,058,115] // Dark Purple
+                      color1: [184,160,207],
+                      color2: [101,131,159],
+                      color3: [97,68,130]
                 ),
                 
                 Theme(id: 10,
                       name: "Desert",
                       category: "The Land",
-                      color1: [210,176,147], // Tan
-                      color2: [135,155,142], // Dull Green
-                      color3: [196,124,083] // Brown Orange
+                      color1: [212,172,136],
+                      color2: [135,155,142],
+                      color3: [196,124,83]
                 ),
                 
                 Theme(id: 11,
                       name: "Floral",
                       category: "The Land",
-                      color1: [184,043,216], // Purple
-                      color2: [218,236,056], // Yellow Green
-                      color3: [132,032,213] // Dark Purple
+                      color1: [174,56,218],
+                      color2: [149,185,46],
+                      color3: [123,71,196]
                 ),
             ]
         ),
@@ -154,33 +156,33 @@ class ThemeData {
                 Theme(id: 12,
                       name: "Aquatic",
                       category: "The Sea",
-                      color1: [115,215,235], // Light Blue
-                      color2: [242,065,011], // Scarlet
-                      color3: [025,143,166] // Teal
+                      color1: [103,194,229],
+                      color2: [242,65,10],
+                      color3: [43,124,139]
                 ),
                 
                 Theme(id: 13,
                       name: "Scuba",
                       category: "The Sea",
-                      color1: [000,030,150], // Blue
-                      color2: [000,090,030], // Dark Green
-                      color3: [000,025,100] // Dark Blue
+                      color1: [38,68,217],
+                      color2: [0,117,65],
+                      color3: [49,43,144]
                 ),
                 
                 Theme(id: 14,
                       name: "Sailboat",
                       category: "The Sea",
-                      color1: [224,055,055], // Red
-                      color2: [209,171,145], // Beige
-                      color3: [002,191,212] // Light Blue
+                      color1: [0,163,212],
+                      color2: [191,157,154],
+                      color3: [223,59,97]
                 ),
                 
                 Theme(id: 15,
                       name: "Coral",
                       category: "The Sea",
-                      color1: [053,138,159], // Blue-Gray
-                      color2: [144,083,205], // Purple
-                      color3: [053,074,159] // Indigo
+                      color1: [0,164,170],
+                      color2: [117,92,211],
+                      color3: [83,63,190]
                 ),
             ]
         ),
@@ -190,33 +192,33 @@ class ThemeData {
                 Theme(id: 16,
                       name: "Galaxy",
                       category: "The Sky",
-                      color1: [150,010,200], // Purple
-                      color2: [231,020,243], // Magenta
-                      color3: [000,002,154] // Blue
+                      color1: [132,15,200],
+                      color2: [204,47,236],
+                      color3: [55,44,157]
                 ),
                 
                 Theme(id: 17,
                       name: "Sunset",
                       category: "The Sky",
-                      color1: [252,031,090], // Pinkish Red
-                      color2: [236,075,236], // Magenta
-                      color3: [252,141,031] // Orangey Yellow
+                      color1: [236,43,79],
+                      color2: [232,95,148],
+                      color3: [238,129,84]
                 ),
                 
                 Theme(id: 18,
                       name: "Moonlight",
                       category: "The Sky",
-                      color1: [212,212,212], // White
-                      color2: [000,027,100], // Dark Blue
-                      color3: [000,014,065] // Darker Blue
+                      color1: [25,100,134],
+                      color2: [194,175,164],
+                      color3: [46,73,88]
                 ),
                 
                 Theme(id: 19,
                       name: "Alien",
                       category: "The Sky",
-                      color1: [089,239,169], // Light Green
-                      color2: [074,183,205], // Light Blue
-                      color3: [184,136,202] // Light Purple
+                      color1: [1,209,135],
+                      color2: [121,170,192],
+                      color3: [176,124,186]
                 ),
             ]
         ),
@@ -226,33 +228,33 @@ class ThemeData {
                 Theme(id: 20,
                       name: "Caterpillar",
                       category: "Animals",
-                      color1: [000,207,242], // Aqua
-                      color2: [157,212,040], // Yellow Green
-                      color3: [020,135,170] // Dark Aqua
+                      color1: [29,198,242],
+                      color2: [150,219,35],
+                      color3: [31,121,172]
                 ),
                 
                 Theme(id: 21,
                       name: "Turtle",
                       category: "Animals",
-                      color1: [142,179,152], // Dull Green
-                      color2: [210,239,218], // Very Light Green
-                      color3: [004,081,032] // Dark Green
+                      color1: [118,180,152],
+                      color2: [84,128,143],
+                      color3: [35,110,75]
                 ),
                 
                 Theme(id: 22,
                       name: "Unicorn",
                       category: "Animals",
-                      color1: [253,091,145], // Pink
-                      color2: [054,010,118], // Indigo
-                      color3: [195,188,205] // White
+                      color1: [225,121,143],
+                      color2: [109,44,119],
+                      color3: [192,158,160]
                 ),
                 
                 Theme(id: 23,
                       name: "Robin",
                       category: "Animals",
-                      color1: [060,208,225], // Light Blue
-                      color2: [234,061,002], // Scarlet
-                      color3: [004,135,087] // Teal
+                      color1: [56,194,219],
+                      color2: [253,82,110],
+                      color3: [4,133,110]
                 ),
             ]
         ),
@@ -262,33 +264,33 @@ class ThemeData {
                 Theme(id: 24,
                       name: "Watermelon",
                       category: "Food",
-                      color1: [228,051,090], // Red Violet
-                      color2: [104,223,024], // Lime Green
-                      color3: [023,170,006] // Dark Green
+                      color1: [218,52,90],
+                      color2: [118,191,43],
+                      color3: [40,136,31]
                 ),
                 
                 Theme(id: 25,
                       name: "Cookie",
                       category: "Food",
-                      color1: [201,149,047], // Dough
-                      color2: [125,090,014], // Brown
-                      color3: [043,031,016] // Chocolate
+                      color1: [201,136,49],
+                      color2: [116,85,44],
+                      color3: [90,69,60]
                 ),
                 
                 Theme(id: 26,
                       name: "Pineapple",
                       category: "Food",
-                      color1: [200,168,000], // Yellow
-                      color2: [115,056,002], // Brown
-                      color3: [010,141,016] // Green
+                      color1: [224,173,-34],
+                      color2: [141,99,4],
+                      color3: [-22,143,98]
                 ),
                 
                 Theme(id: 27,
                       name: "Jelly",
                       category: "Food",
-                      color1: [210,043,144], // Rose
-                      color2: [112,016,106], // Fuschia
-                      color3: [038,016,112] // Dark Blue
+                      color1: [210,43,144],
+                      color2: [111,15,105],
+                      color3: [61,49,129]
                 ),
             ]
         ),
@@ -298,33 +300,33 @@ class ThemeData {
                 Theme(id: 28,
                       name: "Hearts",
                       category: "Festive",
-                      color1: [214,020,191], // Pink
-                      color2: [148,023,169], // Purple
-                      color3: [201,014,092] // Red
+                      color1: [243,80,165],
+                      color2: [160,80,148],
+                      color3: [198,47,89]
                 ),
                 
                 Theme(id: 29,
                       name: "Fireworks",
                       category: "Festive",
-                      color1: [210,210,210], // White
-                      color2: [200,000,000], // Red
-                      color3: [000,000,186] // Blue
+                      color1: [168,183,215],
+                      color2: [224,54,67],
+                      color3: [64,82,184]
                 ),
                 
                 Theme(id: 30,
                       name: "Pumpkin",
                       category: "Festive",
-                      color1: [249,133,044], // Orange
-                      color2: [145,057,025], // Chestnut
-                      color3: [225,060,000] // Scarlet
+                      color1: [248,136,34],
+                      color2: [150,69,32],
+                      color3: [226,91,25]
                 ),
                 
                 Theme(id: 31,
                       name: "Holiday",
                       category: "Festive",
-                      color1: [157,000,000], // Red
-                      color2: [210,210,210], // White
-                      color3: [005,142,005] // Dark Green
+                      color1: [174,34,38],
+                      color2: [177,141,96],
+                      color3: [36,127,35]
                 ),
             ]
         ),
@@ -334,35 +336,71 @@ class ThemeData {
                 Theme(id: 32,
                       name: "Gold",
                       category: "Gemstones",
-                      color1: [240,200,000],
-                      color2: [255,220,100],
-                      color3: [200,150,000]
+                      color1: [242,181,-18],
+                      color2: [209,147,89],
+                      color3: [220,143,12]
                 ),
                 
                 Theme(id: 33,
                       name: "Ruby",
                       category: "Gemstones",
-                      color1: [220,055,090],
-                      color2: [155,017,030],
-                      color3: [198,031,095]
+                      color1: [235,51,96],
+                      color2: [153,35,83],
+                      color3: [186,34,104]
                 ),
                 
                 Theme(id: 34,
                       name: "Amethyst",
                       category: "Gemstones",
-                      color1: [165,031,226],
+                      color1: [165,31,226],
                       color2: [182,160,206],
-                      color3: [180,124,255]
+                      color3: [180,124,254]
                 ),
                 
                 Theme(id: 35,
                       name: "Emerald",
                       category: "Gemstones",
-                      color1: [000,210,155],
-                      color2: [150,235,200],
-                      color3: [018,121,091]
+                      color1: [17,196,139],
+                      color2: [2,123,110],
+                      color3: [29,111,83]
                 ),
             ]
-        )
+        ),
+        
+        ThemeCategory(id: 9, name: "Monochrome", themes: [
+            
+                Theme(id: 36,
+                      name: "Orange",
+                      category: "Basic",
+                      color1: [80,80,80],
+                      color2: [271,142,0],
+                      color3: [132,136,136]
+                ),
+                
+                Theme(id: 37,
+                      name: "Blue",
+                      category: "Basic",
+                      color1: [80,80,80],
+                      color2: [0,119,243],
+                      color3: [131,136,136]
+                ),
+                
+                Theme(id: 38,
+                      name: "Green",
+                      category: "Basic",
+                      color1: [80,80,80],
+                      color2: [0,201,18],
+                      color3: [131,136,136]
+                ),
+                
+                Theme(id: 39,
+                      name: "Hot Pink",
+                      category: "Basic",
+                      color1: [80,80,80],
+                      color2: [255,57,125],
+                      color3: [131,136,136]
+                ),
+            ]
+        ),
     ]
 }

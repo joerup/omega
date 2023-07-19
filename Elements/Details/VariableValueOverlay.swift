@@ -32,7 +32,7 @@ struct VariableValueOverlay: View {
 
                         HStack {
 
-                            TextDisplay(strings: [variable.text], size: size == .small ? 25 : 25, color: color(settings.theme.color1))
+                            TextDisplay(strings: [variable.text], size: size == .small ? 25 : 25, colorContext: .theme)
                                 .frame(width: size == .small ? 25 : 35)
 
                             HStack {
@@ -45,7 +45,7 @@ struct VariableValueOverlay: View {
                                 Spacer()
 
                                 if variable.type == .bound || variable.type == .dummy {
-                                    TextDisplay(strings: [], size: size == .small ? 18 : 25, color: Color.init(white: 0.6), scrollable: true)
+                                    TextDisplay(strings: [], size: size == .small ? 18 : 25, colorContext: .secondary, scrollable: true)
                                 } else {
                                     TextInput(queue: calculation.queue.allLetters[v].value, placeholder: [variable.text], size: size == .small ? 18 : 25, scrollable: true, onChange: { value in
                                         if value.empty {

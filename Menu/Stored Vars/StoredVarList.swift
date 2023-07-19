@@ -155,8 +155,8 @@ struct StoredVarList: View {
                                     }
 
                                     HStack {
-                                        TextDisplay(strings: [storedVar.variable.text], size: 32, color: color(settings.theme.color1, edit: true))
-                                        TextDisplay(strings: ["="], size: 24, opacity: 0.5)
+                                        TextDisplay(strings: [storedVar.variable.text], size: 32, colorContext: .theme)
+                                        TextDisplay(strings: ["="], size: 24, colorContext: .secondary)
                                     }
                                     .frame(width: 60)
 
@@ -166,8 +166,8 @@ struct StoredVarList: View {
 
                                     if !selectionMode {
                                         Image(systemName: "plus.circle")
+                                            .font(.headline.weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.8))
-                                            .imageScale(.large)
                                             .frame(maxHeight: .infinity)
                                             .onTapGesture {
                                                 guard proCheckNotice(.variables) else { return }

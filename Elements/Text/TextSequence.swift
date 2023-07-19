@@ -16,8 +16,7 @@ struct TextSequence: View {
     
     var textElements: [TextElement]
     
-    var color: Color? = nil
-    var opacity: CGFloat? = nil
+    var colorContext: ColorContext = .primary
     
     var calculation: Calculation = Calculation.current
     
@@ -49,13 +48,23 @@ struct TextSequence: View {
                         if element is Vinculum {
                             
                             RoundedRectangle(cornerRadius: 0.5*element.size)
-                                .fill(color ?? element.color)
-                                .opacity(opacity ?? element.opacity)
+                                .fill(element.color.inContext(colorContext))
                                 .frame(width: element.width, height: element.size)
+                            
+                        } else if element is Radical {
+                                
+                            Path { path in
+                                path.move(to: CGPoint(x: 0, y: element.size * element.aspectRatio * 0.55))
+                                path.addLine(to: CGPoint(x: element.width*0.375, y: element.size * (element.aspectRatio - 0.12)))
+                                path.addLine(to: CGPoint(x: element.width*0.75, y: element.size * 0.05))
+                            }
+                            .stroke(element.color.inContext(colorContext),
+                                    style: StrokeStyle(lineWidth: element.size*0.1, lineCap: .round, lineJoin: .round))
+                            .frame(width: element.width, height: element.size * element.aspectRatio)
                             
                         } else if interaction != .none {
                             
-                            TextLabel(element: element, color: color, opacity: opacity, interaction: interaction)
+                            TextLabel(element: element, colorContext: colorContext, interaction: interaction)
                                 .frame(width: element.width, height: element.height)
                                 .offset(x: element.horizontalOffset, y: -element.verticalOffset)
                                 .scaleEffect(x: 1, y: element.aspectRatio)
@@ -72,7 +81,7 @@ struct TextSequence: View {
                             
                         } else {
                             
-                            TextLabel(element: element, color: color, opacity: opacity)
+                            TextLabel(element: element, colorContext: colorContext)
                                 .frame(width: element.width, height: element.height)
                                 .offset(x: element.horizontalOffset, y: -element.verticalOffset)
                                 .scaleEffect(x: 1, y: element.aspectRatio)

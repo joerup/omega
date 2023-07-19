@@ -36,7 +36,7 @@ struct SubstituteView: View {
                 
                 HStack {
                     
-                    TextDisplay(strings: [variable.text], size: size == .small ? 24 : 35, color: color(settings.theme.color1, edit: true))
+                    TextDisplay(strings: [variable.text], size: size == .small ? 24 : 35, colorContext: .theme)
                         .frame(width: size == .small ? 28 : 35)
                     
                     HStack {
@@ -51,10 +51,10 @@ struct SubstituteView: View {
                         Spacer()
                         
                         if variable.type == .constant {
-                            TextDisplay(strings: variable.value!.strings, size: size == .small ? 20 : 25, color: Color.init(white: variable.value!.variables.isEmpty && variable.value!.bounds.isEmpty ? 0.8 : 1), scrollable: true)
+                            TextDisplay(strings: variable.value!.strings, size: size == .small ? 20 : 25, colorContext: variable.value!.variables.isEmpty && variable.value!.bounds.isEmpty ? .primary : .secondary, scrollable: true)
                         }
                         else if variable.type == .bound || variable.type == .dummy {
-                            TextDisplay(strings: [], size: size == .small ? 20 : 25, color: Color.init(white: 0.6), scrollable: true)
+                            TextDisplay(strings: [], size: size == .small ? 20 : 25, colorContext: .secondary, scrollable: true)
                         }
                         else if variable.storedValue {
                             TextInput(queue: variable.value!, placeholder: [variable.text], defaultValue: variable.value!, size: size == .small ? 20 : 25, scrollable: true, onChange: { value in

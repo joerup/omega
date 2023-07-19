@@ -192,39 +192,6 @@ extension Value {
             return Expression([Function(.definteg), Expression(lower, grouping: .hidden, pattern: .stuckLeft), Expression(upper, grouping: .hidden, pattern: .stuckLeft), Expression(integrand, grouping: .hidden, pattern: .stuckLeft), Expression(variable, grouping: .bound, pattern: .stuckLeft)])
         }
         
-        
-//        let dx = (upper.value - lower.value)/4
-//
-//        var total: Double = 0
-//        var index = lower.value + dx
-//        var four = true
-//
-//        // Add the lower value
-//        if let number = integrand.plugIn(lower, to: variable) as? Number {
-//            print(lower.value)
-//            total += number.value
-//        }
-//        // Add the alternating 4 and 2
-//        while index < upper.value {
-//            if let number = integrand.plugIn(Number(index), to: variable) as? Number {
-//                print("------",index)
-//                total += (four ? 4:2)*number.value
-//            }
-//            four.toggle()
-//            index += dx
-//        }
-//        // Add the upper value
-//        if let number = integrand.plugIn(upper, to: variable) as? Number {
-//            print(upper.value)
-//            total += number.value
-//        }
-//
-//        result = number(dx/3 * total)
-        
-//        result = ((upper - lower)/Number(6)) * ( integrand.plugIn(lower, to: variable) + Number(4)*integrand.plugIn((lower + upper)/Number(2), to: variable) + integrand.plugIn(upper, to: variable) )
-        
-        
-        
         // Set the intervals
         let intervals = 2500
         let dx = (upper.value - lower.value) / Double(intervals)
@@ -241,7 +208,7 @@ extension Value {
             let y = integrand.plugIn(Number(x), to: variable)
 
             // Set the y value
-            if let y = (y as? Number)?.value {
+            if let y = (setValue(y, keepExp: false) as? Number)?.value {
 
                 // Add the 2x trapezoid area
                 if let y0 = y0 {
@@ -250,6 +217,12 @@ extension Value {
 
                 // Set the last value
                 y0 = y
+            }
+            else if i == 0 || i == intervals {
+                
+            }
+            else {
+                return Error()
             }
         }
 
