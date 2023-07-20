@@ -14,8 +14,8 @@ class ThemeData {
     
     static var allThemes: [Theme] {
         var themes: [Theme] = []
-        ThemeData.themes.forEach { themes += $0.themes }
-        return themes
+        ThemeData.themes.forEach({ themes += $0.themes })
+        return themes.sorted(by: { $0.id < $1.id })
     }
     
     static func categoryID(for name: String) -> Int {
@@ -34,8 +34,6 @@ class ThemeData {
             return 5
         case "Gemstones":
             return 6
-        case "Monochrome":
-            return 7
         default:
             return -1
         }
@@ -79,7 +77,43 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 1, name: "Colorful", themes: [
+        ThemeCategory(id: 1, name: "Monochrome", themes: [
+            
+                Theme(id: 36,
+                      name: "Circuit",
+                      category: "Monochrome",
+                      color1: [80,80,80],
+                      color2: [271,142,0],
+                      color3: [132,136,136]
+                ),
+                
+                Theme(id: 37,
+                      name: "Electric",
+                      category: "Monochrome",
+                      color1: [80,80,80],
+                      color2: [0,119,243],
+                      color3: [131,136,136]
+                ),
+                
+                Theme(id: 38,
+                      name: "Boost",
+                      category: "Monochrome",
+                      color1: [80,80,80],
+                      color2: [0,201,18],
+                      color3: [131,136,136]
+                ),
+                
+                Theme(id: 39,
+                      name: "Neon",
+                      category: "Monochrome",
+                      color1: [80,80,80],
+                      color2: [255,57,125],
+                      color3: [131,136,136]
+                ),
+            ]
+        ),
+        
+        ThemeCategory(id: 2, name: "Colorful", themes: [
         
                 Theme(id: 4,
                       name: "Warm",
@@ -115,7 +149,43 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 2, name: "The Land", themes: [
+        ThemeCategory(id: 3, name: "Gemstones", themes: [
+
+                Theme(id: 32,
+                      name: "Gold",
+                      category: "Gemstones",
+                      color1: [242,181,-17],
+                      color2: [162,133,106],
+                      color3: [220,143,11]
+                ),
+                
+                Theme(id: 33,
+                      name: "Ruby",
+                      category: "Gemstones",
+                      color1: [235,50,96],
+                      color2: [139,37,83],
+                      color3: [186,33,103]
+                ),
+                
+                Theme(id: 34,
+                      name: "Amethyst",
+                      category: "Gemstones",
+                      color1: [165,31,226],
+                      color2: [182,160,206],
+                      color3: [180,124,254]
+                ),
+                
+                Theme(id: 35,
+                      name: "Emerald",
+                      category: "Gemstones",
+                      color1: [17,196,139],
+                      color2: [2,123,110],
+                      color3: [29,111,83]
+                ),
+            ]
+        ),
+        
+        ThemeCategory(id: 4, name: "The Land", themes: [
             
                 Theme(id: 8,
                       name: "Grassy",
@@ -151,7 +221,7 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 3, name: "The Sea", themes: [
+        ThemeCategory(id: 5, name: "The Sea", themes: [
                 
                 Theme(id: 12,
                       name: "Aquatic",
@@ -172,9 +242,9 @@ class ThemeData {
                 Theme(id: 14,
                       name: "Sailboat",
                       category: "The Sea",
-                      color1: [0,163,212],
+                      color1: [223,59,97],
                       color2: [191,157,154],
-                      color3: [223,59,97]
+                      color3: [0,163,212]
                 ),
                 
                 Theme(id: 15,
@@ -187,7 +257,7 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 4, name: "The Sky", themes: [
+        ThemeCategory(id: 6, name: "The Sky", themes: [
         
                 Theme(id: 16,
                       name: "Galaxy",
@@ -208,9 +278,9 @@ class ThemeData {
                 Theme(id: 18,
                       name: "Moonlight",
                       category: "The Sky",
-                      color1: [25,100,134],
+                      color1: [24,99,133],
                       color2: [194,175,164],
-                      color3: [46,73,88]
+                      color3: [29,59,97]
                 ),
                 
                 Theme(id: 19,
@@ -223,7 +293,7 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 5, name: "Animals", themes: [
+        ThemeCategory(id: 7, name: "Animals", themes: [
         
                 Theme(id: 20,
                       name: "Caterpillar",
@@ -236,16 +306,16 @@ class ThemeData {
                 Theme(id: 21,
                       name: "Turtle",
                       category: "Animals",
-                      color1: [118,180,152],
-                      color2: [84,128,143],
-                      color3: [35,110,75]
+                      color1: [130,184,151],
+                      color2: [90,116,143],
+                      color3: [69,105,87]
                 ),
                 
                 Theme(id: 22,
                       name: "Unicorn",
                       category: "Animals",
                       color1: [225,121,143],
-                      color2: [109,44,119],
+                      color2: [109,43,100],
                       color3: [192,158,160]
                 ),
                 
@@ -259,7 +329,7 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 6, name: "Food", themes: [
+        ThemeCategory(id: 8, name: "Food", themes: [
             
                 Theme(id: 24,
                       name: "Watermelon",
@@ -272,9 +342,9 @@ class ThemeData {
                 Theme(id: 25,
                       name: "Cookie",
                       category: "Food",
-                      color1: [201,136,49],
-                      color2: [116,85,44],
-                      color3: [90,69,60]
+                      color1: [201,136,48],
+                      color2: [121,90,56],
+                      color3: [80,57,53]
                 ),
                 
                 Theme(id: 26,
@@ -295,20 +365,20 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 7, name: "Festive", themes: [
+        ThemeCategory(id: 9, name: "Festive", themes: [
 
                 Theme(id: 28,
                       name: "Hearts",
                       category: "Festive",
                       color1: [243,80,165],
-                      color2: [160,80,148],
-                      color3: [198,47,89]
+                      color2: [160,59,178],
+                      color3: [198,46,88]
                 ),
                 
                 Theme(id: 29,
                       name: "Fireworks",
                       category: "Festive",
-                      color1: [168,183,215],
+                      color1: [159,170,207],
                       color2: [224,54,67],
                       color3: [64,82,184]
                 ),
@@ -327,78 +397,6 @@ class ThemeData {
                       color1: [174,34,38],
                       color2: [177,141,96],
                       color3: [36,127,35]
-                ),
-            ]
-        ),
-        
-        ThemeCategory(id: 8, name: "Gemstones", themes: [
-
-                Theme(id: 32,
-                      name: "Gold",
-                      category: "Gemstones",
-                      color1: [242,181,-18],
-                      color2: [209,147,89],
-                      color3: [220,143,12]
-                ),
-                
-                Theme(id: 33,
-                      name: "Ruby",
-                      category: "Gemstones",
-                      color1: [235,51,96],
-                      color2: [153,35,83],
-                      color3: [186,34,104]
-                ),
-                
-                Theme(id: 34,
-                      name: "Amethyst",
-                      category: "Gemstones",
-                      color1: [165,31,226],
-                      color2: [182,160,206],
-                      color3: [180,124,254]
-                ),
-                
-                Theme(id: 35,
-                      name: "Emerald",
-                      category: "Gemstones",
-                      color1: [17,196,139],
-                      color2: [2,123,110],
-                      color3: [29,111,83]
-                ),
-            ]
-        ),
-        
-        ThemeCategory(id: 9, name: "Monochrome", themes: [
-            
-                Theme(id: 36,
-                      name: "Orange",
-                      category: "Basic",
-                      color1: [80,80,80],
-                      color2: [271,142,0],
-                      color3: [132,136,136]
-                ),
-                
-                Theme(id: 37,
-                      name: "Blue",
-                      category: "Basic",
-                      color1: [80,80,80],
-                      color2: [0,119,243],
-                      color3: [131,136,136]
-                ),
-                
-                Theme(id: 38,
-                      name: "Green",
-                      category: "Basic",
-                      color1: [80,80,80],
-                      color2: [0,201,18],
-                      color3: [131,136,136]
-                ),
-                
-                Theme(id: 39,
-                      name: "Hot Pink",
-                      category: "Basic",
-                      color1: [80,80,80],
-                      color2: [255,57,125],
-                      color3: [131,136,136]
                 ),
             ]
         ),

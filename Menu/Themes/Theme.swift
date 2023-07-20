@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class Theme: ObservableObject, Codable {
+class Theme: ObservableObject, Codable, Identifiable {
     
     var id: Int
     var name: String
@@ -55,6 +55,7 @@ class Theme: ObservableObject, Codable {
         guard !locked else { return }
         
         Settings.settings.themeID = self.id
+        Settings.settings.notification = .theme
         Calculation.current.refresh()
         
         let impactMed = UIImpactFeedbackGenerator(style: .light)

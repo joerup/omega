@@ -33,6 +33,13 @@
 					<string>aquatic</string>
 				</array>
 			</dict>
+			<key>Boost</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>boost</string>
+				</array>
+			</dict>
 			<key>Caterpillar</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -40,18 +47,18 @@
 					<string>caterpillar</string>
 				</array>
 			</dict>
+			<key>Circuit</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>circuit</string>
+				</array>
+			</dict>
 			<key>Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>classic</string>
-				</array>
-			</dict>
-			<key>Classic Pink</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>classicpink</string>
 				</array>
 			</dict>
 			<key>Cookie</key>
@@ -87,6 +94,13 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>desert</string>
+				</array>
+			</dict>
+			<key>Electric</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>electric</string>
 				</array>
 			</dict>
 			<key>Emerald</key>
@@ -131,6 +145,13 @@
 					<string>grassy</string>
 				</array>
 			</dict>
+			<key>Grayscale</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>grayscale</string>
+				</array>
+			</dict>
 			<key>Hearts</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -159,13 +180,6 @@
 					<string>life</string>
 				</array>
 			</dict>
-			<key>Light</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>light</string>
-				</array>
-			</dict>
 			<key>Moonlight</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -180,11 +194,11 @@
 					<string>mountain</string>
 				</array>
 			</dict>
-			<key>Orange</key>
+			<key>Neon</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>orange</string>
+					<string>neon</string>
 				</array>
 			</dict>
 			<key>Pastel</key>
@@ -234,6 +248,13 @@
 				<key>CFBundleIconFiles</key>
 				<array>
 					<string>scuba</string>
+				</array>
+			</dict>
+			<key>Special</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>special</string>
 				</array>
 			</dict>
 			<key>Sunset</key>
@@ -308,6 +329,14 @@
 					<string>aquatic-pro</string>
 				</array>
 			</dict>
+			<key>Boost</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>boost-ipad</string>
+					<string>boost-pro</string>
+				</array>
+			</dict>
 			<key>Caterpillar</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -316,20 +345,20 @@
 					<string>caterpillar-pro</string>
 				</array>
 			</dict>
-			<key>Classic Blue</key>
+			<key>Circuit</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>classicblue-ipad</string>
-					<string>classicblue-pro</string>
+					<string>circuit-ipad</string>
+					<string>circuit-pro</string>
 				</array>
 			</dict>
-			<key>Classic Pink</key>
+			<key>Classic</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
 				<array>
-					<string>classicpink-ipad</string>
-					<string>classicpink-pro</string>
+					<string>classic-ipad</string>
+					<string>classic-pro</string>
 				</array>
 			</dict>
 			<key>Cookie</key>
@@ -370,6 +399,14 @@
 				<array>
 					<string>desert-ipad</string>
 					<string>desert-pro</string>
+				</array>
+			</dict>
+			<key>Electric</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>electric-ipad</string>
+					<string>electric-pro</string>
 				</array>
 			</dict>
 			<key>Emerald</key>
@@ -420,6 +457,14 @@
 					<string>grassy-pro</string>
 				</array>
 			</dict>
+			<key>Grayscale</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>grayscale-ipad</string>
+					<string>grayscale-pro</string>
+				</array>
+			</dict>
 			<key>Hearts</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -452,14 +497,6 @@
 					<string>life-pro</string>
 				</array>
 			</dict>
-			<key>Light</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>light-ipad</string>
-					<string>light-pro</string>
-				</array>
-			</dict>
 			<key>Moonlight</key>
 			<dict>
 				<key>CFBundleIconFiles</key>
@@ -474,6 +511,14 @@
 				<array>
 					<string>mountain-ipad</string>
 					<string>mountain-pro</string>
+				</array>
+			</dict>
+			<key>Neon</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>neon-ipad</string>
+					<string>neon-pro</string>
 				</array>
 			</dict>
 			<key>Pastel</key>
@@ -530,6 +575,14 @@
 				<array>
 					<string>scuba-ipad</string>
 					<string>scuba-pro</string>
+				</array>
+			</dict>
+			<key>Special</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>special-ipad</string>
+					<string>special-pro</string>
 				</array>
 			</dict>
 			<key>Sunset</key>

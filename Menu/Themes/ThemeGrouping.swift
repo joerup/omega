@@ -22,7 +22,7 @@ struct ThemeGrouping: View {
     var hasColumns: Bool = false
     
     @Binding var preview: ThemePreviewItem?
-    @Binding var showUnlock: Bool
+    @Binding var showUnlock: Theme?
     
     var size: CGFloat {
         return hasColumns ? 65 : 70
@@ -51,14 +51,14 @@ struct ThemeGrouping: View {
                                 .foregroundColor(.white)
                             
                             ThemeCircles(theme: theme)
-                                .padding(.bottom, 5)
+                                .padding(.bottom, 10)
+                                .padding(.top, -5)
                         }
                         .onTapGesture {
                             if !theme.locked {
                                 theme.setTheme()
-                                settings.notification = .theme
                             } else {
-                                showUnlock.toggle()
+                                showUnlock = theme
                             }
                         }
                         .onLongPressGesture {
@@ -66,7 +66,7 @@ struct ThemeGrouping: View {
                                 theme.favorite()
                                 settings.notification = theme.isFavorite ? .favorite : .unfavorite
                             } else {
-                                showUnlock.toggle()
+                                showUnlock = theme
                             }
                         }
                     }

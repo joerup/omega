@@ -64,7 +64,7 @@ struct CalculationVisuals: View {
                 let equation = Queue(expression.value, modes: calculation.queue.modes).substituted
 
                 let line = Line(equation: equation, color: settings.theme.color1)
-                let area = LineShape(equation: equation, location: .center, domain: lowerBound.value...upperBound.value, color: settings.theme.color2, opacity: 0.5)
+                let area = LineShape(equation: equation, location: .center, domain: lowerBound.value...upperBound.value, color: settings.theme.color1, opacity: 0.5)
 
                 CalculationVisualSquare(text: "Integral", width: width, height: height) {
                     GraphView([line, area], horizontalAxis: variable, verticalAxis: Letter("f(\(variable.text)"), interactive: false, popUpGraph: true, lightBackground: lightBackground, precision: 500)

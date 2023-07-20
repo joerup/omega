@@ -72,10 +72,7 @@ struct NewsUpdate: View {
                         desc: "A stunning brand new theme set. Available to unlock now."
                     ) {
                         ZStack {
-                            if let category = ThemeData.themes.first(where: { $0.name == "Gemstones" }) {
-                                ThemeGrouping(themes: category.themes, geometry: geometry, preview: .constant(nil), showUnlock: .constant(false))
-                                    .padding(.vertical, -10)
-                            }
+                            
                         }
                     }
                     

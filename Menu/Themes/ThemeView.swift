@@ -19,10 +19,10 @@ struct ThemeView: View {
     
     @State private var showPreview: Bool = false
     @State private var preview: ThemePreviewItem? = nil
-    @State private var showUnlock: Bool = false
+    @State private var showUnlock: Theme? = nil
     
     private var favorites: [Theme] {
-        return settings.favoriteThemes.map{ ThemeData.allThemes[$0] }
+        return settings.favoriteThemes.map { ThemeData.allThemes[$0] }
     }
     
     var body: some View {
@@ -95,7 +95,7 @@ struct ThemeView: View {
                                             if category.themes[0].locked {
                                                 
                                                 Button(action: {
-                                                    showUnlock.toggle()
+                                                    showUnlock = category.themes[0]
                                                 }) {
                                                     Text(NSLocalizedString("Unlock", comment: "").uppercased())
                                                         .font(Font.system(.caption, design: .rounded).weight(.bold))
@@ -127,14 +127,6 @@ struct ThemeView: View {
                             }
                         }
                         
-                        Button(action: {
-                            showUnlock.toggle()
-                        }) {
-                            Text("Unlock Colors")
-                                .font(Font.system(.headline, design: .rounded).weight(.bold))
-                                .padding(20)
-                        }
-                        
                         Spacer()
                             .frame(height: 50)
                     }
@@ -142,10 +134,11 @@ struct ThemeView: View {
                 }
             }
         }
-        .sheet(isPresented: self.$showUnlock) {
+        .sheet(item: self.$showUnlock) { theme in
             OmegaProSplash(storeManager: storeManager)
                 .onAppear {
                     settings.proPopUpType = .themes
+                    settings.previewTheme1 = theme
                 }
         }
         .sheet(isPresented: self.$showPreview) {

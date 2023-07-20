@@ -17,7 +17,6 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
     case calculus
     case save
     case misc
-    case final
     
     var id: String {
         return self.rawValue
@@ -42,12 +41,11 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
     static func randomArray(startingWith: ProFeatureDisplay? = nil) -> [ProFeatureDisplay] {
         let start = startingWith ?? random()
         var array: [ProFeatureDisplay] = [start]
-        while array.count < allCases.count-1 {
-            if let element = allCases.filter({ !array.contains($0) && $0.previewAmount != (array.last?.previewAmount ?? 0) && $0 != .final }).randomElement() {
+        while array.count < allCases.count {
+            if let element = allCases.filter({ !array.contains($0) && $0.previewAmount != (array.last?.previewAmount ?? 0) }).randomElement() {
                 array.append(element)
             }
         }
-        array.append(.final)
         return array
     }
     
@@ -65,17 +63,6 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
             return "Take your calculations further."
         case .misc:
             return "Convenient tools and features."
-        default:
-            return nil
-        }
-    }
-    
-    var paragraph: String? {
-        switch self {
-        case .final:
-            return "We're committed to providing this app at no cost – and with no ads – for everyone. We just want to give you the best calculator experience. Your purchase of Omega Pro helps us do that."
-        default:
-            return nil
         }
     }
     
@@ -93,65 +80,56 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
             return "Save your calculations. Organize them into folders. Export them into spreadsheets."
         case .misc:
             return "Edit the input line with an interactive pointer. Get equivalent forms & visuals of results."
-        case .final:
-            return "We're so grateful for your support. 🤍"
         }
     }
     
-    func previews(theme: Theme, otherTheme1: Theme, otherTheme2: Theme) -> some View {
-        return ProFeatureDisplay.previews(type: self, theme: theme, otherTheme1: otherTheme1, otherTheme2: otherTheme2)
+    func previews(theme1: Theme, theme2: Theme, theme3: Theme) -> some View {
+        return ProFeatureDisplay.previews(type: self, theme1: theme1, theme2: theme2, theme3: theme3)
     }
     
     @ViewBuilder
-    static func previews(type: ProFeatureDisplay, theme: Theme, otherTheme1: Theme, otherTheme2: Theme) -> some View {
+    static func previews(type: ProFeatureDisplay, theme1: Theme, theme2: Theme, theme3: Theme) -> some View {
         switch type {
         case .themes:
             tripleCalculatorDisplay(
-                left: .theme(otherTheme1),
-                center: .theme(theme),
-                right: .theme(otherTheme2),
-                theme: theme
+                left: .theme(theme2),
+                center: .theme(theme1),
+                right: .theme(theme3),
+                theme: theme1
             )
         case .functions:
             tripleCalculatorDisplay(
                 left: .table(function: expression1),
                 center: .buttonsText(text: expression1),
-                right: .graph(elements: [Line(equation: expression1, color: theme.color1)]),
-                theme: theme
+                right: .graph(elements: [Line(equation: expression1, color: theme1.color1)]),
+                theme: theme1
             )
         case .variables:
             doubleCalculatorDisplay(
                 left: .variableButtonsText(text: expression2),
                 right: .variablePlug(expression: plugInExp, variables: plugInVars, values: plugInVals, result: plugInResult),
-                theme: theme
+                theme: theme1
             )
         case .calculus:
             tripleCalculatorDisplay(
                 left: .buttonsText(text: expression4),
-                center: .graph(elements: [Line(equation: function3, modes: .init(angleUnit: .rad), color: theme.color1), LineShape(equation: function3, location: .center, domain: 0...3*Double.pi, color: theme.color2, opacity: 0.5)]),
+                center: .graph(elements: [Line(equation: function3, modes: .init(angleUnit: .rad), color: theme1.color1), LineShape(equation: function3, location: .center, domain: 0...3*Double.pi, color: theme1.color1, opacity: 0.5)]),
                 right: .buttonsText(text: expression3),
-                theme: theme,
+                theme: theme1,
                 modes: .init(angleUnit: .rad)
             )
         case .save:
             doubleCalculatorDisplay(
                 left: .pastCalculations(inputs: inputList, outputs: expressionList),
                 right: .popUp(text: "Export"),
-                theme: theme
+                theme: theme1
             )
         case .misc:
             doubleCalculatorDisplay(
                 left: .buttonsAnimatedText(textSequence: animatedExpressions, delay: 0.2),
                 right: .extraResults(result: result2, function: function2, angle: angle2, extraResults: extraResult2),
-                theme: theme,
+                theme: theme1,
                 modes: .init(angleUnit: .deg)
-            )
-        case .final:
-            tripleCalculatorDisplay(
-                left: .smiley,
-                center: .smiley,
-                right: .smiley,
-                theme: theme
             )
         }
     }
@@ -162,8 +140,6 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
             return 3
         case .variables, .misc, .save:
             return 2
-        default:
-            return 0
         }
     }
     
@@ -192,7 +168,7 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
     private static let plugInResult = Queue([Number(3.53955),Operation(.exp),Number(22)])
     
     
-    private static func doubleCalculatorDisplay(left: ModelDisplayType, right: ModelDisplayType, theme: Theme, modes: ModeSettings? = nil) -> some View {
+    static func doubleCalculatorDisplay(left: ModelDisplayType, right: ModelDisplayType, theme: Theme, modes: ModeSettings? = nil) -> some View {
         GeometryReader { geometry in
             HStack(spacing: 20) {
                 CalculatorModel(left, orientation: .portrait, maxWidth: geometry.size.width*0.36, maxHeight: geometry.size.height*0.8, theme: theme, modes: modes)
@@ -204,7 +180,7 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
         .disabled(true)
     }
     
-    private static func tripleCalculatorDisplay(left: ModelDisplayType, center: ModelDisplayType, right: ModelDisplayType, theme: Theme, modes: ModeSettings? = nil) -> some View {
+    static func tripleCalculatorDisplay(left: ModelDisplayType, center: ModelDisplayType, right: ModelDisplayType, theme: Theme, modes: ModeSettings? = nil) -> some View {
         GeometryReader { geometry in
             ZStack {
                 HStack(spacing: 0) {

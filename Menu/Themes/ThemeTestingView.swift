@@ -39,11 +39,30 @@ struct ThemeTestingView: View {
                     }
                 }
                 .padding(.horizontal)
-                Button {
-                    UIPasteboard.general.string = copyString
-                } label: {
-                    Text("Copy RGB Values")
+                HStack {
+                    Button {
+                        UIPasteboard.general.string = copyString
+                    } label: {
+                        Text("Copy RGB Values")
+                    }
+                    Spacer()
+                    Button {
+                        UIPasteboard.general.string = color1.rgbString
+                    } label: {
+                        Text("COLOR 1").font(.body.bold()).foregroundColor(color1)
+                    }
+                    Button {
+                        UIPasteboard.general.string = color2.rgbString
+                    } label: {
+                        Text("COLOR 2").font(.body.bold()).foregroundColor(color2)
+                    }
+                    Button {
+                        UIPasteboard.general.string = color3.rgbString
+                    } label: {
+                        Text("COLOR 3").font(.body.bold()).foregroundColor(color3)
+                    }
                 }
+                .padding(.horizontal)
                 Spacer(minLength: 0)
                 ScrollView(.horizontal) {
                     HStack {

@@ -33,6 +33,9 @@ class Settings: ObservableObject {
     @Published var buttonUppercase: Bool = false
     
     @Published var showProPopUp: Bool = false
+    @Published var previewTheme1: Theme = ThemeData.allThemes[0]
+    @Published var previewTheme2: Theme = ThemeData.allThemes[0]
+    @Published var previewTheme3: Theme = ThemeData.allThemes[0]
     @Published var proPopUpType: ProFeatureDisplay? = nil
     @Published var purchaseConfirmation: Bool = false
     @Published var restoreConfirmation: Bool = false

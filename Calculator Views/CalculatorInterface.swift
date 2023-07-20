@@ -60,7 +60,7 @@ struct CalculatorInterface: View {
             .frame(width: geometry.size.width, height: geometry.size.height)
             .overlay(VStack{ if verticalSizeClass == .compact { CalculatorOverlay().padding(.top, standardSize+7) } else {}})
             .contentOverlay()
-            .background(Color.init(white: 0.07).edgesIgnoringSafeArea(.all))
+            .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
             .accentColor(color(self.settings.theme.color1))
             .ignoresSafeArea(.keyboard)
             .onChange(of: geometry.size) { _ in

@@ -153,22 +153,6 @@ struct CalculatorModel: View {
                             ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
                                 .padding(.bottom, bottomSafeArea)
                                 .padding(.top, 2*scale)
-                        case .smiley:
-                            VStack {
-                                VStack(spacing: 0) {
-                                    Spacer(minLength: 0)
-                                    HStack(spacing: 20) {
-                                        Circle().fill(.white).frame(width: 5)
-                                        Circle().fill(.white).frame(width: 5)
-                                    }
-                                    Circle().trim(from: 0.1, to: 0.4).stroke(.white, lineWidth: 3).frame(width: 40).padding(.top, -15)
-                                    Spacer(minLength: 0)
-                                }
-                                .scaleEffect(safeSize.width/40/4)
-                                .padding(.top, 2*scale)
-                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
-                                    .padding(.bottom, bottomSafeArea)
-                            }
                         case .theme(let theme):
                             VStack {
                                 Spacer(minLength: 0)
@@ -183,6 +167,22 @@ struct CalculatorModel: View {
                                     .scaleEffect(0.7)
                                 Spacer(minLength: 0)
                                 Spacer(minLength: 0)
+                                ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
+                                    .padding(.bottom, bottomSafeArea)
+                            }
+                        case .smiley(let theme):
+                            VStack {
+                                VStack(spacing: 0) {
+                                    Spacer(minLength: 0)
+                                    HStack(spacing: 20) {
+                                        Circle().fill(.white).frame(width: 5)
+                                        Circle().fill(.white).frame(width: 5)
+                                    }
+                                    Circle().trim(from: 0.1, to: 0.4).stroke(.white, lineWidth: 3).frame(width: 40).padding(.top, -15)
+                                    Spacer(minLength: 0)
+                                }
+                                .scaleEffect(safeSize.width/40/4)
+                                .padding(.top, 2*scale)
                                 ButtonPad(size: size, orientation: orientation, width: safeSize.width, buttonHeight: safeSize.height*buttonHeight, theme: theme, active: false, showText: false)
                                     .padding(.bottom, bottomSafeArea)
                             }
@@ -390,8 +390,8 @@ struct CalculatorModel: View {
 enum ModelDisplayType {
     case shapes
     case buttons
-    case smiley
     case theme(_ theme: Theme)
+    case smiley(_ theme: Theme)
     case buttonsText(text: Queue)
     case variableButtonsText(text: Queue)
     case buttonsAnimatedText(textSequence: [Queue], delay: Double)

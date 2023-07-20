@@ -40,6 +40,7 @@ class TextFormatting {
             let prev3 = index-3 >= 0 ? elements[index-3] : nil
             let next = index+1 < elements.count ? elements[index+1] : nil
             let next2 = index+2 < elements.count ? elements[index+2] : nil
+            let themeColor = TextColor.custom(theme?.color1 ?? settings.theme.color1)
             
             element.color = .general
             
@@ -137,13 +138,13 @@ class TextFormatting {
             // MARK: Placeholders
             else if element.text == "□" || element.text == "■" {
                 element.display = "■"
-                element.color = element.text == "■" ? .theme : .gray3
+                element.color = element.text == "■" ? themeColor : .gray3
             }
             
             // MARK: Pointers
             else if element.text == "#|" {
                 element.display = "|"
-                element.color = .theme
+                element.color = themeColor
             
                 element.leftPad -= element.width * (prev != nil ? 0.8 : 0.5)
                 element.rightPad -= element.width * (next != nil ? 0.8 : 0.5)

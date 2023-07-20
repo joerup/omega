@@ -19,13 +19,12 @@ struct OmegaProSplash: View {
     
     var array: [ProFeatureDisplay] = ProFeatureDisplay.randomArray(startingWith: Settings.settings.proPopUpType)
     
-    @State private var theme: Theme = ThemeData.allThemes.first!
-    @State private var otherTheme1: Theme = ThemeData.allThemes.first!
-    @State private var otherTheme2: Theme = ThemeData.allThemes.first!
-    @State private var recentThemeIDs: [Int] = []
-    
     @State private var scale: Double = 0.95
     @State private var spotlight: Double = 0.95
+    
+    var theme1: Theme { settings.previewTheme1 }
+    var theme2: Theme { settings.previewTheme2 }
+    var theme3: Theme { settings.previewTheme3 }
     
     var body: some View {
         
@@ -59,7 +58,7 @@ struct OmegaProSplash: View {
             .frame(width: geometry.size.width)
             .background(
                 LinearGradient(colors: [.init(white: 0.3), .init(white: 0.2)], startPoint: .top, endPoint: .bottom)
-                    .overlay(color(theme.color1).opacity(0.6))
+                    .overlay(color(theme1.color1).opacity(0.6))
                     .edgesIgnoringSafeArea(.all)
             )
         }
@@ -98,23 +97,11 @@ struct OmegaProSplash: View {
             
             VStack {
                 if verticalSizeClass == .regular {
-                    displayType.previews(theme: theme, otherTheme1: otherTheme1, otherTheme2: otherTheme2)
+                    displayType.previews(theme1: theme1, theme2: theme2, theme3: theme3)
                 }
             }
-            .frame(maxWidth: size.height > 800 && displayType != .final ? .infinity : 500)
+            .frame(maxWidth: size.height > 800 ? .infinity : 500)
             .shadow(radius: 10)
-            
-            if let paragraph = displayType.paragraph {
-                Text(paragraph)
-                    .font(.footnote.weight(.semibold))
-                    .foregroundColor(.white.opacity(0.9))
-                    .minimumScaleFactor(0.5)
-                    .multilineTextAlignment(.center)
-                    .shadow(radius: 15)
-                    .frame(maxWidth: 500)
-                    .padding(.horizontal, 30)
-                    .padding(.bottom, 15)
-            }
             
             Spacer(minLength: 0)
             
@@ -155,7 +142,7 @@ struct OmegaProSplash: View {
                     }
                     .frame(height: 100)
                     .frame(maxWidth: .infinity)
-                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme.color1).opacity(0.6)))
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme1.color1).opacity(0.6)))
                     .cornerRadius(20)
                     .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
                 }
@@ -186,7 +173,7 @@ struct OmegaProSplash: View {
                     .shadow(color: .init(white: 0.4), radius: 15)
                     .frame(height: 100)
                     .frame(maxWidth: .infinity)
-                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme.color1).opacity(0.6)))
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme1.color1).opacity(0.6)))
                     .cornerRadius(20)
                     .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
                 }
@@ -218,7 +205,8 @@ struct OmegaProSplash: View {
             }
             
             Button(action: {
-                self.storeManager.restoreProducts()
+                self.settings.purchaseConfirmation.toggle()
+//                self.storeManager.restoreProducts()
             }) {
                 Text("Restore Purchases")
                     .font(Font.system(.subheadline, design: .rounded).weight(.bold))
@@ -243,9 +231,9 @@ struct OmegaProSplash: View {
     }
     
     private func setThemes() {
-        theme = ThemeData.allThemes[4...].filter({ ![theme,otherTheme1,otherTheme2].map({ $0.id }).contains($0.id) }).randomElement()!
-        otherTheme1 = ThemeData.allThemes[4...].filter({ ![theme,otherTheme1,otherTheme2].map({ $0.id }).contains($0.id) }).randomElement()!
-        otherTheme2 = ThemeData.allThemes[4...].filter({ ![theme,otherTheme1,otherTheme2].map({ $0.id }).contains($0.id) }).randomElement()!
+        settings.previewTheme1 = ThemeData.allThemes[4...].filter({ ![theme1,theme2,theme3].map({ $0.id }).contains($0.id) }).randomElement()!
+        settings.previewTheme2 = ThemeData.allThemes[4...].filter({ ![theme1,theme2,theme3].map({ $0.id }).contains($0.id) }).randomElement()!
+        settings.previewTheme3 = ThemeData.allThemes[4...].filter({ ![theme1,theme2,theme3].map({ $0.id }).contains($0.id) }).randomElement()!
     }
 }
 
