@@ -41,8 +41,23 @@ struct ThemeGrouping: View {
                     
                     Button(action: { }) {
                         VStack {
-                            ThemeIcon(theme: theme, locked: theme.locked, selected: self.settings.theme.name == theme.name)
+                            ThemeIcon(theme: theme, locked: theme.locked, selected: settings.theme.id == theme.id)
+                                .cornerRadius(20)
                                 .padding(.horizontal, 5)
+                                .overlay(alignment: .bottomTrailing) {
+                                    if settings.theme.id == theme.id {
+                                        ZStack {
+                                            Image(systemName: "circle.fill")
+                                                .foregroundColor(theme.secondaryColor.opacity(0.9))
+                                                .imageScale(.large)
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.white)
+                                                .imageScale(.small)
+                                        }
+                                        .shadow(radius: 5)
+                                        .padding(.bottom, -5)
+                                    }
+                                }
 
                             Text(theme.name)
                                 .font(Font.system(.footnote, design: .rounded).weight(.bold))

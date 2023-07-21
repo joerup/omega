@@ -64,7 +64,7 @@ struct PastCalcRecentView: View {
                             
                             HStack {
                                     
-                                SmallIconButton(symbol: "calendar", color: Color.init(white: editCalendar ? 0.3 : 0.2), textColor: color(self.settings.theme.color2, edit: true), smallerLarge: true) {
+                                SmallIconButton(symbol: "calendar", color: Color.init(white: editCalendar ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
                                     withAnimation {
                                         self.editCalendar.toggle()
                                     }
@@ -82,7 +82,7 @@ struct PastCalcRecentView: View {
                                 }) {
                                     Image(systemName: "chevron.backward")
                                         .font(.body.bold())
-                                        .foregroundColor(prevDate >= minDate ? color(self.settings.theme.color2, edit: true) : Color.init(white: 0.25))
+                                        .foregroundColor(prevDate >= minDate ? settings.theme.secondaryTextColor : Color.init(white: 0.25))
                                         .padding(.horizontal, 5)
                                 }
                                 
@@ -103,13 +103,13 @@ struct PastCalcRecentView: View {
                                 }) {
                                     Image(systemName: "chevron.forward")
                                         .font(.body.bold())
-                                        .foregroundColor(nextDate <= Date() ? color(self.settings.theme.color2, edit: true) : Color.init(white: 0.25))
+                                        .foregroundColor(nextDate <= Date() ? settings.theme.secondaryTextColor : Color.init(white: 0.25))
                                         .padding(.horizontal, 5)
                                 }
                                 
                                 Spacer()
                                 
-                                SmallIconButton(symbol: "house", color: Color.init(white: Calendar.current.isDate(selectedDate, inSameDayAs: Date()) ? 0.3 : 0.2), textColor: color(self.settings.theme.color2, edit: true), smallerLarge: true) {
+                                SmallIconButton(symbol: "house", color: Color.init(white: Calendar.current.isDate(selectedDate, inSameDayAs: Date()) ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
                                     withAnimation {
                                         self.selectedDate = Date()
                                     }
@@ -144,15 +144,15 @@ struct PastCalcRecentView: View {
 
                                 if !selectedCalculations.isEmpty {
 
-                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: settings.featureVersionIdentifier > 0, action: {
+                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, locked: settings.featureVersionIdentifier > 0, action: {
                                         PastCalculation.saveSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true, action: {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, locked: true, action: {
                                         PastCalculation.exportSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "trash", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                    SmallIconButton(symbol: "trash", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, action: {
                                         PastCalculation.deleteSelected(selectedCalculations)
                                     })
 
@@ -193,7 +193,7 @@ struct PastCalcRecentView: View {
                         .padding(.horizontal, 10)
                         .padding(.top, 3)
                         .padding(.bottom, 15)
-                        .accentColor(color(settings.theme.color2))
+                        .accentColor(settings.theme.secondaryTextColor)
                         .background(Color.init(white: 0.15))
                         .cornerRadius(20)
                         .padding(.horizontal, 10)
@@ -247,7 +247,7 @@ struct PastCalcRecentView: View {
                                     VStack {
                                         ZStack {
                                             Rectangle()
-                                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                                                .foregroundColor(settings.theme.primaryColor)
                                                 .frame(width: 50, height: 50)
                                                 .cornerRadius(50/4)
                                             Image(systemName: calculation.listType.icon)
@@ -276,7 +276,7 @@ struct PastCalcRecentView: View {
                                                 Text(name)
                                                     .font(.system(size: 24, design: .rounded))
                                                     .fontWeight(.bold)
-                                                    .foregroundColor(color(settings.theme.color1))
+                                                    .foregroundColor(settings.theme.secondaryTextColor)
                                                     .frame(height: 36)
                                             } else {
                                                 TextDisplay(strings: calculation.queue.strings, modes: calculation.modes, size: 24, colorContext: .secondary, equals: !calculation.result.error)
@@ -292,7 +292,7 @@ struct PastCalcRecentView: View {
                                                 Text(name)
                                                     .font(.system(size: 24, design: .rounded))
                                                     .fontWeight(.bold)
-                                                    .foregroundColor(color(settings.theme.color1))
+                                                    .foregroundColor(settings.theme.secondaryTextColor)
                                                     .frame(height: 36)
                                             }
                                             
@@ -363,7 +363,7 @@ struct PastCalcRecentView: View {
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
-            .accentColor(color(self.settings.theme.color1, edit: true))
+            .accentColor(settings.theme.primaryTextColor)
             .overlay(
                 VStack {
                     if geometry.size.width > 650 {

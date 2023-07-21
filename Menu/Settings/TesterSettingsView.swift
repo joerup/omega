@@ -21,8 +21,6 @@ struct TesterSettingsView: View {
             
             VStack(spacing: 0) {
                 
-                NavigationHeader("Test Settings")
-                
                 ScrollView {
                     
                     VStack(alignment: .leading, spacing: 20) {

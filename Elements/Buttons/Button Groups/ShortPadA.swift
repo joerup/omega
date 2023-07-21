@@ -35,7 +35,7 @@ struct ShortPadA: View {
                     
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
                         ForEach(Input.shortScroll.buttons, id: \.id) { button in
-                            ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                            ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                                 .padding(.vertical, buttonHeight*0.025)
                                 .padding(.horizontal, width*0.025/6)
                         }
@@ -59,7 +59,7 @@ struct ShortPadA: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 3), spacing: 0) {
                     
                     ForEach(Input.numPad.buttons, id: \.id) { button in
-                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                        ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color1, width: width*0.95/6, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                             .padding(.vertical, buttonHeight*0.025)
                             .padding(.horizontal, width*0.025/6)
                     }

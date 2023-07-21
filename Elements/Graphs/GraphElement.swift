@@ -11,9 +11,9 @@ import SwiftUI
 
 class GraphElement {
     
-    var color: [CGFloat]
+    var color: Color
     
-    init(color: [CGFloat] = [255,255,255]) {
+    init(color: Color = .white) {
         self.color = color
     }
 }
@@ -25,7 +25,7 @@ class Line: GraphElement {
     var domain: ClosedRange<Double>
     var points: [Double: Double]
     
-    init(equation: Queue, modes: ModeSettings = Settings.settings.modes, domain: ClosedRange<Double> = -Double.infinity...Double.infinity, color: [CGFloat] = [255,255,255]) {
+    init(equation: Queue, modes: ModeSettings = Settings.settings.modes, domain: ClosedRange<Double> = -Double.infinity...Double.infinity, color: Color = .white) {
         self.equation = equation
         self.modes = modes
         self.domain = domain
@@ -43,7 +43,7 @@ class LineShape: Line {
     var location: VerticalAlignment
     var opacity: CGFloat
     
-    init(equation: Queue, location: VerticalAlignment = .center, domain: ClosedRange<Double> = -Double.infinity...Double.infinity, color: [CGFloat] = [255,255,255], opacity: CGFloat = 1) {
+    init(equation: Queue, location: VerticalAlignment = .center, domain: ClosedRange<Double> = -Double.infinity...Double.infinity, color: Color = .white, opacity: CGFloat = 1) {
         self.location = location
         self.opacity = opacity
         super.init(equation: equation, domain: domain, color: color)
@@ -60,14 +60,14 @@ class Guideline: GraphElement {
     var end: CGPoint
     var circle: Bool
     
-    init(start: CGPoint, end: CGPoint, color: [CGFloat] = [255,255,255]) {
+    init(start: CGPoint, end: CGPoint, color: Color = .white) {
         self.start = start
         self.end = end
         self.circle = false
         super.init(color: color)
     }
     
-    init(center: CGPoint = CGPoint(x: 0, y: 0), radius: CGFloat, color: [CGFloat] = [255,255,255]) {
+    init(center: CGPoint = CGPoint(x: 0, y: 0), radius: CGFloat, color: Color = .white) {
         self.start = CGPoint(x: center.x + radius, y: center.y)
         self.end = center
         self.circle = true
@@ -91,7 +91,7 @@ class GraphAngle: GraphElement {
         return unit == .deg ? Angle(degrees: endAngle) : Angle(radians: endAngle)
     }
     
-    init(center: CGPoint, startAngle: Double, endAngle: Double, maxSize: Double? = nil, unit: ModeSettings.AngleUnit, string: String? = nil, color: [CGFloat] = [255,255,255]) {
+    init(center: CGPoint, startAngle: Double, endAngle: Double, maxSize: Double? = nil, unit: ModeSettings.AngleUnit, string: String? = nil, color: Color = .white) {
         self.center = center
         self.startAngle = startAngle
         self.endAngle = endAngle
@@ -109,7 +109,7 @@ class GraphText: GraphElement {
     var size: CGFloat
     var rotation: Angle
     
-    init(position: CGPoint, text: String, size: CGFloat = 0.1, rotation: Angle = .zero, color: [CGFloat] = [255,255,255]) {
+    init(position: CGPoint, text: String, size: CGFloat = 0.1, rotation: Angle = .zero, color: Color = .white) {
         self.position = position
         self.text = text
         self.size = size

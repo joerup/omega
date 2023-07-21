@@ -108,7 +108,7 @@ struct TextSequence: View {
                         .position(x: element.centerPosition, y: geometry.size.height/2 - element.midline)
                     
                     Rectangle()
-                        .fill(OmegaCalc.color(self.settings.theme.color1))
+                        .fill(settings.theme.primaryColor)
                         .opacity(calculation.queue.highlighted(element.queueIndex) ? 0.3 : 0)
                         .frame(width: element.width)
                         .position(x: element.centerPosition, y: geometry.size.height/2 - element.midline)

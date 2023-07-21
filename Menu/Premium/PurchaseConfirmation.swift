@@ -64,7 +64,7 @@ struct PurchaseConfirmation: View {
                     .shadow(color: .init(white: 0.4), radius: 15)
                     .frame(height: 100)
                     .frame(maxWidth: .infinity)
-                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .center, startRadius: 1, endRadius: 400).overlay(color(settings.previewTheme1.color1).opacity(0.6)))
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .center, startRadius: 1, endRadius: 400).overlay(settings.previewTheme1.primaryColor.opacity(0.6)))
                     .cornerRadius(20)
             }
             .padding()
@@ -72,7 +72,7 @@ struct PurchaseConfirmation: View {
         .padding()
         .background(
             LinearGradient(colors: [.init(white: 0.3), .init(white: 0.2)], startPoint: .top, endPoint: .bottom)
-                .overlay(color(settings.previewTheme1.color1).opacity(0.6))
+                .overlay(settings.previewTheme1.primaryColor.opacity(0.6))
                 .edgesIgnoringSafeArea(.all)
         )
     }

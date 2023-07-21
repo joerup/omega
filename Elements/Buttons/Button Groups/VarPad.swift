@@ -53,11 +53,11 @@ struct VarPad: View {
                     ForEach(0..<(count*Int(geometry.size.height/buttonHeight)), id: \.self) { index in
                             
                         if index < buttons.count {
-                            ButtonView(button: buttons[index], input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/CGFloat(count), height: buttonHeight, relativeSize: 0.45, active: active, showText: showText, onChange: onChange)
+                            ButtonView(button: buttons[index], input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/CGFloat(count), height: buttonHeight, relativeSize: 0.45, active: active, showText: showText, onChange: onChange)
                                 .padding(.vertical, buttonHeight*0.025)
                                 .padding(.horizontal, width*0.025/CGFloat(count))
                         } else {
-                            ButtonView(button: InputButton(""), input: queue, backgroundColor: color((theme ?? self.settings.theme).color3).opacity(0.4), width: width*0.95/CGFloat(count), height: buttonHeight, relativeSize: 0.45, active: false, showText: false)
+                            ButtonView(button: InputButton(""), input: queue, backgroundColor: (theme ?? settings.theme).color3.opacity(0.4), width: width*0.95/CGFloat(count), height: buttonHeight, relativeSize: 0.45, active: false, showText: false)
                                 .padding(.vertical, buttonHeight*0.025)
                                 .padding(.horizontal, width*0.025/CGFloat(count))
                         }

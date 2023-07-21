@@ -75,7 +75,7 @@ struct ExportView: View {
     var body: some View {
         
         PopUpSheet(title: "Export", fullScreen: fullScreen, showCancel: !fullScreen, confirmText: "Export", confirmAction: {
-            
+            guard proCheckNotice(.save) else { return }
             if fileType == .commaSeparatedText {
                 self.csvFile = createCSVFile()
                 self.exportCSV = true
@@ -86,10 +86,6 @@ struct ExportView: View {
         }) {
             
             VStack(spacing: 0) {
-                
-                if fullScreen {
-                    NavigationHeader("Export")
-                }
                 
                 ScrollView {
                     
@@ -182,7 +178,7 @@ struct ExportView: View {
                 }
             }
         }
-        .accentColor(color(settings.theme.color1, edit: true))
+        .accentColor(settings.theme.primaryTextColor)
         .fileExporter(isPresented: self.$exportCSV, document: csvFile, contentType: fileType, defaultFilename: fileName, onCompletion: { result in
             switch result {
             case .success(let url):

@@ -28,7 +28,7 @@ struct LargeIconButton: View {
                 Image(systemName: image)
                     .font(.system(size: height*0.35, weight: .semibold))
                     .frame(height: height*0.35)
-                    .foregroundColor(color(Settings.settings.theme.color1, edit: true))
+                    .foregroundColor(Settings.settings.theme.primaryTextColor)
                     .padding(.vertical, height*0.05)
                 Text(LocalizedStringKey(text))
                     .font(Font.system(.subheadline, design: .rounded).weight(.semibold))

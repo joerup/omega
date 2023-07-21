@@ -50,7 +50,7 @@ struct HeaderButtonRow: View {
                     }
                 })
             } else {
-                SmallTextButton(text: "PRO", color: Color.init(white: 0.15), textColor: color(settings.theme.color1, edit: true), width: size == .small ? 55 : 75, smallerSmall: orientation == .landscape, action: {
+                SmallTextButton(text: "PRO", color: Color.init(white: 0.15), textColor: settings.theme.primaryTextColor, width: size == .small ? 55 : 75, smallerSmall: orientation == .landscape, action: {
                     settings.popUp()
                 })
             }

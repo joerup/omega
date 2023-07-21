@@ -31,15 +31,13 @@ struct ThemeView: View {
             
             VStack(spacing: 0) {
                 
-                NavigationHeader("Themes")
-                
                 ScrollView {
                     
                     VStack(spacing: 20) {
                         
                         SettingsGroup {
                             ThemeDescription(theme: settings.theme)
-                                .padding(.horizontal, 5)
+                                .padding(.horizontal, 10)
                                 .padding(.vertical, 10)
                         }
                         
@@ -67,14 +65,13 @@ struct ThemeView: View {
                                             .padding(.bottom, 30)
                                             .padding(.horizontal, 5)
                                     } else {
-                                        SettingsRow {
-                                            ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: $preview, showUnlock: $showUnlock)
-                                                .padding(-5)
-                                        }
+                                        ThemeGrouping(themes: favorites, name: "Favorite Colors", geometry: geometry, preview: $preview, showUnlock: $showUnlock)
+                                            .padding(.vertical, 5)
                                     }
                                 }
                                 .padding(.vertical, -10)
                             }
+                            .padding(.horizontal, -5)
                         }
                         
                         SettingsGroup(columns: geometry.size.width > 700) {
@@ -125,12 +122,10 @@ struct ThemeView: View {
                                     .padding(.vertical, -10)
                                 }
                             }
+                            .padding(.horizontal, -5)
                         }
-                        
-                        Spacer()
-                            .frame(height: 50)
                     }
-                    .padding(.horizontal, 5)
+                    .padding(.vertical, 10)
                 }
             }
         }

@@ -29,7 +29,7 @@ struct ListDisplayTypePicker: View {
                 }
             }
         } label: {
-            SmallIconButton(symbol: displayType.icon, color: Color.init(white: displayType == .all ? 0.15 : 0.25), textColor: color(settings.theme.color3, edit: true), smallerLarge: true, action: {})
+            SmallIconButton(symbol: displayType.icon, color: Color.init(white: displayType == .all ? 0.15 : 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, action: {})
         }
         .simultaneousGesture(TapGesture().onEnded {
             SoundManager.play(sound: .click3, haptic: .light)

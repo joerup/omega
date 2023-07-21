@@ -61,7 +61,7 @@ struct ButtonView: View {
                             pressButton(pressType: .hold)
                         }
                 }
-                .scaleEffect(isPressed ? 0.95 : 1.0)
+                .scaleEffect(isPressed ? 0.9 : 1.0)
             }
         }
         else if showText {

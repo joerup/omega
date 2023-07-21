@@ -52,7 +52,7 @@ struct StoredVarList: View {
                             
                             Spacer()
                         
-                            SmallIconButton(symbol: "plus", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true) {
+                            SmallIconButton(symbol: "plus", color: Color.init(white: 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true, locked: true) {
                                 guard proCheckNotice(.variables) else { return }
                                 self.settings.popUp = AnyView(
                                     StoredVarSetView()
@@ -88,7 +88,7 @@ struct StoredVarList: View {
 
                             if !selectedVars.isEmpty {
 
-                                SmallIconButton(symbol: "trash", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                SmallIconButton(symbol: "trash", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, action: {
                                     StoredVar.deleteSelected(selectedVars)
                                 })
 
@@ -216,7 +216,7 @@ struct StoredVarList: View {
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
-            .accentColor(color(self.settings.theme.color1, edit: true))
+            .accentColor(settings.theme.primaryTextColor)
             .overlay(
                 VStack {
                     if geometry.size.width > 650 {

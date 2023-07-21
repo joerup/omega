@@ -14,17 +14,16 @@ struct SettingsView: View {
     
     @ObservedObject var settings = Settings.settings
     
-    @ViewBuilder
     var body: some View {
             
         SettingsGroup {
-            SettingsIconPicker(value: self.$settings.roundPlaces,
+            SettingsMenuPicker(value: self.$settings.roundPlaces,
                                title: "Rounding Places",
-                               displayOptions: ["6.circle","7.circle","8.circle","9.circle","10.circle","11.circle","12.circle"],
-                               offset: 6
+                               displayOptions: ["4","5","6","7","8","9","10","11","12"],
+                               offset: 4
             )
             SettingsMenuPicker(value: self.$settings.thousandsSeparators,
-                               title: "Thousands Separators",
+                               title: "Thousands Separator",
                                displayOptions: ["None", settings.commaDecimal ? "Period" : "Comma", "Space"]
             )
             SettingsBoolMenuPicker(value: self.$settings.commaDecimal,
@@ -49,24 +48,38 @@ struct SettingsView: View {
             SettingsToggle(toggle: self.$settings.textAnimations,
                            title: "Text Animations"
             )
-            SettingsIconPicker(value: self.$settings.minimumTextSize,
+            SettingsMenuPicker(value: self.$settings.minimumTextSize,
                                title: "Minimum Text Size",
-                               displayOptions: ["s.circle", "m.circle", "l.circle"],
-                               alternateOptions: ["1.circle", "2.circle", "3.circle"]
+                               displayOptions: ["Small", "Medium", "Large"]
             )
         }
+    }
+}
+
+
+struct AdvancedSettingsView: View {
+    
+    @ObservedObject var settings = Settings.settings
+    
+    var body: some View {
         
-        SettingsGroup {
-            if proCheck() {
+        if proCheck() {
+            SettingsGroup(description: settings.stayInGroups ? "The text pointer will remain inside powers, radicals, etc. until manually moved outside." : "The text pointer will automatically exit powers, radicals, etc. after something has been completely inputted in them.") {
                 SettingsBoolMenuPicker(value: self.$settings.stayInGroups,
                                        title: "Pointer Behavior",
                                        displayOptions: ["Continue Automatically", "Remain with Group"]
                 )
             }
+        }
+        
+        SettingsGroup(description: settings.autoParFunction ? "Parentheses will be automatically added after functions, such as trig functions and logarithms." : "Functions may exist without explicit parentheses in their arguments.") {
             SettingsBoolMenuPicker(value: self.$settings.autoParFunction,
                                    title: "Function Arguments",
                                    displayOptions: ["Implicit Grouping", "Explicit Parentheses"]
             )
+        }
+        
+        SettingsGroup(description: settings.implicitMultFirst ? "When the order of operations is ambiguous, implicit multiplication will take precedence over division. ex: 6÷2(3) becomes 6÷(2(3)) -> 1." : "When the order of operations is ambiguous, implicit multiplication will be treated as normal multiplication. ex: 6÷2(3) becomes (6÷2)(3) -> 9.") {
             SettingsBoolMenuPicker(value: self.$settings.implicitMultFirst,
                                    title: "Implicit Multiplication",
                                    displayOptions: ["Prioritized", "Normal Order"],
@@ -75,5 +88,4 @@ struct SettingsView: View {
         }
     }
 }
-
 

@@ -21,8 +21,8 @@ struct AlphabetButton: View {
     
     var body: some View {
         SmallTextButton(text: text,
-                        color: alphabet != .english ? color(settings.theme.color1) : backgroundColor,
-                        textColor: alphabet != .english ? .white : color(settings.theme.color1, edit: true),
+                        color: alphabet != .english ? settings.theme.primaryColor : backgroundColor,
+                        textColor: alphabet != .english ? .white : settings.theme.primaryTextColor,
                         width: width,
                         smallerSmall: smallerSmall,
                         sound: .click3

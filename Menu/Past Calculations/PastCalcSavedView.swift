@@ -65,7 +65,7 @@ struct PastCalcSavedView: View {
                             }) {
                                 HStack {
                                     
-                                    SmallIconButton(symbol: "folder\(selectedFolder != nil ? ".fill" : "")", color: Color.init(white: editFolder ? 0.3 : 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true) {
+                                    SmallIconButton(symbol: "folder\(selectedFolder != nil ? ".fill" : "")", color: Color.init(white: editFolder ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
                                         withAnimation {
                                             self.editFolder.toggle()
                                         }
@@ -74,7 +74,7 @@ struct PastCalcSavedView: View {
                                     if let selectedFolder = selectedFolder {
                                         Text(selectedFolder)
                                             .font(Font.system(.headline, design: .rounded).weight(.semibold))
-                                            .foregroundColor(color(settings.theme.color2, edit: true))
+                                            .foregroundColor(settings.theme.secondaryTextColor)
                                             .padding(.horizontal, 5)
                                             .padding(.vertical, 10)
                                     } else {
@@ -87,7 +87,7 @@ struct PastCalcSavedView: View {
 
                                     Spacer()
                                     
-                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.2), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true) {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true, locked: true) {
                                         withAnimation {
                                             PastCalculation.exportSelected(getAllCalculations(limit: false))
                                         }
@@ -124,15 +124,15 @@ struct PastCalcSavedView: View {
 
                                 if !selectedCalculations.isEmpty {
 
-                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: settings.featureVersionIdentifier > 0, action: {
+                                    SmallIconButton(symbol: "folder\(!selectedCalculations.isEmpty && selectedCalculations.contains(where: { $0.saved }) ? ".fill" : "")", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, locked: settings.featureVersionIdentifier > 0, action: {
                                         PastCalculation.saveSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, locked: true, action: {
+                                    SmallIconButton(symbol: "square.and.arrow.up", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, locked: true, action: {
                                         PastCalculation.exportSelected(selectedCalculations)
                                     })
 
-                                    SmallIconButton(symbol: "trash", color: Color.init(white: 0.25), textColor: color(settings.theme.color2, edit: true), smallerLarge: true, action: {
+                                    SmallIconButton(symbol: "trash", color: Color.init(white: 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, action: {
                                         PastCalculation.deleteSelected(selectedCalculations)
                                     })
 
@@ -334,7 +334,7 @@ struct PastCalcSavedView: View {
                                     VStack {
                                         ZStack {
                                             Rectangle()
-                                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                                                .foregroundColor(settings.theme.primaryColor)
                                                 .frame(width: 50, height: 50)
                                                 .cornerRadius(50/4)
                                             Image(systemName: calculation.listType.icon)
@@ -363,7 +363,7 @@ struct PastCalcSavedView: View {
                                                 Text(name)
                                                     .font(.system(size: 24, design: .rounded))
                                                     .fontWeight(.bold)
-                                                    .foregroundColor(color(settings.theme.color1))
+                                                    .foregroundColor(settings.theme.primaryTextColor)
                                                     .frame(height: 36)
                                             } else {
                                                 TextDisplay(strings: calculation.queue.strings, modes: calculation.modes, size: 24, colorContext: .secondary, equals: !calculation.result.error)
@@ -379,7 +379,7 @@ struct PastCalcSavedView: View {
                                                 Text(name)
                                                     .font(.system(size: 24, design: .rounded))
                                                     .fontWeight(.bold)
-                                                    .foregroundColor(color(settings.theme.color1))
+                                                    .foregroundColor(settings.theme.primaryTextColor)
                                                     .frame(height: 36)
                                             }
 
@@ -457,7 +457,7 @@ struct PastCalcSavedView: View {
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
-            .accentColor(color(self.settings.theme.color1, edit: true))
+            .accentColor(settings.theme.primaryTextColor)
             .overlay(
                 VStack {
                     if geometry.size.width > 650 {

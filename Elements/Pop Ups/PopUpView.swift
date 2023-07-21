@@ -100,7 +100,7 @@ struct PopUpView: View {
                                     .minimumScaleFactor(0.5)
                                     .padding(.vertical, 20)
                                     .frame(width: 125)
-                                    .background(color(settings.theme.color1))
+                                    .background(settings.theme.primaryColor)
                                     .cornerRadius(20)
                             }
                         }

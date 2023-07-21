@@ -17,11 +17,8 @@ struct MainMenuView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
-    @State private var showThemes: Bool = false
-    @State private var showTesterView: Bool = false
-    @State private var showExport: Bool = false
     @State private var showShare = false
     
     let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
@@ -34,10 +31,8 @@ struct MainMenuView: View {
         
         GeometryReader { geometry in
             
-            VStack(spacing: 0) {
-                
-                NavigationHeader("Settings")
-                
+            NavigationView {
+                    
                 ScrollView {
                     
                     LazyVStack(spacing: 30) {
@@ -49,7 +44,7 @@ struct MainMenuView: View {
                                 } content: {
                                     HStack {
                                         Image(systemName: "star.fill")
-                                            .foregroundColor(color(settings.theme.color1))
+                                            .foregroundColor(settings.theme.primaryColor)
                                             .font(.system(.title2, design: .rounded).weight(.heavy))
                                             .padding(.bottom, 1)
                                         Text("OMEGA PRO")
@@ -63,34 +58,43 @@ struct MainMenuView: View {
                             }
                         }
                         
-                        SettingsGroup {
-                            SettingsButton(title: "TEST SETTINGS", icon: "xmark") {
-                                self.showTesterView.toggle()
-                            }
-                        }
+//                        SettingsGroup {
+//                            SettingsNavigationLink(title: "TEST SETTINGS", icon: "xmark", dismiss: dismiss) {
+//                                TesterSettingsView()
+//                            }
+//                        }
                         
                         SettingsGroup {
-                            SettingsButtonContent {
-                                self.showThemes.toggle()
-                            } content: {
+                            SettingsContentNavigationLink(title: "Themes", dismiss: dismiss) {
+                                ThemeView(storeManager: storeManager)
+                                    .contentOverlay()
+                            } label: {
                                 ThemeDescription(theme: settings.theme)
-                            }
-                        }
-                        
-                        SettingsGroup {
-                            SettingsButton(title: "Export Calculations", icon: "square.and.arrow.up") {
-                                guard proCheckNotice(.save) else { return }
-                                self.showExport.toggle()
                             }
                         }
                         
                         SettingsView()
                         
                         SettingsGroup {
-                            SettingsLink(title: "Website",
+                            SettingsNavigationLink(title: "Advanced Settings", dismiss: dismiss) {
+                                ScrollView {
+                                    AdvancedSettingsView()
+                                        .padding(.vertical, 10)
+                                }
+                            }
+                        }
+                        
+                        SettingsGroup {
+                            SettingsNavigationLink(title: "Export Calculations", dismiss: dismiss) {
+                                ExportView()
+                            }
+                        }
+                        
+                        SettingsGroup {
+                            SettingsLink(title: "App Website",
                                          url: URL(string: "https://omegacalculator.com")!
                             )
-                            SettingsLink(title: "Support",
+                            SettingsLink(title: "Contact Support",
                                          url: URL(string: "https://omegacalculator.com/support")!
                             )
                             SettingsLink(title: "Privacy Policy",
@@ -104,7 +108,7 @@ struct MainMenuView: View {
                         SettingsGroup {
                             SettingsButton(title: "Rate the App") {
                                 guard let writeReviewURL = URL(string: "https://apps.apple.com/app/id1528068503?action=write-review")
-                                    else { fatalError("Expected a valid URL") }
+                                else { fatalError("Expected a valid URL") }
                                 UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
                             }
                             SettingsButton(title: "Share the App") {
@@ -128,24 +132,22 @@ struct MainMenuView: View {
                         .padding(.horizontal, 10)
                         .padding(.bottom, 20)
                     }
-                    .padding(5)
+                    .padding(.vertical, 10)
                 }
-                .accentColor(color(self.settings.theme.color1, edit: true))
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        XButton {
+                            dismiss()
+                        }
+                    }
+                }
             }
-            .accentColor(color(settings.theme.color1))
+            .navigationViewStyle(.stack)
+            .accentColor(settings.theme.primaryTextColor)
             .sheet(isPresented: self.$settings.showProPopUp) {
                 OmegaProSplash(storeManager: storeManager)
-            }
-            .sheet(isPresented: self.$showThemes) {
-                ThemeView(storeManager: storeManager)
-                    .contentOverlay()
-            }
-            .sheet(isPresented: self.$showExport) {
-                ExportView()
-                    .contentOverlay()
-            }
-            .sheet(isPresented: self.$showTesterView) {
-                TesterSettingsView()
             }
             .sheet(isPresented: self.$showShare) {
                 ActivityViewController(activityItems: [URL(string: "https://apps.apple.com/us/app/omega-calculator/id1528068503")!])
@@ -155,34 +157,6 @@ struct MainMenuView: View {
     }
 }
 
-
-struct NavigationHeader: View {
-    
-    var text: String
-    
-    @Environment(\.presentationMode) var presentationMode
-    
-    init(_ text: String) {
-        self.text = text
-    }
-    
-    var body: some View {
-        
-        ZStack {
-            Text(text)
-                .font(Font.system(.headline, design: .rounded).weight(.bold))
-            HStack {
-                Spacer()
-                XButton {
-                    withAnimation {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
-        }
-        .padding(10)
-    }
-}
 
 struct ActivityViewController: UIViewControllerRepresentable {
 

@@ -98,9 +98,9 @@ struct ThemeTestingView: View {
     
     private func setCurrentTheme(_ theme: Theme? = nil) {
         let theme = theme ?? Settings.settings.theme
-        color1 = color(theme.color1)
-        color2 = color(theme.color2)
-        color3 = color(theme.color3)
+        color1 = theme.color1
+        color2 = theme.color2
+        color3 = theme.color3
         Settings.settings.themeID = theme.id
     }
 }

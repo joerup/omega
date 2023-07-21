@@ -12,7 +12,7 @@ struct OmegaProSplash: View {
     
     @ObservedObject var settings = Settings.settings
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
     @StateObject var storeManager: StoreManager
@@ -58,7 +58,7 @@ struct OmegaProSplash: View {
             .frame(width: geometry.size.width)
             .background(
                 LinearGradient(colors: [.init(white: 0.3), .init(white: 0.2)], startPoint: .top, endPoint: .bottom)
-                    .overlay(color(theme1.color1).opacity(0.6))
+                    .overlay(theme1.primaryColor.opacity(0.6))
                     .edgesIgnoringSafeArea(.all)
             )
         }
@@ -125,7 +125,7 @@ struct OmegaProSplash: View {
             if settings.pro {
                 
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    self.dismiss()
                 }) {
                     HStack {
                         Text("Unlocked")
@@ -142,7 +142,7 @@ struct OmegaProSplash: View {
                     }
                     .frame(height: 100)
                     .frame(maxWidth: .infinity)
-                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme1.color1).opacity(0.6)))
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(theme1.primaryColor.opacity(0.6)))
                     .cornerRadius(20)
                     .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
                 }
@@ -173,7 +173,7 @@ struct OmegaProSplash: View {
                     .shadow(color: .init(white: 0.4), radius: 15)
                     .frame(height: 100)
                     .frame(maxWidth: .infinity)
-                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(color(theme1.color1).opacity(0.6)))
+                    .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(theme1.primaryColor.opacity(0.6)))
                     .cornerRadius(20)
                     .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
                 }
@@ -186,7 +186,7 @@ struct OmegaProSplash: View {
             } else {
                 
                 VStack {
-                    Text("Loading")
+                    Text("No connection")
                         .font(Font.system(.title2, design: .rounded).weight(.bold))
                         .lineLimit(0)
                         .minimumScaleFactor(0.5)
@@ -205,8 +205,7 @@ struct OmegaProSplash: View {
             }
             
             Button(action: {
-                self.settings.purchaseConfirmation.toggle()
-//                self.storeManager.restoreProducts()
+                self.storeManager.restoreProducts()
             }) {
                 Text("Restore Purchases")
                     .font(Font.system(.subheadline, design: .rounded).weight(.bold))
@@ -217,7 +216,7 @@ struct OmegaProSplash: View {
             }
             
             Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
+                self.dismiss()
             }) {
                 Text("Not Now")
                     .font(Font.system(.subheadline, design: .rounded).weight(.bold))

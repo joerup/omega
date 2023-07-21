@@ -35,14 +35,14 @@ struct ScrollRow: View {
                         
                         let button = Input.scrollRow.buttons[index]
                         
-                        ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/5, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
+                        ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/5, height: buttonHeight, relativeSize: 0.35, active: active, showText: showText, onChange: onChange)
                             .padding(.leading, index == 0 ? 0 : width*0.025/5)
                             .padding(.trailing, index == Input.scrollRow.buttons.count-1 ? 0 : width*0.025/5)
                     }
                 }
             }
             .frame(width: width*(1-2*0.025/5), height: buttonHeight, alignment: .center)
-            .background(color((theme ?? self.settings.theme).color3).opacity(0.9))
+            .background((theme ?? self.settings.theme).color3.opacity(0.9))
             .clipShape(RoundedRectangle(cornerRadius: 0.42*buttonHeight, style: .continuous))
             .padding(.horizontal, width*0.025/5)
             .padding(.vertical, buttonHeight*0.025)

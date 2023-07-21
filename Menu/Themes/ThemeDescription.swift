@@ -19,25 +19,23 @@ struct ThemeDescription: View {
         HStack {
             
             ThemeIcon(theme: theme, selected: true)
-                .frame(maxHeight: 80)
+                .frame(maxHeight: 60)
+                .cornerRadius(15)
             
             VStack(alignment: .leading, spacing: 0) {
-                Text("Theme")
-                    .font(Font.system(.headline, design: .rounded).weight(.bold))
-                    .foregroundColor(Color.init(white: 0.7))
+                Text("Current Theme")
+                    .font(.headline.weight(.semibold))
+                    .foregroundColor(Color.init(white: 0.8))
                 Text(theme.name)
                     .font(Font.system(.title2, design: .rounded).weight(.bold))
                     .foregroundColor(.white)
-                    .padding(.vertical, 3)
-                ThemeCircles(theme: theme)
-                    .padding(.horizontal, 2)
-                    .padding(.vertical, 5)
+                    .padding(.vertical, 1)
             }
             .padding(.leading, 5)
             
             Spacer()
         }
         .padding(.vertical, 5)
-        .padding(.horizontal, 1)
+        .padding(.horizontal, -5)
     }
 }

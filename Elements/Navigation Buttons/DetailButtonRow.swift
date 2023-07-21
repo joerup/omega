@@ -34,8 +34,8 @@ struct DetailButtonRow: View {
                         
                         if orientation == .landscape || size == .large {
                             SmallTextButton(text: "MAT",
-                                            color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                            textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
+                                            color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                                            textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : settings.theme.secondaryTextColor,
                                             width: size == .small ? 55 : 70,
                                             smallerSmall: orientation == .landscape,
                                             sound: .click3
@@ -46,8 +46,8 @@ struct DetailButtonRow: View {
                             }
                         } else {
                             SmallTextButton(text: "MAT",
-                                            color: settings.buttonDisplayMode == .funcs ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                            textColor: settings.buttonDisplayMode == .funcs ? Color.white : color(settings.theme.color3, edit: true),
+                                            color: settings.buttonDisplayMode == .funcs ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                                            textColor: settings.buttonDisplayMode == .funcs ? Color.white : settings.theme.secondaryTextColor,
                                             width: size == .small ? 55 : 70,
                                             smallerSmall: orientation == .landscape,
                                             sound: .click3
@@ -59,8 +59,8 @@ struct DetailButtonRow: View {
                         }
                         
                         SmallTextButton(text: "VAR",
-                                        color: settings.buttonDisplayMode == .vars ? color(settings.theme.color3) : Color.init(white: 0.15),
-                                        textColor: settings.buttonDisplayMode == .vars ? Color.white : color(settings.theme.color3, edit: true),
+                                        color: settings.buttonDisplayMode == .vars ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                                        textColor: settings.buttonDisplayMode == .vars ? Color.white : settings.theme.secondaryTextColor,
                                         width: size == .small ? 55 : 70,
                                         smallerSmall: orientation == .landscape,
                                         sound: .click3,
@@ -72,21 +72,6 @@ struct DetailButtonRow: View {
                             settings.detailOverlay = .none
                         }
                         
-//                                        SmallTextButton(text: "UNIT",
-//                                                        color: settings.buttonDisplayMode == .units ? color(settings.theme.color3) : Color.init(white: 0.15),
-//                                                        textColor: settings.buttonDisplayMode == .units ? Color.white : color(settings.theme.color3, edit: true),
-//                                                        width: size == .small ? 50 : 65,
-//                                                        smallerSmall: orientation == .landscape,
-//                                                        sound: .click3
-//                                        ) {
-//                                            guard proCheck() else {
-//                                                settings.popUp(.misc)
-//                                                return
-//                                            }
-//                                            settings.buttonDisplayMode = settings.buttonDisplayMode == .units ? .basic : .units
-//                                            settings.buttonUppercase = false
-//                                            settings.detailOverlay = .none
-//                                        }
                     }
                     
                     if orientation == .landscape || size == .large {
@@ -140,14 +125,14 @@ struct DetailButtonRow: View {
                     
                     if calculation.completed {
                         
-                        SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape) {
+                        SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape) {
                             pastCalculation?.copy()
                         }
-                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, locked: settings.featureVersionIdentifier > 0) {
+                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, locked: settings.featureVersionIdentifier > 0) {
                             guard proCheckNotice(.save, maxFreeVersion: 0) else { return }
                             pastCalculation?.save()
                         }
-                        SmallIconButton(symbol: "character.textbox", textColor: color(settings.theme.color1, edit: true), smallerSmall: orientation == .landscape, locked: true) {
+                        SmallIconButton(symbol: "character.textbox", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, locked: true) {
                             guard proCheckNotice(.variables) else { return }
                             pastCalculation?.store()
                         }
@@ -176,8 +161,8 @@ struct DetailButtonRow: View {
     @ViewBuilder
     var matButtons: some View {
         SmallTextButton(text: "2nd",
-                        color: settings.buttonUppercase ? color(settings.theme.color1) : Color.init(white: 0.15),
-                        textColor: settings.buttonUppercase ? Color.white : color(settings.theme.color1, edit: true),
+                        color: settings.buttonUppercase ? settings.theme.primaryColor : Color.init(white: 0.15),
+                        textColor: settings.buttonUppercase ? Color.white : settings.theme.primaryTextColor,
                         width: size == .small ? 50 : 65,
                         smallerSmall: orientation == .landscape,
                         sound: .click3
@@ -195,7 +180,7 @@ struct DetailButtonRow: View {
                        smallerSmall: orientation == .landscape
         )
         SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
-                        color: settings.buttonUppercase ? color(settings.theme.color1) : Color.init(white: 0.15),
+                        color: settings.buttonUppercase ? settings.theme.primaryColor : Color.init(white: 0.15),
                         textColor: .white,
                         smallerSmall: orientation == .landscape,
                         sound: .click3

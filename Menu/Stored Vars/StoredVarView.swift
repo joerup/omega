@@ -64,7 +64,7 @@ struct StoredVarView: View {
                                     storedVar.rename(to: name)
                                 })
                                 .font(Font.system(.title2, design: .rounded).weight(.bold))
-                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                                .foregroundColor(settings.theme.primaryTextColor)
                             }
                             .padding(.top, -3)
 
@@ -90,7 +90,7 @@ struct StoredVarView: View {
                             HStack(spacing: 5) {
                                 Image(systemName: "character.textbox")
                                     .imageScale(.small)
-                                    .foregroundColor(color(settings.theme.color1))
+                                    .foregroundColor(settings.theme.primaryTextColor)
                                 Text(LocalizedStringKey(storedVar.variable.typeString))
                                     .font(Font.system(.subheadline, design: .rounded))
                                     .foregroundColor(Color.init(white: 0.5))

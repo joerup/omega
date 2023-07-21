@@ -31,7 +31,7 @@ struct PastCalculationView: View {
 
                         ZStack {
                             Rectangle()
-                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                                .foregroundColor(settings.theme.primaryColor)
                                 .frame(width: 85, height: 85)
                                 .cornerRadius(85/4)
                             Image(systemName: calculation.listType.icon)
@@ -68,7 +68,7 @@ struct PastCalculationView: View {
                                     calculation.rename(to: name)
                                 })
                                 .font(Font.system(.title2, design: .rounded).weight(.bold))
-                                .foregroundColor(color(self.settings.theme.color1, edit: true))
+                                .foregroundColor(settings.theme.primaryTextColor)
                             }
                             .padding(.top, -3)
                             .padding(.trailing, 30)
@@ -100,7 +100,7 @@ struct PastCalculationView: View {
                                     HStack(spacing: 5) {
                                         Image(systemName: "folder")
                                             .imageScale(.small)
-                                            .foregroundColor(color(settings.theme.color1))
+                                            .foregroundColor(settings.theme.primaryTextColor)
                                         if folder.isEmpty {
                                             Text("Saved")
                                                 .font(Font.system(.subheadline, design: .rounded))
@@ -117,7 +117,7 @@ struct PastCalculationView: View {
                                 HStack(spacing: 5) {
                                     Image(systemName: "clock.arrow.circlepath")
                                         .imageScale(.small)
-                                        .foregroundColor(color(settings.theme.color1))
+                                        .foregroundColor(settings.theme.primaryTextColor)
                                     Text("Recent")
                                         .font(Font.system(.subheadline, design: .rounded))
                                         .foregroundColor(Color.init(white: 0.5))
@@ -217,7 +217,7 @@ struct PastCalculationView: View {
                 .padding(10)
                 .id(calculation)
             }
-            .accentColor(color(self.settings.theme.color1, edit: true))
+            .accentColor(settings.theme.primaryTextColor)
             .onAppear {
                 self.name = self.calculation.name ?? ""
             }

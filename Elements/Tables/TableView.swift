@@ -32,7 +32,7 @@ struct TableView: View {
     @State var showPopUpTable: Bool = false
     
     var fontSize: CGFloat
-    var overlayColor: [CGFloat]
+    var overlayColor: Color
     
     @GestureState private var dragOffset: CGFloat = 0
     @State private var offset: CGFloat = 0
@@ -49,10 +49,10 @@ struct TableView: View {
         self.popUpTable = popUpTable
         self.lightBackground = lightBackground
         self.fontSize = fontSize
-        self.overlayColor = Settings.settings.theme.color1
+        self.overlayColor = Settings.settings.theme.primaryTextColor
     }
     
-    init(equation: Queue, horizontalAxis: Letter, verticalAxis: Letter, lowerBound: Double? = nil, upperBound: Double? = nil, centerValue: Double? = nil, increment: Double? = nil, fullTable: Bool = false, popUpTable: Bool = false, lightBackground: Bool = false, fontSize: CGFloat = 25, color: [CGFloat]? = nil) {
+    init(equation: Queue, horizontalAxis: Letter, verticalAxis: Letter, lowerBound: Double? = nil, upperBound: Double? = nil, centerValue: Double? = nil, increment: Double? = nil, fullTable: Bool = false, popUpTable: Bool = false, lightBackground: Bool = false, fontSize: CGFloat = 25, color: Color? = nil) {
         self.equation = equation
         self.horizontalAxis = horizontalAxis
         self.verticalAxis = verticalAxis
@@ -64,7 +64,7 @@ struct TableView: View {
         self.popUpTable = popUpTable
         self.lightBackground = lightBackground
         self.fontSize = fontSize
-        self.overlayColor = color ?? Settings.settings.theme.color1
+        self.overlayColor = color ?? Settings.settings.theme.primaryTextColor
     }
     
     var body: some View {
@@ -94,7 +94,7 @@ struct TableView: View {
                             }
                             .frame(maxWidth: geometry.size.width*(fullTable ? 0.3 : 0.2), maxHeight: fontSize*1.2)
                             .padding(.horizontal, fontSize/2)
-                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(color(overlayColor).opacity(0.1)).cornerRadius(20))
+                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(overlayColor.opacity(0.1)).cornerRadius(20))
 
                             let yStrings = number is Expression ? (number as! Expression).queue.strings : Queue([number]).strings
 
@@ -104,7 +104,7 @@ struct TableView: View {
                             }
                             .frame(minWidth: geometry.size.width*(fullTable ? 0.3 : 0.2))
                             .padding(.horizontal, fontSize/2)
-                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(color(overlayColor).opacity(0.1)).cornerRadius(20))
+                            .background(Color.init(white: !fullTable ? 0.25 : isCenter(x) ? 0.3 : 0.2).overlay(overlayColor.opacity(0.1)).cornerRadius(20))
                             .contextMenu {
                                 if fullTable {
                                     Button {

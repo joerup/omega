@@ -183,7 +183,7 @@ extension UIFont {
 }
 
 enum TextColor {
-    case custom(_ rgb: [CGFloat])
+    case custom(_ color: Color)
     case prominent
     case general
     case gray1
@@ -198,7 +198,7 @@ enum TextColor {
         case .secondary:
             return secondaryColor
         case .theme:
-            return color(Settings.settings.theme.color1)
+            return Settings.settings.theme.primaryTextColor
         case .none:
             return noColor
         }
@@ -206,7 +206,7 @@ enum TextColor {
     
     var primaryColor: Color {
         switch self {
-        case .custom(let rgb): return color(rgb).opacity(0.7)
+        case .custom(let color): return color.opacity(0.7)
         case .prominent: return .white
         case .general: return .init(white: 0.8)
         case .gray1: return .init(white: 0.4)
@@ -217,7 +217,7 @@ enum TextColor {
     }
     var secondaryColor: Color {
         switch self {
-        case .custom(let rgb): return color(rgb).opacity(0.5)
+        case .custom(let color): return color.opacity(0.5)
         case .prominent: return .init(white: 0.6)
         case .general: return .init(white: 0.5)
         case .gray1: return .init(white: 0.35)

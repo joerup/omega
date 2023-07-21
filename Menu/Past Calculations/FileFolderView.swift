@@ -54,7 +54,7 @@ struct FileFolderView: View {
                             }
                             .frame(width: 250)
                             .padding(10)
-                            .background(selectedFolder == "" ? color(settings.theme.color1, edit: true) : Color.init(white: 0.3))
+                            .background(selectedFolder == "" ? settings.theme.primaryColor : Color.init(white: 0.3))
                             .cornerRadius(10)
                         }
                         
@@ -69,7 +69,7 @@ struct FileFolderView: View {
                                 }) {
                                     HStack {
                                         Image(systemName: "folder\(folders.contains(folder) ? ".fill" : "")")
-                                            .foregroundColor(selectedFolder == folder ? .white : color(settings.theme.color1, edit: true))
+                                            .foregroundColor(selectedFolder == folder ? .white : settings.theme.primaryTextColor)
                                         Text(folder)
                                             .font(Font.system(.body, design: .rounded).weight(.semibold))
                                             .foregroundColor(Color.white)
@@ -77,7 +77,7 @@ struct FileFolderView: View {
                                     }
                                     .frame(width: 250)
                                     .padding(10)
-                                    .background(selectedFolder == folder ? color(settings.theme.color1, edit: true) : Color.init(white: 0.3))
+                                    .background(selectedFolder == folder ? settings.theme.primaryColor : Color.init(white: 0.3))
                                     .cornerRadius(10)
                                 }
                             }
@@ -149,7 +149,7 @@ struct FileFolderView: View {
                         }
                         .frame(width: 250)
                         .padding(10)
-                        .background(selectedUnsave ? color(settings.theme.color1, edit: true) : Color.init(white: 0.4))
+                        .background(selectedUnsave ? settings.theme.primaryColor : Color.init(white: 0.4))
                         .cornerRadius(10)
                     }
                     .padding(.bottom, 10)

@@ -63,7 +63,7 @@ struct VariablePlugView: View {
                         }
                     } label: {
                         Image(systemName: "chevron.forward.circle")
-                            .foregroundColor(color(settings.theme.color1))
+                            .foregroundColor(settings.theme.primaryTextColor)
                     }
                     .padding(.trailing, 10).padding(.leading, -10)
                 }

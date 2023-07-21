@@ -30,7 +30,7 @@ struct ShortPadB: View {
             HStack(spacing:0) {
                     
                 ForEach(Input.shortNumRow.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color1, width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/10)
                 }
@@ -54,20 +54,20 @@ struct ShortPadB: View {
                             
                             let button = Input.shortScroll.buttons[index]
                             
-                            ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color3), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                            ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                                 .padding(.leading, index == 0 ? 0 : width*0.025/10)
                                 .padding(.trailing, index == Input.shortScroll.buttons.count-1 ? 0 : width*0.025/10)
                         }
                     }
                 }
                 .frame(width: width*(6/10-2*0.025/10), height: buttonHeight, alignment: .center)
-                .background(color((theme ?? self.settings.theme).color3).darker(by: 0.05))
+                .background((theme ?? settings.theme).color3.darker(by: 0.05))
                 .cornerRadius((width*0.95/10+buttonHeight)/2 * 0.4)
                 .padding(.horizontal, width*0.025/10)
                 .padding(.vertical, buttonHeight*0.025)
                     
                 ForEach(Input.shortFormatRow.buttons, id: \.id) { button in
-                    ButtonView(button: button, input: queue, backgroundColor: color((theme ?? self.settings.theme).color1), width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
+                    ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color1, width: width*0.95/10, height: buttonHeight, relativeSize: 0.4, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/10)
                 }

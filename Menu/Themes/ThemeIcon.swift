@@ -32,13 +32,13 @@ struct ThemeCircles: View {
         
         HStack(spacing: 5) {
             Circle()
-                .fill(color(theme.color1))
+                .fill(theme.color1)
                 .frame(width: 6, height: 6)
             Circle()
-                .fill(color(theme.color2))
+                .fill(theme.color2)
                 .frame(width: 6, height: 6)
             Circle()
-                .fill(color(theme.color3))
+                .fill(theme.color3)
                 .frame(width: 6, height: 6)
         }
         .shadow(color: Color.init(white: 0.4), radius: 10)

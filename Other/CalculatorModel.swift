@@ -213,7 +213,7 @@ struct CalculatorModel: View {
                                 GraphView(elements, gridLines: false, interactive: false, precision: 200)
                             }
                         case .table(let function):
-                            TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), lowerBound: -10, upperBound: 10, lightBackground: true, fontSize: safeSize.height*0.04, color: theme.color1)
+                            TableView(equation: function, horizontalAxis: Letter("x"), verticalAxis: Letter("y"), lowerBound: -10, upperBound: 10, lightBackground: true, fontSize: safeSize.height*0.04, color: theme.primaryColor)
                         case .popUp(let text):
                             ZStack {
                                 VStack {
@@ -260,7 +260,7 @@ struct CalculatorModel: View {
                                                         HStack(spacing: 0) {
                                                             ZStack {
                                                                 RoundedRectangle(cornerRadius: safeSize.height*0.015)
-                                                                    .fill(color(theme.color1, edit: true))
+                                                                    .fill(theme.primaryColor)
                                                                     .frame(width: safeSize.height*0.07, height: safeSize.height*0.07)
                                                                 Image(systemName: outputs[i].allVariables.isEmpty ? "number" : "x.squareroot")
                                                                     .foregroundColor(.white)

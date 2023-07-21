@@ -207,7 +207,7 @@ struct GraphView: View {
                 LinePlot(line: shape, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, size: size) { x, y, geometry in
                     return point(x, y, size: size)
                 }
-                .fill(color(shape.color, edit: true))
+                .fill(shape.color)
                 .opacity(shape.opacity)
 
             } else {
@@ -215,7 +215,7 @@ struct GraphView: View {
                 LinePlot(line: line, xi: xi, xf: xf, yi: yi, yf: yf, precision: precision, size: size) { x, y, geometry in
                     return point(x, y, size: size)
                 }
-                .stroke(color(line.color, edit: true), lineWidth: 3)
+                .stroke(line.color, lineWidth: 3)
                 .shadow(radius: 4)
                 .zIndex(1)
             }
@@ -243,7 +243,7 @@ struct GraphView: View {
                     path.addLine(to: point(guideline.end.x, guideline.end.y, size: size))
                 }
             }
-            .stroke(color(guideline.color, edit: true), lineWidth: 1)
+            .stroke(guideline.color, lineWidth: 1)
         }
     }
     
@@ -268,7 +268,7 @@ struct GraphView: View {
                     path.addArc(center: point(angle.center.x, angle.center.y, size: size), radius: angleSize, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
                 }
             }
-            .stroke(color(angle.color, edit: true), lineWidth: 1)
+            .stroke(angle.color, lineWidth: 1)
             
             if let string = angle.string {
                 Text(string)

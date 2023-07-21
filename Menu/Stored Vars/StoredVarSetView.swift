@@ -142,7 +142,7 @@ struct StoredVarSetView: View {
                             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: count), spacing: 0) {
                                 
                                 ForEach(self.letters, id: \.id) { button in
-                                    ButtonView(button: button, backgroundColor: color(button.name == letter ? self.settings.theme.color1 : self.settings.theme.color3), width: geometry.size.width*0.95/CGFloat(count), height: geometry.size.width*0.95/CGFloat(count), relativeSize: 0.45, customAction: {
+                                    ButtonView(button: button, backgroundColor: button.name == letter ? settings.theme.color3 : settings.theme.secondaryColor, width: geometry.size.width*0.95/CGFloat(count), height: geometry.size.width*0.95/CGFloat(count), relativeSize: 0.45, customAction: {
                                         self.letter = button.name
                                     })
                                     .padding(.vertical, geometry.size.width*0.95/CGFloat(count)*0.025)
