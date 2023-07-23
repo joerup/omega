@@ -18,7 +18,6 @@ struct ThemeIcon: View {
         Image("Omega_\(theme.name.replacingOccurrences(of: " ", with: "_"))")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .cornerRadius(20)
             .opacity(locked ? 0.3 : 1)
     }
 }

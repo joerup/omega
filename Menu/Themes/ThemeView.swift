@@ -98,6 +98,7 @@ struct ThemeView: View {
                                                         .font(Font.system(.caption, design: .rounded).weight(.bold))
                                                         .lineLimit(0)
                                                         .minimumScaleFactor(0.5)
+                                                        .foregroundColor(.white.opacity(0.8))
                                                 }
                                                 .padding(.horizontal, 10)
                                             }
@@ -110,6 +111,7 @@ struct ThemeView: View {
                                                     .font(Font.system(.caption, design: .rounded).weight(.bold))
                                                     .lineLimit(0)
                                                     .minimumScaleFactor(0.5)
+                                                    .foregroundColor(.white.opacity(0.8))
                                             }
                                         }
                                         .padding(.top, 17)

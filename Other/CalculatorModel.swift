@@ -296,7 +296,7 @@ struct CalculatorModel: View {
                                 }
                                 ButtonPad(size: size, orientation: orientation, overlay: AnyView(
                                     VStack(spacing: 4) {
-                                        UnitCircleView(function: function, angle: angle, unit: .deg, color1: theme.color1, color2: theme.color2, gridLines: false, interactive: false, popUpGraph: true)
+                                        UnitCircleView(function: function, angle: angle, unit: .deg, color: theme.primaryTextColor, gridLines: false, interactive: false, popUpGraph: true)
                                             .disabled(true)
                                             .frame(width: safeSize.width-4)
                                             .background(Color.init(white: 0.15).cornerRadius(10))

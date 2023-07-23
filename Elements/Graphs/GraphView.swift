@@ -81,6 +81,7 @@ struct GraphView: View {
                 graphAnglesView(size: geometry.size)
                 linesView(size: geometry.size)
                 gridLabelsView(size: geometry.size)
+                graphTextView(size: geometry.size)
                 
                 Rectangle()
                     .opacity(1e-10)
@@ -272,10 +273,23 @@ struct GraphView: View {
             
             if let string = angle.string {
                 Text(string)
-                    .font(.system(size: angleSize/2))
-                    .fontWeight(.bold)
+                    .font(.system(size: angleSize/2, design: .rounded).weight(.bold))
                     .position(x: center.x + angleSize*cos(angle.start.radians) + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.start.radians) - angleSize*sin(angle.end.radians))
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func graphTextView(size: CGSize) -> some View {
+        ForEach(self.text.indices, id: \.self) { t in
+
+            let text = self.text[t]
+
+            Text(text.text)
+                .font(.system(size: point(0, 0, size: size).y - point(0, Double(text.size), size: size).y))
+                .foregroundColor(text.color)
+                .position(point(text.position.x, text.position.y, size: size))
+                .rotationEffect(text.rotation)
         }
     }
     

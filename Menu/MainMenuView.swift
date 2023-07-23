@@ -58,11 +58,11 @@ struct MainMenuView: View {
                             }
                         }
                         
-//                        SettingsGroup {
-//                            SettingsNavigationLink(title: "TEST SETTINGS", icon: "xmark", dismiss: dismiss) {
-//                                TesterSettingsView()
-//                            }
-//                        }
+                        SettingsGroup {
+                            SettingsNavigationLink(title: "TEST SETTINGS", icon: "xmark", dismiss: dismiss) {
+                                TesterSettingsView()
+                            }
+                        }
                         
                         SettingsGroup {
                             SettingsContentNavigationLink(title: "Themes", dismiss: dismiss) {

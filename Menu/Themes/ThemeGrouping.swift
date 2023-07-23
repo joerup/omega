@@ -47,12 +47,16 @@ struct ThemeGrouping: View {
                                 .overlay(alignment: .bottomTrailing) {
                                     if settings.theme.id == theme.id {
                                         ZStack {
-                                            Image(systemName: "circle.fill")
-                                                .foregroundColor(theme.secondaryColor.opacity(0.9))
-                                                .imageScale(.large)
+                                            Circle()
+                                                .fill(.white)
+                                                .frame(width: 26)
+                                            Circle()
+                                                .fill(theme.primaryTextColor.opacity(0.9))
+                                                .frame(width: 22)
+                                                .padding(1)
                                             Image(systemName: "checkmark")
+                                                .font(.system(size: 12).weight(.bold))
                                                 .foregroundColor(.white)
-                                                .imageScale(.small)
                                         }
                                         .shadow(radius: 5)
                                         .padding(.bottom, -5)

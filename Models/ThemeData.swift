@@ -58,7 +58,7 @@ class ThemeData {
                 ),
                 
                 Theme(id: 2,
-                      name: "Grayscale",
+                      name: "Light",
                       category: "Basic",
                       color1: [170,178,177],
                       color2: [96,98,110],
@@ -78,7 +78,7 @@ class ThemeData {
         ThemeCategory(id: 1, name: "Monochrome", themes: [
             
                 Theme(id: 36,
-                      name: "Circuit",
+                      name: "System",
                       category: "Monochrome",
                       color1: [80,80,80],
                       color2: [271,142,0],
@@ -111,10 +111,10 @@ class ThemeData {
             ]
         ),
         
-        ThemeCategory(id: 2, name: "Colorful", themes: [
+        ThemeCategory(id: 2, name: "Elements", themes: [
         
                 Theme(id: 4,
-                      name: "Warm",
+                      name: "Fire",
                       category: "Colorful",
                       color1: [243,32,44],
                       color2: [237,121,20],
@@ -122,15 +122,15 @@ class ThemeData {
                 ),
                 
                 Theme(id: 5,
-                      name: "Cool",
+                      name: "Water",
                       category: "Colorful",
-                      color1: [85,192,218],
-                      color2: [192,90,210],
-                      color3: [133,139,215]
+                      color1: [61,200,235],
+                      color2: [206,86,216],
+                      color3: [71,135,201]
                 ),
                 
                 Theme(id: 6,
-                      name: "Life",
+                      name: "Earth",
                       category: "Colorful",
                       color1: [74,200,101],
                       color2: [37,178,175],
@@ -138,11 +138,11 @@ class ThemeData {
                 ),
                 
                 Theme(id: 7,
-                      name: "Pastel",
+                      name: "Air",
                       category: "Colorful",
-                      color1: [164,205,150],
-                      color2: [160,151,215],
-                      color3: [207,157,137]
+                      color1: [146,195,160],
+                      color2: [152,151,215],
+                      color3: [181,150,138]
                 ),
             ]
         ),

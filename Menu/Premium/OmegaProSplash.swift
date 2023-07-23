@@ -46,11 +46,6 @@ struct OmegaProSplash: View {
                     }
                 }
                 .tabViewStyle(.page)
-                .onTapGesture {
-                    withAnimation {
-                        setThemes()
-                    }
-                }
                 
                 purchaseButtons(size: geometry.size)
                 
@@ -106,7 +101,7 @@ struct OmegaProSplash: View {
             Spacer(minLength: 0)
             
             Text(displayType.description)
-                .font(.callout.weight(.semibold))
+                .font(.system(.callout, design: .rounded).weight(.semibold))
                 .foregroundColor(.white.opacity(0.9))
                 .lineLimit(2)
                 .minimumScaleFactor(0.5)
@@ -116,6 +111,67 @@ struct OmegaProSplash: View {
                 .padding(.vertical, 5)
                 .padding(.horizontal)
                 .padding(.bottom, 40)
+        }
+    }
+    
+    private func summaryPage(size: CGSize) -> some View {
+        VStack {
+            
+            Text("Take your calculator to the next level.")
+                .font(.system(.title2, design: .rounded).weight(.bold))
+                .lineLimit(0)
+                .minimumScaleFactor(0.5)
+                .foregroundColor(Color.white)
+                .shadow(radius: 10)
+                .padding(.horizontal)
+                .padding(.top, verticalSizeClass == .compact ? 0 : 10)
+            
+            Spacer(minLength: 0)
+            
+            if verticalSizeClass == .regular {
+                ProFeatureDisplay.summaryDisplay(theme: theme1)
+                    .shadow(radius: 10, y: 10)
+                    .padding(.bottom, -20)
+                
+                VStack(alignment: .leading) {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2)) {
+                        ForEach(array, id: \.self) { display in
+                            ForEach(display.summary, id: \.self) { summary in
+                                HStack {
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.white.opacity(0.7))
+                                        .padding(.vertical, 2)
+                                    Text(summary)
+                                        .font(.system(.callout, design: .rounded).weight(.semibold))
+                                        .foregroundColor(.white)
+                                        .multilineTextAlignment(.center)
+                                        .shadow(radius: 15)
+                                    Spacer()
+                                }
+                            }
+                        }
+                    }
+                }
+                .padding()
+                .frame(maxWidth: 500)
+                .background(Color.init(white: 0.5).overlay(theme1.primaryColor.opacity(0.8)).opacity(0.8))
+                .cornerRadius(20)
+                .padding(.vertical, 10)
+                .padding(.horizontal)
+                .padding(.bottom, 10)
+                .zIndex(1)
+            }
+            
+            Spacer(minLength: 0)
+            
+            Text("The best calculator experience.\nOne lifetime purchase.")
+                .font(.system(.callout, design: .rounded).weight(.semibold))
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .shadow(radius: 15)
+                .frame(maxWidth: 500)
+                .padding(.horizontal)
+                .padding(.bottom, 45)
         }
     }
     
