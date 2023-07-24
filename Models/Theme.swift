@@ -71,7 +71,6 @@ class Theme {
         guard !locked else { return }
         
         Settings.settings.themeID = self.id
-        Settings.settings.notification = .theme
         Calculation.current.refresh()
         
         let impactMed = UIImpactFeedbackGenerator(style: .light)

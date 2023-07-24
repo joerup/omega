@@ -64,6 +64,7 @@ struct VariablePlugView: View {
                     } label: {
                         Image(systemName: "chevron.forward.circle")
                             .foregroundColor(settings.theme.primaryTextColor)
+                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     }
                     .padding(.trailing, 10).padding(.leading, -10)
                 }

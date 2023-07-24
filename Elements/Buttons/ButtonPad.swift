@@ -46,18 +46,16 @@ struct ButtonPad: View {
                     ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 4, active: active, showText: showText)
                         .padding(.top, self.width*0.0025)
                     
-                }
-                
-                else {
+                } else {
                     
                     let width = self.width*0.98
                     let height = min(buttonHeight, width*0.95/8)
                         
                     VStack(spacing:0) {
-                        PortraitPadBTop(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
+                        PortraitPadTop(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
     
                         HStack(spacing:0) {
-                            PortraitPadBSide(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
+                            PortraitPadSide(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
                             NumPad(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
                         }
                     }

@@ -74,6 +74,7 @@ struct PopUpSheet<Content: View>: View {
             }
             .padding(5)
             .padding(.bottom, fullScreen ? 20 : 0)
+            .dynamicTypeSize(..<DynamicTypeSize.xxxLarge)
         }
         .frame(maxWidth: fullScreen ? .infinity : 500, maxHeight: fullScreen ? .infinity : 500)
     }

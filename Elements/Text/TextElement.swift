@@ -56,7 +56,7 @@ class TextElement: Equatable {
         guard size > 0 else { return 0 }
         let label = UILabel()
         label.text = display
-        label.font = UIFont.rounded(size: size, weight: .medium)
+        label.font = UIFont.displayFont(size: size)
         label.textAlignment = .center
         label.numberOfLines = 1
         return label.intrinsicContentSize.width
@@ -158,7 +158,10 @@ class Vinculum: TextElement {
 
 class Radical: TextElement {
     
-    init(size: CGFloat) {
+    var thickness: CGFloat
+    
+    init(size: CGFloat, thickness: CGFloat) {
+        self.thickness = thickness
         super.init("RADICAL")
         self.size = size
     }
@@ -166,11 +169,16 @@ class Radical: TextElement {
     override var width: CGFloat {
         return size*0.5
     }
+    
+    override func multiply(_ factor: Double) {
+        super.multiply(factor)
+        self.thickness *= factor
+    }
 }
 
 extension UIFont {
-    class func rounded(size: CGFloat, weight: UIFont.Weight) -> UIFont {
-        let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
+    class func displayFont(size: CGFloat) -> UIFont {
+        let systemFont = UIFont.systemFont(ofSize: size, weight: .medium)
         let font: UIFont
         
         if let descriptor = systemFont.fontDescriptor.withDesign(.rounded) {
@@ -178,6 +186,7 @@ extension UIFont {
         } else {
             font = systemFont
         }
+        
         return font
     }
 }
@@ -199,6 +208,8 @@ enum TextColor {
             return secondaryColor
         case .theme:
             return Settings.settings.theme.primaryTextColor
+        case .custom(let color):
+            return color
         case .none:
             return noColor
         }
@@ -239,5 +250,6 @@ enum ColorContext {
     case primary
     case secondary
     case theme
+    case custom(_ color: Color)
     case none
 }

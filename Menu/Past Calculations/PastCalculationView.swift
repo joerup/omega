@@ -125,6 +125,7 @@ struct PastCalculationView: View {
                             }
                         }
                         .padding(.leading, 6)
+                        .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
                         
                         Spacer()
                     }
@@ -194,17 +195,6 @@ struct PastCalculationView: View {
                         }
                         .id(Calculation.current.update)
                         
-                        // Analysis
-                        
-    //                    let roots = Value.functionRoots(calculation.queue)
-    //                    let extrema = Value.functionRoots( Queue([Value.derivative(Expression(calculation.queue.items), withRespectTo: calculation.queue.variables.first ?? Variable("x"))]) )
-    //
-    //                    if !roots.isEmpty, !extrema.isEmpty {
-    //
-    //                        FunctionAnalysisView(queue: calculation.queue, roots: roots, extrema: extrema)
-    //                            .background(Color.init(white: 0.2))
-    //                            .cornerRadius(20)
-    //                    }
                     }
                     
                     // Note

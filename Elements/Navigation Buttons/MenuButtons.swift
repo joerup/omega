@@ -14,6 +14,7 @@ struct XButton: View {
     
     var body: some View {
         SmallIconButton(symbol: "xmark", color: Color.init(white: 0.25), smallerSmall: true, action: action)
+            .accessibilityLabel(Text("Close"))
     }
 }
 

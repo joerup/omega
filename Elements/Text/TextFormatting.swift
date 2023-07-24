@@ -147,7 +147,7 @@ class TextFormatting {
                 element.color = themeColor
             
                 element.leftPad -= element.width * (prev != nil ? 0.8 : 0.5)
-                element.rightPad -= element.width * (next != nil ? 0.8 : 0.5)
+                element.rightPad -= element.width * (next != nil && next?.text != "\\)" ? 0.8 : 0.5)
                 element.verticalOffset += element.size*0.078
             }
  
@@ -244,10 +244,10 @@ class TextFormatting {
                 
                 for e in elements[index1..<index] {
                     e.multiply(0.42)
-                    e.midline += element.size*0.37
+                    e.midline += element.size*0.33
                 }
                 
-                let radical = Radical(size: element.size)
+                let radical = Radical(size: element.size, thickness: strokeSize(element.size))
                 radical.leftPad -= element.size*0.3
                 radical.rightPad -= element.size*0.27
                 radical.color = .general
@@ -269,7 +269,7 @@ class TextFormatting {
                 elements[index].midline += (vinculum.topPosition+radicandHeight.bottom)/2
                 
                 for e in elements[index1..<index] {
-                    e.midline += element.midline - element.height*0.08
+                    e.midline += elements[index].midline - elements[index].height*0.08
                 }
                 
                 index = index2+1
@@ -324,8 +324,15 @@ class TextFormatting {
                     e.midline -= denominatorHeight.top + element.size*0.1
                 }
                 
-                let numeratorWidth = getTotalWidth(elements[index1..<index].map{$0})
+                var numeratorWidth = getTotalWidth(elements[index1..<index].map{$0})
                 let denominatorWidth = getTotalWidth(elements[index+1...index2].map{$0})
+                
+                let visibleElements = elements[index1..<index].filter({ $0.size > 0 })
+                if let first = visibleElements.first, first.text.contains("-") {
+                    let negativeWidth = TextElement("-", copy: first).width
+                    numeratorWidth -= negativeWidth
+                    elements[index1].leftPad -= negativeWidth*0.5
+                }
                 
                 if numeratorWidth >= denominatorWidth {
                     
@@ -482,15 +489,15 @@ class TextFormatting {
                 if prev?.text == "*" || prev?.text == "#(" && prev2?.text == "*" {
                     element.leftPad -= element.size*0.15
                 }
-                element.rightPad -= element.size*0.1
-                elements[index1+1].leftPad -= element.size*0.1
+                element.rightPad -= element.size*0.2
+                elements[index1+1].leftPad -= element.size*0.2
                 elements[index1+1].queueIndex = elements[index1].queueIndex
                 
                 let height = getTotalHeight(elements[index...index1].map{$0})
                 let ratio = (height.top-height.bottom)/element.size
                 
-                element.aspectRatio *= ratio
-                elements[index1+1].aspectRatio *= ratio
+                element.aspectRatio *= ratio * 1.1
+                elements[index1+1].aspectRatio *= ratio * 1.1
                 
                 element.midline += (height.top+height.bottom)/2
                 elements[index1+1].midline += (height.top+height.bottom)/2
@@ -835,6 +842,6 @@ class TextFormatting {
     
     // Stroke size
     func strokeSize(_ size: CGFloat) -> CGFloat {
-        return size * 0.1
+        return size * (UIAccessibility.isBoldTextEnabled ? 0.125 : 0.1)
     }
 }

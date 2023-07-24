@@ -37,17 +37,17 @@ struct CalculatorInterface: View {
                     Spacer(minLength: size == .large ? size.smallerLargeSize : 0)
                     TextView(size: size, orientation: orientation, standardSize: standardSize)
                         .frame(maxHeight: min(size == .large ? max(geometry.size.height*0.2, 190) : geometry.size.height*(orientation == .landscape ? 0.3 : 0.22), geometry.size.width*0.5))
-                        .padding(.top, orientation == .landscape ? 2 : standardSize + 2)
+                        .padding(.top, orientation == .landscape ? 5 : standardSize + 2)
                         .border(Color.red, width: settings.guidelines ? 1 : 0)
                         .ignoresSafeArea(.keyboard)
                 }
                 .overlay(OverlayDismissArea())
                 
-                VStack(spacing: 2) {
+                VStack(spacing: 0) {
                     
                     DetailButtonRow(size: size, orientation: orientation)
                         .padding(.horizontal, horizontalPadding)
-                        .padding(.top, 2)
+                        .padding(.vertical, verticalSizeClass == .compact ? 0 : 2)
                         .border(Color.green, width: settings.guidelines ? 1 : 0)
                     
                     ButtonPad(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
@@ -55,10 +55,10 @@ struct CalculatorInterface: View {
                         .border(Color.blue, width: settings.guidelines ? 1 : 0)
                 }
                 .keypadShift()
-                .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay() } else {}})
+                .overlay(VStack{ if verticalSizeClass == .regular { CalculatorOverlay().padding(.top, -5) } else {}})
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
-            .overlay(VStack{ if verticalSizeClass == .compact { CalculatorOverlay().padding(.top, standardSize+7) } else {}})
+            .overlay(VStack{ if verticalSizeClass == .compact { CalculatorOverlay().padding(.top, standardSize+10) } else {}})
             .contentOverlay()
             .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
             .accentColor(settings.theme.primaryTextColor)

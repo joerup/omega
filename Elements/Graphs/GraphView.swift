@@ -157,7 +157,6 @@ struct GraphView: View {
     @ViewBuilder
     private func gridLinesView(size: CGSize) -> some View {
         Path { path in
-            
             if xf > xi, yf > yi {
                 
                 for x in adjustDisplayRange(range: xi...xf, size: size) {
@@ -186,6 +185,7 @@ struct GraphView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.gray)
                     .position(point(Double(num), 0, size: size, limitY: true, num: num))
+                    .dynamicTypeSize(..<DynamicTypeSize.xLarge)
             }
             ForEach(adjustDisplayRange(range: yi...yf, number: true, size: size), id: \.self) { num in
                 Text(formatNum(num))
@@ -193,6 +193,7 @@ struct GraphView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.gray)
                     .position(point(0, Double(num), size: size, limitX: true, num: num))
+                    .dynamicTypeSize(..<DynamicTypeSize.xLarge)
             }
         }
     }
@@ -244,7 +245,7 @@ struct GraphView: View {
                     path.addLine(to: point(guideline.end.x, guideline.end.y, size: size))
                 }
             }
-            .stroke(guideline.color, lineWidth: 1)
+            .stroke(guideline.color, lineWidth: 1.5)
         }
     }
     
@@ -290,6 +291,7 @@ struct GraphView: View {
                 .foregroundColor(text.color)
                 .position(point(text.position.x, text.position.y, size: size))
                 .rotationEffect(text.rotation)
+                .dynamicTypeSize(..<DynamicTypeSize.xLarge)
         }
     }
     

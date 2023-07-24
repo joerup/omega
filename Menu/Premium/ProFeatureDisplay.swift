@@ -56,7 +56,7 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
         case .functions:
             return "A whole new world of capabilities."
         case .variables:
-            return "Unlock the power of variables."
+            return "Variables: store or plug in."
         case .calculus:
             return "Advanced functions made simple."
         case .save:

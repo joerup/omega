@@ -132,9 +132,6 @@ struct PopUpView: View {
                         else if settings.notification == .delete {
                             Notification(text: "Deleted", image: "trash", notification: $settings.notification)
                         }
-                        else if settings.notification == .theme {
-                            Notification(text: "Set Theme", image: "paintpalette", notification: $settings.notification)
-                        }
                         else if settings.notification == .favorite {
                             Notification(text: "Added to Favorites", image: "star.fill", notification: $settings.notification)
                         }
@@ -149,6 +146,7 @@ struct PopUpView: View {
             .frame(width: geometry.size.width, height: geometry.size.height)
             .transition(.move(edge: .bottom))
             .animation(.default, value: settings.warning?.id)
+            .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
         }
     }
 }

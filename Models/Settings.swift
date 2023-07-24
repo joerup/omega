@@ -67,8 +67,16 @@ class Settings: ObservableObject {
     }
     
     func popUp(_ displayType: ProFeatureDisplay? = nil) {
+        setPreviewThemes()
         self.proPopUpType = displayType
         self.showProPopUp = true
+    }
+    
+    func setPreviewThemes(without theme: Theme? = nil) {
+        let currentTheme = theme ?? self.theme
+        self.previewTheme1 = ThemeData.allThemes[4...].filter({ ![currentTheme,previewTheme1,previewTheme2,previewTheme3].map({ $0.id }).contains($0.id) }).randomElement()!
+        self.previewTheme2 = ThemeData.allThemes[4...].filter({ ![currentTheme,previewTheme1,previewTheme2,previewTheme3].map({ $0.id }).contains($0.id) }).randomElement()!
+        self.previewTheme3 = ThemeData.allThemes[4...].filter({ ![currentTheme,previewTheme1,previewTheme2,previewTheme3].map({ $0.id }).contains($0.id) }).randomElement()!
     }
     
     

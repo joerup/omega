@@ -85,8 +85,14 @@ struct MainMenuView: View {
                         }
                         
                         SettingsGroup {
-                            SettingsNavigationLink(title: "Export Calculations", dismiss: dismiss) {
-                                ExportView()
+                            if proCheck() {
+                                SettingsNavigationLink(title: "Export Calculations", dismiss: dismiss) {
+                                    ExportView()
+                                }
+                            } else {
+                                SettingsButton(title: "Export Calculations") {
+                                    let _ = proCheckNotice(.save)
+                                }
                             }
                         }
                         
@@ -131,6 +137,7 @@ struct MainMenuView: View {
                         }
                         .padding(.horizontal, 10)
                         .padding(.bottom, 20)
+                        .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     }
                     .padding(.vertical, 10)
                 }
@@ -145,6 +152,7 @@ struct MainMenuView: View {
                 }
             }
             .navigationViewStyle(.stack)
+            .dynamicTypeSize(..<DynamicTypeSize.accessibility3)
             .accentColor(settings.theme.primaryTextColor)
             .sheet(isPresented: self.$settings.showProPopUp) {
                 OmegaProSplash(storeManager: storeManager)

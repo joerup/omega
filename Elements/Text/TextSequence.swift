@@ -51,7 +51,7 @@ struct TextSequence: View {
                                 .fill(element.color.inContext(colorContext))
                                 .frame(width: element.width, height: element.size)
                             
-                        } else if element is Radical {
+                        } else if let element = element as? Radical {
                                 
                             Path { path in
                                 path.move(to: CGPoint(x: 0, y: element.size * element.aspectRatio * 0.55))
@@ -59,7 +59,7 @@ struct TextSequence: View {
                                 path.addLine(to: CGPoint(x: element.width*0.75, y: element.size * 0.05))
                             }
                             .stroke(element.color.inContext(colorContext),
-                                    style: StrokeStyle(lineWidth: element.size*0.1, lineCap: .round, lineJoin: .round))
+                                    style: StrokeStyle(lineWidth: element.thickness, lineCap: .round, lineJoin: .round))
                             .frame(width: element.width, height: element.size * element.aspectRatio)
                             
                         } else if interaction != .none {

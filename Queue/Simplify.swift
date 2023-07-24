@@ -662,15 +662,35 @@ extension Queue {
                 return Queue([Error("Invalid syntax")])
             }
             
+            // Mixed Numbers
+            if operation == .con, !((queue[index-1] as? Expression)?.parentheses ?? false), index+3 < queue.count, (queue[index+2] as? Operation)?.operation ?? .con == .fra, queue[index+3] is Value {
+                
+                // Set the values
+                let value1 = queue[index-1] as! Value
+                let value2 = queue[index+1] as! Value
+                let value3 = queue[index+3] as! Value
+                
+                let negative = (value1 as? Number)?.negative ?? false
+                
+                // Perform the operation
+                let result = value1 + (value2 / value3) * Number(negative ? -1 : 1)
+                
+                // Set the result
+                queue[index] = result
+                
+                // Remove the extra operands
+                queue.remove(at: index+2)
+                queue.remove(at: index+2)
+            }
             // Coefficients
-            if operation == .con {
+            else if operation == .con {
                 
                 // Set the values
                 let value1 = queue[index-1] as! Value
                 let value2 = queue[index+1] as! Value
 
                 // Perform the operation
-                let result = Value.connect(input1: value1, input2: value2)
+                let result = value1 * value2
 
                 // Set the result
                 queue[index] = result

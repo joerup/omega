@@ -97,6 +97,7 @@ struct StoredVarView: View {
                             }
                         }
                         .padding(.leading, 6)
+                        .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
                         
                         Spacer()
                     }

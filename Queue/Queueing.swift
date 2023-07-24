@@ -135,6 +135,12 @@ extension Queue {
         // Decimal points
         if format == .dec {
             
+            // Repeating decimal
+            if pressType == .hold {
+                queue(.vinc, pressType)
+                return
+            }
+            
             // Make a new num
             newNum(allowSoloNegative: true)
             
@@ -473,7 +479,7 @@ extension Queue {
             case .con:
                 return [Placeholder(active: true)]
             case .mix:
-                return [Placeholder(active: true), Operation(.fra), Placeholder()]
+                return [Placeholder(active: true, grouping: .temporary, pattern: .stuckRight), Operation(.fra), Placeholder(grouping: .temporary, pattern: .stuckLeft)]
             default:
                 return [Placeholder(active: true, grouping: .temporary, pattern: .stuckLeft)]
             }
@@ -1775,11 +1781,6 @@ extension Queue {
         // all means all three queues will be combined
         // keepIntact means nothing additional may be added to any queue
         
-        // Remove placeholder
-//        if queue1.last is Placeholder && queue2.first is Value && !(queue2.first is Placeholder) && !keepIntact {
-//            queue1.removeLast()
-//        }
-        
         // Combine the main queue with the second queue
         while queue2.count > 0 {
             // Set the item
@@ -1830,15 +1831,6 @@ extension Queue {
         
         // Called after every input
         // Adjusts items encroach directly around the pointer
-        
-        // Last item is an implicit temporary expression following function or operation - move
-//        if !queue3.isEmpty, queue2.isEmpty, let expression = queue3.first as? Expression, expression.grouping == .temporary, let nextNonValue = nextNonValue(after: 0, in: queue3), nextNonValue.afterFakePar, expression.smallEnoughNext(for: nextNonValue) {
-//            queue3.removeFirst()
-//            openParentheses(type: expression.grouping, pattern: expression.pattern)
-//            queue2.insert(contentsOf: expression.value, at: 0)
-//            queue3.insert(contentsOf: queue2, at: 0)
-//            queue2.removeAll()
-//        }
         
         // Format the lagging num
         if num.isEmpty && queue1.last is NonValue, queue2.isEmpty, let laggingNum = queue3.first as? Number {

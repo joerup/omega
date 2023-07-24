@@ -46,6 +46,8 @@ struct ButtonText: View {
                 return ["■"]
             case "/":
                 return ["■","/","■"]
+            case "*/":
+                return ["■","*","■","/","■"]
             case "+/-":
                 return ["+","//","-"]
             case "abs":
@@ -93,11 +95,14 @@ struct ButtonText: View {
         return nil
     }
     
-    var offset: CGFloat {
+    var offset: CGSize {
         if Operation.primary.contains(button.name) || ["enter","(",")","∑","∏"].contains(button.name) {
-            return fontSize*0.125
+            return CGSize(width: 0, height: fontSize*0.125)
         }
-        return 0
+        if button.name == "*/" {
+            return CGSize(width: -fontSize*0.075, height: 0)
+        }
+        return .zero
     }
     
     var relativeSize: CGFloat {
@@ -119,10 +124,12 @@ struct ButtonText: View {
         
         if let elements = elements {
             TextSequence(textElements: elements, colorContext: .none)
+                .offset(offset)
         } else {
             Text(name)
                 .font(.system(size: fontSize*relativeSize, weight: .medium, design: .rounded))
-                .baselineOffset(offset)
+                .baselineOffset(offset.height)
+                .offset(x: offset.width)
         }
     }
     

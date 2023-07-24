@@ -17,15 +17,10 @@ struct ListDisplayTypePicker: View {
     var body: some View {
         
         Menu {
-            ForEach(ListDisplayType.allCases) { type in
-                Button(action: {
-                    SoundManager.play(sound: .click3, haptic: .medium)
-                    withAnimation {
-                        self.displayType = type
-                    }
-                }) {
-                    Image(systemName: type.icon)
-                    Text(LocalizedStringKey(type.rawValue))
+            Picker("", selection: self.$displayType) {
+                ForEach(ListDisplayType.allCases) { type in
+                    Label(type.rawValue, systemImage: type.icon)
+                        .tag(type)
                 }
             }
         } label: {

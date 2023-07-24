@@ -26,7 +26,6 @@ struct Notification: View {
         case assign
         case export
         case delete
-        case theme
         case favorite
         case unfavorite
     }
@@ -54,6 +53,7 @@ struct Notification: View {
         .padding(10)
         .background(Color.init(white: 0.2))
         .cornerRadius(30)
+        .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
         .shadow(radius: 10)
         .onTapGesture {
             self.notification = .none

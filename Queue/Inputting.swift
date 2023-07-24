@@ -448,7 +448,7 @@ extension Queue {
             
             // Cannot jump LEFT for a stuck left expression
             else if let expression = item as? Expression, expression.pattern == .stuckLeft {
-            
+                
                 // Go forward
                 if motion == nil || motion == 1 {
                     if expression.canEnter, proCheck() {
@@ -488,15 +488,6 @@ extension Queue {
                     if path[0] < queue1.count, queue1[path[0]] is Expression, proCheck() {
                         path += [0]
                     }
-                }
-            }
-            
-            // Cannot jump after a connector
-            else if (prev as? Operation)?.operation == .con {
-                if (item as? Expression)?.pattern == .stuckRight && motion != -1 {
-                    path += [0]
-                } else {
-                    path[0] += motion ?? -1
                 }
             }
             

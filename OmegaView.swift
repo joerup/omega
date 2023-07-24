@@ -57,7 +57,7 @@ struct OmegaView: View {
                 
                 HeaderButtonRow(size: size, orientation: orientation)
                     .padding(.horizontal, horizontalPadding)
-                    .padding(.top, 2)
+                    .padding(.top, 5)
                 
                 Spacer()
             }

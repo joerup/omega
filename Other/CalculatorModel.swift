@@ -227,6 +227,7 @@ struct CalculatorModel: View {
                                         .font(.system(.caption, design: .rounded).weight(.semibold))
                                         .lineLimit(0).minimumScaleFactor(0.5)
                                         .padding([.top, .horizontal])
+                                        .dynamicTypeSize(..<DynamicTypeSize.xxxLarge)
                                     VStack(spacing: 2.5) {
                                         ForEach(0...4, id: \.self) { _ in
                                             RoundedRectangle(cornerRadius: 5)
@@ -237,7 +238,7 @@ struct CalculatorModel: View {
                                     Spacer()
                                 }
                                 .frame(width: min(200, safeSize.width*0.7), height: min(300, safeSize.height*0.6))
-                                .background(Color.init(white: 0.25).cornerRadius(10))
+                                .background(Color.init(white: 0.25).cornerRadius(10).shadow(radius: 10))
                             }
                         case .pastCalculations(let inputs, let outputs):
                             VStack {
@@ -328,7 +329,7 @@ struct CalculatorModel: View {
                                         VStack(spacing: safeSize.height*0.02) {
                                             ForEach(variables.indices, id: \.self) { i in
                                                 HStack(spacing: 2) {
-                                                    TextDisplay(strings: [variables[i].name], size: safeSize.height*0.05)
+                                                    TextDisplay(strings: [variables[i].name], size: safeSize.height*0.05, colorContext: .custom(theme.primaryTextColor))
                                                         .frame(width: safeSize.width*0.12, height: safeSize.height*0.06)
                                                     TextDisplay(strings: values[i].strings, size: safeSize.height*0.045, scrollable: true)
                                                         .frame(height: safeSize.height*0.06)

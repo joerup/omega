@@ -83,12 +83,14 @@ struct PastCalcRecentView: View {
                                     Image(systemName: "chevron.backward")
                                         .font(.body.bold())
                                         .foregroundColor(prevDate >= minDate ? settings.theme.secondaryTextColor : Color.init(white: 0.25))
+                                        .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                         .padding(.horizontal, 5)
                                 }
                                 
                                 Text(dateString(selectedDate))
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                     .foregroundColor(.white)
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .lineLimit(0)
                                     .minimumScaleFactor(0.5)
                                     .padding(5)
@@ -104,6 +106,7 @@ struct PastCalcRecentView: View {
                                     Image(systemName: "chevron.forward")
                                         .font(.body.bold())
                                         .foregroundColor(nextDate <= Date() ? settings.theme.secondaryTextColor : Color.init(white: 0.25))
+                                        .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                         .padding(.horizontal, 5)
                                 }
                                 
@@ -134,9 +137,10 @@ struct PastCalcRecentView: View {
                                     }
                                 })
                                 
-                                Text("\(String(selectedCalculations.count)) selected")
+                                Text("\(String(selectedCalculations.count))")
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                     .lineLimit(0)
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .foregroundColor(Color.init(white: 0.8))
                                     .padding(.horizontal, 5)
                                 
@@ -219,6 +223,7 @@ struct PastCalcRecentView: View {
                         Spacer()
                     }
                     .foregroundColor(Color.init(white: 0.6))
+                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     .padding(40)
                 }
                 
@@ -241,6 +246,7 @@ struct PastCalcRecentView: View {
                                         Image(systemName: selectedCalculations.contains(calculation) ? "checkmark.circle.fill" : "circle")
                                             .foregroundColor(Color.init(white: 0.8))
                                             .imageScale(.large)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .padding(.horizontal, -5)
                                     }
 
@@ -308,6 +314,7 @@ struct PastCalcRecentView: View {
                                             .font(.headline.weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.8))
                                             .frame(maxHeight: .infinity)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .onTapGesture {
                                                 calculation.insert()
                                             }
@@ -343,6 +350,7 @@ struct PastCalcRecentView: View {
                                     }
                                 }
                             }
+                            .buttonStyle(.plain)
                             .id(!calculation.isFault ? calculation.uuid : UUID())
                         }
                         .id(self.current.update)
@@ -378,10 +386,11 @@ struct PastCalcRecentView: View {
                         } else {
                             MenuSheetView {
                                 Text("Select a Calculation")
-                                    .font(.title)
+                                    .font(.system(.title, design: .rounded))
                                     .fontWeight(.bold)
                                     .padding(.bottom, 10)
                                     .foregroundColor(Color.init(white: 0.6))
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .padding(40)
                             }
                         }

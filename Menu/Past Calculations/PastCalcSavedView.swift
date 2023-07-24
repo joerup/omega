@@ -75,12 +75,14 @@ struct PastCalcSavedView: View {
                                         Text(selectedFolder)
                                             .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                             .foregroundColor(settings.theme.secondaryTextColor)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .padding(.horizontal, 5)
                                             .padding(.vertical, 10)
                                     } else {
                                         Text("All Saved")
                                             .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.6))
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .padding(.horizontal, 5)
                                             .padding(.vertical, 10)
                                     }
@@ -114,10 +116,11 @@ struct PastCalcSavedView: View {
                                     }
                                 })
                                 
-                                Text("\(String(selectedCalculations.count)) selected")
+                                Text("\(String(selectedCalculations.count))")
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                     .lineLimit(0)
                                     .foregroundColor(Color.init(white: 0.8))
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .padding(.horizontal, 5)
                                 
                                 Spacer()
@@ -178,6 +181,7 @@ struct PastCalcSavedView: View {
                                         Text("All Saved")
                                             .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.7))
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                         Spacer()
                                     }
                                     .padding(10)
@@ -201,6 +205,7 @@ struct PastCalcSavedView: View {
                                                 Text(folder)
                                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                                     .foregroundColor(.white)
+                                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                                 Spacer()
                                             }
                                             Menu {
@@ -224,6 +229,7 @@ struct PastCalcSavedView: View {
                                             } label: {
                                                 Image(systemName: "ellipsis.circle")
                                                     .foregroundColor(Color.init(white: 0.7))
+                                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             }
                                         }
                                         .padding(10)
@@ -249,6 +255,7 @@ struct PastCalcSavedView: View {
                                         SoundManager.play(haptic: .light)
                                     })
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .foregroundColor(.white)
                                     .padding(10)
                                     .background(Color.init(white: 0.2))
@@ -262,6 +269,7 @@ struct PastCalcSavedView: View {
                                             Text("New Folder")
                                                 .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                                 .foregroundColor(Color.init(white: 0.6))
+                                                .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             Spacer()
                                         }
                                         .padding(10)
@@ -308,6 +316,7 @@ struct PastCalcSavedView: View {
                         Spacer()
                     }
                     .foregroundColor(Color.init(white: 0.6))
+                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     .padding(40)
                 }
 
@@ -328,6 +337,7 @@ struct PastCalcSavedView: View {
                                         Image(systemName: selectedCalculations.contains(calculation) ? "checkmark.circle.fill" : "circle")
                                             .foregroundColor(Color.init(white: 0.8))
                                             .imageScale(.large)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .padding(.horizontal, -5)
                                     }
 
@@ -395,6 +405,7 @@ struct PastCalcSavedView: View {
                                             .font(.headline.weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.8))
                                             .frame(maxHeight: .infinity)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .onTapGesture {
                                                 calculation.insert()
                                             }
@@ -432,6 +443,7 @@ struct PastCalcSavedView: View {
                             }
                             .id(!calculation.isFault ? calculation.uuid : UUID())
                         }
+                        .buttonStyle(.plain)
                         .id(self.current.update)
                         
                         if !settings.pro && !calculations.isEmpty {
@@ -472,10 +484,11 @@ struct PastCalcSavedView: View {
                         } else {
                             MenuSheetView {
                                 Text("Select a Calculation")
-                                    .font(.title)
+                                    .font(.system(.title, design: .rounded))
                                     .fontWeight(.bold)
                                     .padding(.bottom, 10)
                                     .foregroundColor(Color.init(white: 0.6))
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .padding(40)
                             }
                         }

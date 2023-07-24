@@ -60,6 +60,7 @@ struct ThemeView: View {
                                             .font(.caption)
                                             .foregroundColor(Color.init(white: 0.6))
                                             .multilineTextAlignment(.center)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxxLarge)
                                             .frame(maxWidth: .infinity)
                                             .padding(.top, 20)
                                             .padding(.bottom, 30)
@@ -82,37 +83,43 @@ struct ThemeView: View {
                                     
                                     VStack(alignment: .leading, spacing: 0) {
                                         
-                                        HStack {
+                                        AStack {
                                             
                                             Text("\(category.name) Series")
                                                 .font(Font.system(.body, design: .rounded).weight(.bold))
                                             
                                             Spacer()
                                             
-                                            if category.themes[0].locked {
+                                            HStack {
+                                                
+                                                if category.themes[0].locked {
+                                                    
+                                                    Button(action: {
+                                                        showUnlock = category.themes[0]
+                                                        settings.setPreviewThemes(without: category.themes[0])
+                                                    }) {
+                                                        Text(NSLocalizedString("Unlock", comment: "").uppercased())
+                                                            .font(Font.system(.caption, design: .rounded).weight(.bold))
+                                                            .lineLimit(0)
+                                                            .minimumScaleFactor(0.5)
+                                                            .foregroundColor(.white.opacity(0.8))
+                                                    }
+                                                    .padding(.leading, 10)
+                                                }
                                                 
                                                 Button(action: {
-                                                    showUnlock = category.themes[0]
+                                                    self.showPreview.toggle()
+                                                    self.preview = ThemePreviewItem(category.themes[0], category: category)
                                                 }) {
-                                                    Text(NSLocalizedString("Unlock", comment: "").uppercased())
+                                                    Text(NSLocalizedString("Preview", comment: "").uppercased())
                                                         .font(Font.system(.caption, design: .rounded).weight(.bold))
                                                         .lineLimit(0)
                                                         .minimumScaleFactor(0.5)
                                                         .foregroundColor(.white.opacity(0.8))
                                                 }
-                                                .padding(.horizontal, 10)
+                                                .padding(.leading, 10)
                                             }
-                                            
-                                            Button(action: {
-                                                self.showPreview.toggle()
-                                                self.preview = ThemePreviewItem(category.themes[0], category: category)
-                                            }) {
-                                                Text(NSLocalizedString("Preview", comment: "").uppercased())
-                                                    .font(Font.system(.caption, design: .rounded).weight(.bold))
-                                                    .lineLimit(0)
-                                                    .minimumScaleFactor(0.5)
-                                                    .foregroundColor(.white.opacity(0.8))
-                                            }
+                                            .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
                                         }
                                         .padding(.top, 17)
                                         .padding(.horizontal, 5)

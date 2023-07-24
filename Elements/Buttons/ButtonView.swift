@@ -50,7 +50,7 @@ struct ButtonView: View {
                 Button { } label: {
                     ButtonText(button: button, fontSize: fontSize)
                         .foregroundColor(.white)
-                        .shadow(color: Color.init(white: 0.1), radius: fontSize/2.5)
+                        .shadow(radius: fontSize/2.5)
                         .frame(width: width, height: height, alignment: .center)
                         .background(backgroundColor)
                         .clipShape(RoundedRectangle(cornerRadius: 0.42*height, style: .continuous))
@@ -62,6 +62,7 @@ struct ButtonView: View {
                         }
                 }
                 .scaleEffect(isPressed ? 0.9 : 1.0)
+                .buttonStyle(.plain)
             }
         }
         else if showText {

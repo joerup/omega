@@ -114,14 +114,14 @@ class Input {
     
     static var landscapePad = [
         Input([
-            "(", ")", "%", "*", "/", "vinc", "abs",
+            "(", ")", "%", "*", "/", "*/", "abs",
             "∑", "!", "^2", "^3", "^", "^-1", "EXP",
             "∏", "rand", "√", "3√", "n√", "π", "e",
             "dx", "nPr", "sin", "cos", "tan", "10^", "e^",
             "∫", "nCr", "sin⁻¹", "cos⁻¹", "tan⁻¹", "log", "ln"
         ]),
         Input([
-            "(", ")", "%", "*", "/", "vinc", "abs",
+            "(", ")", "%", "*", "/", "*/", "abs",
             "∑", "!", "^2", "^3", "^", "^-1", "EXP",
             "∏", "rand", "√", "3√", "n√", "π", "e",
             "dx", "nPr", "sinh", "cosh", "tanh", "2^", "n^",
@@ -130,25 +130,14 @@ class Input {
     ]
 
     static var scrollRow = Input([
-        "(", ")", "%", "^2", "√", "/", "EXP", "^", "π", "e", "sin", "cos", "tan", "log", "ln"
+        "(", ")", "%", "^2", "√", "/", "*/", "EXP", "^", "π", "e", "sin", "cos", "tan", "log", "ln"
     ])
 
-    static var portraitPadATop = Input([
-        "(", ")", "^2", "^", "%",
-        "sin", "EXP", "√", "n√", "/"
+    static var portraitPadTop = Input([
+        "(", ")", "^2", "^3", "^", "π", "%", "/",
+        "abs", "EXP", "√", "3√", "n√", "e", "^-1", "*/",
     ])
-    static var portraitPadASide = Input([
-        "cos",
-        "tan",
-        "log",
-        "ln"
-    ])
-
-    static var portraitPadBTop = Input([
-        "(", ")", "^2", "^3", "^", "π", "%", "*",
-        "abs", "EXP", "√", "3√", "n√", "e", "^-1", "/",
-    ])
-    static var portraitPadBSide = [
+    static var portraitPadSide = [
         Input([
             "!", "sin", "cos", "tan",
             "rand", "sin⁻¹", "cos⁻¹", "tan⁻¹",
@@ -192,7 +181,7 @@ class Input {
     
     static var funcPad = [
         Input([
-            "(", ")", "%", "*", "/",
+            "(", ")", "%", "/", "*/",
             "^2", "^3", "^", "^-1", "EXP",
             "√", "3√", "n√", "π", "e",
             "sin", "cos", "tan", "10^", "e^",
@@ -200,12 +189,12 @@ class Input {
             "∑", "dx", "!", "rand", "abs"
         ]),
         Input([
-            "(", ")", "%", "*", "/",
+            "(", ")", "%", "/", "*/",
             "^2", "^3", "^", "^-1", "EXP",
             "√", "3√", "n√", "π", "e",
             "sinh", "cosh", "tanh", "2^", "n^",
             "sinh⁻¹", "cosh⁻¹", "tanh⁻¹", "log2", "logn",
-            "∏", "∫", "nPr", "nCr", "vinc"
+            "∏", "∫", "nPr", "nCr", "abs"
         ])
     ]
 }

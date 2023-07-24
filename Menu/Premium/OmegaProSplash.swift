@@ -70,7 +70,6 @@ struct OmegaProSplash: View {
             withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
                 spotlight = 1.0
             }
-            setThemes()
         }
     }
     
@@ -82,6 +81,7 @@ struct OmegaProSplash: View {
                     .font(.system(.title2, design: .rounded).weight(.bold))
                     .lineLimit(0)
                     .minimumScaleFactor(0.5)
+                    .dynamicTypeSize(..<DynamicTypeSize.accessibility2)
                     .foregroundColor(Color.white)
                     .shadow(radius: 10)
                     .padding(.horizontal)
@@ -103,7 +103,7 @@ struct OmegaProSplash: View {
             Text(displayType.description)
                 .font(.system(.callout, design: .rounded).weight(.semibold))
                 .foregroundColor(.white.opacity(0.9))
-                .lineLimit(2)
+                .dynamicTypeSize(..<DynamicTypeSize.accessibility2)
                 .minimumScaleFactor(0.5)
                 .multilineTextAlignment(.center)
                 .shadow(radius: 15)
@@ -201,12 +201,14 @@ struct OmegaProSplash: View {
                     .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(theme1.primaryColor.opacity(0.6)))
                     .cornerRadius(20)
                     .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
+                    .dynamicTypeSize(..<DynamicTypeSize.xxxLarge)
                 }
                 .frame(maxWidth: 500)
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
                 .padding(.top, 20)
                 .scaleEffect(scale*1.05)
+                .buttonStyle(.plain)
                 
             } else if let product = storeManager.myProducts.first(where: { $0.productIdentifier == "com.rupertusapps.OmegaCalc.PRO" }) {
                 
@@ -232,12 +234,14 @@ struct OmegaProSplash: View {
                     .background(RadialGradient(gradient: Gradient(colors: [.white, .black]), center: .init(x: spotlight*20 - 19, y: 0), startRadius: 1, endRadius: 400).overlay(theme1.primaryColor.opacity(0.6)))
                     .cornerRadius(20)
                     .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
+                    .dynamicTypeSize(..<DynamicTypeSize.xxxLarge)
                 }
                 .frame(maxWidth: 500)
                 .padding(.horizontal, 20)
                 .padding(.bottom, 20)
                 .padding(.top, 20)
                 .scaleEffect(scale*1.05)
+                .buttonStyle(.plain)
                 
             } else {
                 
@@ -252,6 +256,7 @@ struct OmegaProSplash: View {
                         .background(Color.white.opacity(0.4))
                         .cornerRadius(20)
                         .shadow(color: .init(white: 0.1).opacity(0.3), radius: 15)
+                        .dynamicTypeSize(..<DynamicTypeSize.xxxLarge)
                 }
                 .frame(maxWidth: 500)
                 .padding(.horizontal, 20)
@@ -266,10 +271,11 @@ struct OmegaProSplash: View {
                 Text("Restore Purchases")
                     .font(Font.system(.subheadline, design: .rounded).weight(.bold))
                     .foregroundColor(.black.opacity(0.5))
+                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     .shadow(color: .init(white: 0.3), radius: 20)
-                    .padding(.top, -10)
-                    .padding(.bottom, 5)
             }
+            .padding(.top, -10)
+            .padding(.bottom, 5)
             
             Button(action: {
                 self.dismiss()
@@ -277,18 +283,13 @@ struct OmegaProSplash: View {
                 Text("Not Now")
                     .font(Font.system(.subheadline, design: .rounded).weight(.bold))
                     .foregroundColor(.black.opacity(0.5))
+                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     .shadow(color: .init(white: 0.3), radius: 20)
-                    .padding(.bottom, 15)
             }
+            .padding(.bottom, 15)
         }
         .frame(width: size.width)
         .background(Color.white.opacity(0.3).frame(maxWidth: .infinity).cornerRadius(10).edgesIgnoringSafeArea(.all))
-    }
-    
-    private func setThemes() {
-        settings.previewTheme1 = ThemeData.allThemes[4...].filter({ ![theme1,theme2,theme3].map({ $0.id }).contains($0.id) }).randomElement()!
-        settings.previewTheme2 = ThemeData.allThemes[4...].filter({ ![theme1,theme2,theme3].map({ $0.id }).contains($0.id) }).randomElement()!
-        settings.previewTheme3 = ThemeData.allThemes[4...].filter({ ![theme1,theme2,theme3].map({ $0.id }).contains($0.id) }).randomElement()!
     }
 }
 

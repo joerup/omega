@@ -1,5 +1,5 @@
 //
-//  PortraitPadB.swift
+//  PortraitPad.swift
 //  OmegaCalculator
 //
 //  Created by Joe Rupertus on 8/7/21.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PortraitPadBTop: View {
+struct PortraitPadTop: View {
     
     @ObservedObject var settings = Settings.settings
     
@@ -29,7 +29,7 @@ struct PortraitPadBTop: View {
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 8), spacing: 0) {
                 
-                ForEach(Input.portraitPadBTop.buttons, id: \.id) { button in
+                ForEach(Input.portraitPadTop.buttons, id: \.id) { button in
                     ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/8, height: buttonHeight, relativeSize: 0.32, active: active, showText: showText, onChange: onChange)
                         .padding(.vertical, buttonHeight*0.025)
                         .padding(.horizontal, width*0.025/8)
@@ -41,7 +41,7 @@ struct PortraitPadBTop: View {
     }
 }
 
-struct PortraitPadBSide: View {
+struct PortraitPadSide: View {
     
     @ObservedObject var settings = Settings.settings
     
@@ -64,7 +64,7 @@ struct PortraitPadBSide: View {
                 
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 4), spacing: 0) {
                     
-                    ForEach(Input.portraitPadBSide[1].buttons, id: \.id) { button in
+                    ForEach(Input.portraitPadSide[1].buttons, id: \.id) { button in
                         ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/4, height: buttonHeight, relativeSize: 0.32, active: active, showText: showText, onChange: onChange)
                             .padding(.vertical, buttonHeight*0.025)
                             .padding(.horizontal, width*0.025/4)
@@ -80,7 +80,7 @@ struct PortraitPadBSide: View {
                 
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 4), spacing: 0) {
                     
-                    ForEach(Input.portraitPadBSide[0].buttons, id: \.id) { button in
+                    ForEach(Input.portraitPadSide[0].buttons, id: \.id) { button in
                         ButtonView(button: button, input: queue, backgroundColor: (theme ?? settings.theme).color3, width: width*0.95/4, height: buttonHeight, relativeSize: 0.32, active: active, showText: showText, onChange: onChange)
                             .padding(.vertical, buttonHeight*0.025)
                             .padding(.horizontal, width*0.025/4)

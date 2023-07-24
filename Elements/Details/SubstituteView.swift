@@ -45,6 +45,7 @@ struct SubstituteView: View {
                             .font(Font.system(.caption, design: .rounded))
                             .foregroundColor(Color.init(white: 0.6))
                             .lineLimit(0)
+                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                             .minimumScaleFactor(0.3)
                             .padding(.leading, 2)
                         

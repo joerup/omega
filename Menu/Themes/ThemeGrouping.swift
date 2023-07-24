@@ -42,7 +42,7 @@ struct ThemeGrouping: View {
                     Button(action: { }) {
                         VStack {
                             ThemeIcon(theme: theme, locked: theme.locked, selected: settings.theme.id == theme.id)
-                                .cornerRadius(20)
+                                .cornerRadius(size*0.25)
                                 .padding(.horizontal, 5)
                                 .overlay(alignment: .bottomTrailing) {
                                     if settings.theme.id == theme.id {
@@ -64,9 +64,9 @@ struct ThemeGrouping: View {
                                 }
 
                             Text(theme.name)
-                                .font(Font.system(.footnote, design: .rounded).weight(.bold))
+                                .font(Font.system(.caption, design: .rounded).weight(.bold))
                                 .lineLimit(0)
-                                .minimumScaleFactor(0.5)
+                                .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
                                 .foregroundColor(.white)
                             
                             ThemeCircles(theme: theme)
@@ -78,6 +78,7 @@ struct ThemeGrouping: View {
                                 theme.setTheme()
                             } else {
                                 showUnlock = theme
+                                settings.setPreviewThemes(without: theme)
                             }
                         }
                         .onLongPressGesture {
@@ -86,6 +87,7 @@ struct ThemeGrouping: View {
                                 settings.notification = theme.isFavorite ? .favorite : .unfavorite
                             } else {
                                 showUnlock = theme
+                                settings.setPreviewThemes(without: theme)
                             }
                         }
                     }

@@ -62,6 +62,7 @@ struct SettingsGroup<Content: View>: View {
                 Text(NSLocalizedString(description, comment: ""))
                     .font(.footnote)
                     .foregroundColor(Color.init(white: 0.6))
+                    .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
                     .padding(.horizontal, 35)
                     .padding(.top, 2)
                     .padding(.bottom, 15)
@@ -123,7 +124,7 @@ struct SettingsText: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(LocalizedStringKey(self.title))
-                .font(Font.system(.subheadline, design: .default).weight(.semibold))
+                .font(Font.system(.subheadline, design: .rounded).weight(.semibold))
                 .foregroundColor(Color.init(white: 0.9))
         }
     }

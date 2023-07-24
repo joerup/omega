@@ -26,71 +26,67 @@ struct DetailButtonRow: View {
             
         HStack(spacing: 0) {
             
-            ScrollView(.horizontal) {
+            HStack(spacing: 0) {
                 
-                HStack(spacing: 0) {
+                HStack {
                     
-                    HStack {
-                        
-                        if orientation == .landscape || size == .large {
-                            SmallTextButton(text: "MAT",
-                                            color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? settings.theme.secondaryColor : Color.init(white: 0.15),
-                                            textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : settings.theme.secondaryTextColor,
-                                            width: size == .small ? 55 : 70,
-                                            smallerSmall: orientation == .landscape,
-                                            sound: .click3
-                            ) {
-                                settings.buttonDisplayMode = .basic
-                                settings.buttonUppercase = false
-                                settings.detailOverlay = .none
-                            }
-                        } else {
-                            SmallTextButton(text: "MAT",
-                                            color: settings.buttonDisplayMode == .funcs ? settings.theme.secondaryColor : Color.init(white: 0.15),
-                                            textColor: settings.buttonDisplayMode == .funcs ? Color.white : settings.theme.secondaryTextColor,
-                                            width: size == .small ? 55 : 70,
-                                            smallerSmall: orientation == .landscape,
-                                            sound: .click3
-                            ) {
-                                settings.buttonDisplayMode = settings.buttonDisplayMode == .funcs ? .basic : .funcs
-                                settings.buttonUppercase = false
-                                settings.detailOverlay = .none
-                            }
-                        }
-                        
-                        SmallTextButton(text: "VAR",
-                                        color: settings.buttonDisplayMode == .vars ? settings.theme.secondaryColor : Color.init(white: 0.15),
-                                        textColor: settings.buttonDisplayMode == .vars ? Color.white : settings.theme.secondaryTextColor,
+                    if orientation == .landscape || size == .large {
+                        SmallTextButton(text: "MAT",
+                                        color: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                                        textColor: settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs ? Color.white : settings.theme.secondaryTextColor,
                                         width: size == .small ? 55 : 70,
                                         smallerSmall: orientation == .landscape,
-                                        sound: .click3,
-                                        locked: true
+                                        sound: .click3
                         ) {
-                            guard proCheckNotice([.functions, .variables].randomElement()!) else { return }
-                            settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
+                            settings.buttonDisplayMode = .basic
                             settings.buttonUppercase = false
                             settings.detailOverlay = .none
                         }
-                        
+                    } else {
+                        SmallTextButton(text: "MAT",
+                                        color: settings.buttonDisplayMode == .funcs ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                                        textColor: settings.buttonDisplayMode == .funcs ? Color.white : settings.theme.secondaryTextColor,
+                                        width: size == .small ? 55 : 70,
+                                        smallerSmall: orientation == .landscape,
+                                        sound: .click3
+                        ) {
+                            settings.buttonDisplayMode = settings.buttonDisplayMode == .funcs ? .basic : .funcs
+                            settings.buttonUppercase = false
+                            settings.detailOverlay = .none
+                        }
                     }
                     
-                    if orientation == .landscape || size == .large {
-                        if settings.buttonDisplayMode == .basic {
-                            HStack {
-                                matButtons
-                            }
-                            .padding(.leading, 20)
+                    SmallTextButton(text: "VAR",
+                                    color: settings.buttonDisplayMode == .vars ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                                    textColor: settings.buttonDisplayMode == .vars ? Color.white : settings.theme.secondaryTextColor,
+                                    width: size == .small ? 55 : 70,
+                                    smallerSmall: orientation == .landscape,
+                                    sound: .click3,
+                                    locked: true
+                    ) {
+                        guard proCheckNotice([.functions, .variables].randomElement()!) else { return }
+                        settings.buttonDisplayMode = settings.buttonDisplayMode == .vars ? .basic : .vars
+                        settings.buttonUppercase = false
+                        settings.detailOverlay = .none
+                    }
+                    
+                }
+                
+                if orientation == .landscape || size == .large {
+                    if settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs {
+                        HStack {
+                            matButtons
                         }
-                        else if settings.buttonDisplayMode == .vars {
-                            HStack {
-                                varButtons
-                            }
-                            .padding(.leading, 20)
+                        .padding(.leading, 20)
+                    }
+                    else if settings.buttonDisplayMode == .vars {
+                        HStack {
+                            varButtons
                         }
+                        .padding(.leading, 20)
                     }
                 }
             }
-            .padding(.trailing, 10)
             
             Spacer(minLength: 0)
             
@@ -161,8 +157,8 @@ struct DetailButtonRow: View {
     @ViewBuilder
     var matButtons: some View {
         SmallTextButton(text: "2nd",
-                        color: settings.buttonUppercase ? settings.theme.primaryColor : Color.init(white: 0.15),
-                        textColor: settings.buttonUppercase ? Color.white : settings.theme.primaryTextColor,
+                        color: settings.buttonUppercase ? settings.theme.secondaryColor : Color.init(white: 0.15),
+                        textColor: settings.buttonUppercase ? Color.white : settings.theme.secondaryTextColor,
                         width: size == .small ? 50 : 65,
                         smallerSmall: orientation == .landscape,
                         sound: .click3
@@ -180,7 +176,7 @@ struct DetailButtonRow: View {
                        smallerSmall: orientation == .landscape
         )
         SmallIconButton(symbol: settings.buttonUppercase ? "capslock.fill" : "capslock",
-                        color: settings.buttonUppercase ? settings.theme.primaryColor : Color.init(white: 0.15),
+                        color: settings.buttonUppercase ? settings.theme.secondaryColor : Color.init(white: 0.15),
                         textColor: .white,
                         smallerSmall: orientation == .landscape,
                         sound: .click3

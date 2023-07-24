@@ -48,6 +48,7 @@ struct StoredVarList: View {
                             Text(vars.count == 1 ? "1 Variable" : "\(vars.count) Variables")
                                 .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                 .foregroundColor(Color.init(white: 0.6))
+                                .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                 .padding(.horizontal, 15)
                             
                             Spacer()
@@ -78,10 +79,11 @@ struct StoredVarList: View {
                                 }
                             })
                             
-                            Text("\(String(selectedVars.count)) selected")
+                            Text("\(String(selectedVars.count))")
                                 .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                 .lineLimit(0)
                                 .foregroundColor(Color.init(white: 0.8))
+                                .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                 .padding(.horizontal, 5)
 
                             Spacer()
@@ -138,6 +140,7 @@ struct StoredVarList: View {
                                 Spacer()
                             }
                             .foregroundColor(Color.init(white: 0.6))
+                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                             .padding(40)
                         }
                         
@@ -151,6 +154,7 @@ struct StoredVarList: View {
                                         Image(systemName: selectedVars.contains(storedVar) ? "checkmark.circle.fill" : "circle")
                                             .foregroundColor(Color.init(white: 0.8))
                                             .imageScale(.large)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .padding(.horizontal, -5)
                                     }
 
@@ -169,6 +173,7 @@ struct StoredVarList: View {
                                             .font(.headline.weight(.semibold))
                                             .foregroundColor(Color.init(white: 0.8))
                                             .frame(maxHeight: .infinity)
+                                            .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                             .onTapGesture {
                                                 guard proCheckNotice(.variables) else { return }
                                                 storedVar.insert()
@@ -207,6 +212,7 @@ struct StoredVarList: View {
                                     }
                                 }
                             }
+                            .buttonStyle(.plain)
                         }
                         
                         Spacer()
@@ -231,10 +237,11 @@ struct StoredVarList: View {
                         } else {
                             MenuSheetView {
                                 Text("Select a Variable")
-                                    .font(.title)
+                                    .font(.system(.title, design: .rounded))
                                     .fontWeight(.bold)
                                     .padding(.bottom, 10)
                                     .foregroundColor(Color.init(white: 0.6))
+                                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                                     .padding(40)
                             }
                         }

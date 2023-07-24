@@ -33,6 +33,7 @@ struct LargeIconButton: View {
                 Text(LocalizedStringKey(text))
                     .font(Font.system(.subheadline, design: .rounded).weight(.semibold))
                     .foregroundColor(.init(white: 0.8))
+                    .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
                     .frame(maxHeight: .infinity)
             }
             .padding(10)
