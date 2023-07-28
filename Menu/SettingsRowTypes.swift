@@ -198,8 +198,13 @@ struct SettingsNavigationLink<Content: View>: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
-                            XButton {
+                            Button {
                                 dismiss()
+                                SoundManager.play(haptic: .medium)
+                            } label: {
+                                Text("Done")
+                                    .foregroundColor(settings.theme.primaryTextColor)
+                                    .font(.system(.body, design: .rounded).weight(.semibold))
                             }
                         }
                     }
@@ -240,8 +245,13 @@ struct SettingsContentNavigationLink<Content: View, RowContent: View>: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
-                            XButton {
+                            Button {
                                 dismiss()
+                                SoundManager.play(haptic: .medium)
+                            } label: {
+                                Text("Done")
+                                    .foregroundColor(settings.theme.primaryTextColor)
+                                    .font(.system(.body, design: .rounded).weight(.semibold))
                             }
                         }
                     }

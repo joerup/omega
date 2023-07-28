@@ -121,10 +121,18 @@ struct GraphView: View {
                 }
             )
             .fullScreenCover(isPresented: self.$showPopUpGraph) {
-                ZStack {
+                ZStack(alignment: .topTrailing) {
                     GraphView(elements, width: angles.isEmpty ? 21 : 2.2, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis, gridStyle: gridStyle)
-                    XButtonOverlay {
-                        self.showPopUpGraph = false
+                    Button {
+                        withAnimation {
+                            self.showPopUpGraph = false
+                            SoundManager.play(haptic: .medium)
+                        }
+                    } label: {
+                        Text("Done")
+                            .foregroundColor(settings.theme.primaryTextColor)
+                            .font(.system(.body, design: .rounded).weight(.semibold))
+                            .padding()
                     }
                 }
                 .background(Color.init(white: 0.05).edgesIgnoringSafeArea(.all))

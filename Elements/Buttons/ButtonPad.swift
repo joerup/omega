@@ -20,10 +20,14 @@ struct ButtonPad: View {
     var width: CGFloat
     var buttonHeight: CGFloat
     
+    var queue: Queue? = nil
+    
     var theme: Theme? = nil
     
     var active: Bool = true
     var showText: Bool = true
+    var showDetails: Bool = true
+    var onChange: (Queue) -> Void = { _ in }
 
     var body: some View {
         
@@ -37,13 +41,13 @@ struct ButtonPad: View {
                     let height = min(buttonHeight, width*0.95/4)
                     
                     VStack(spacing:0) {
-                        ScrollRow(width: width, buttonHeight: height*0.8, theme: theme, active: active, showText: showText)
+                        ScrollRow(queue: queue, width: width, buttonHeight: height*0.8, theme: theme, active: active, showText: showText, onChange: onChange)
                             .padding(.bottom, self.width*0.005)
-                        NumPad(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
+                        NumPad(queue: queue, width: width, buttonHeight: height, theme: theme, active: active, showText: showText, onChange: onChange)
                     }
                     .overlay(contentOverlay(width: width, buttonHeight: height*4.8/5))
                     
-                    ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 4, active: active, showText: showText)
+                    ControlPad(queue: queue, width: width, buttonHeight: height*0.8, equivalentRowAmount: 4, active: active, showText: showText, onChange: onChange)
                         .padding(.top, self.width*0.0025)
                     
                 } else {
@@ -52,16 +56,16 @@ struct ButtonPad: View {
                     let height = min(buttonHeight, width*0.95/8)
                         
                     VStack(spacing:0) {
-                        PortraitPadTop(width: width, buttonHeight: height, theme: theme, active: active, showText: showText)
+                        PortraitPadTop(queue: queue, width: width, buttonHeight: height, theme: theme, active: active, showText: showText, onChange: onChange)
     
                         HStack(spacing:0) {
-                            PortraitPadSide(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
-                            NumPad(width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText)
+                            PortraitPadSide(queue: queue, width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText, onChange: onChange)
+                            NumPad(queue: queue, width: width*4/8, buttonHeight: height, theme: theme, active: active, showText: showText, onChange: onChange)
                         }
                     }
                     .overlay(contentOverlay(width: width, buttonHeight: height))
                     
-                    ControlPad(width: width, buttonHeight: height*0.8, equivalentRowAmount: 8, active: active, showText: showText)
+                    ControlPad(queue: queue, width: width, buttonHeight: height*0.8, equivalentRowAmount: 8, active: active, showText: showText, onChange: onChange)
                         .padding(.top, self.width*0.0025)
                 }
             }
@@ -77,13 +81,13 @@ struct ButtonPad: View {
             
             HStack(spacing:0) {
                 
-                LandscapePad(width: width*7/11, buttonHeight: height, size: size, theme: theme, active: active, showText: showText)
+                LandscapePad(queue: queue, width: width*7/11, buttonHeight: height, size: size, theme: theme, active: active, showText: showText, onChange: onChange)
                     .overlay(contentOverlay(width: width*7/11, buttonHeight: height))
                 
                 VStack(spacing:0) {
-                    NumPad(width: width*4/11, buttonHeight: height, theme: theme, active: active, showText: showText)
+                    NumPad(queue: queue, width: width*4/11, buttonHeight: height, theme: theme, active: active, showText: showText, onChange: onChange)
                         .overlay(SecondDetailOverlay(size: size, orientation: orientation, active: active))
-                    ControlPad(width: width*4/11, buttonHeight: height, equivalentRowAmount: 4, active: active, showText: showText)
+                    ControlPad(queue: queue, width: width*4/11, buttonHeight: height, equivalentRowAmount: 4, active: active, showText: showText, onChange: onChange)
                 }
             }
             .padding(.horizontal, size == .large ? self.width*0.005 : 0)
@@ -94,8 +98,10 @@ struct ButtonPad: View {
     
     private func contentOverlay(width: CGFloat, buttonHeight: CGFloat) -> some View {
         ZStack {
-            ButtonOverlay(size: size, orientation: orientation, display: display, width: width, buttonHeight: buttonHeight, theme: theme, active: active, showText: showText)
-            DetailOverlay(size: size, orientation: orientation, active: active)
+            ButtonOverlay(size: size, orientation: orientation, display: display, width: width, buttonHeight: buttonHeight, queue: queue, theme: theme, active: active, showText: showText)
+            if showDetails {
+                DetailOverlay(size: size, orientation: orientation, active: active)
+            }
             if let overlay {
                 overlay
             }

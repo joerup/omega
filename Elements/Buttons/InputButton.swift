@@ -152,32 +152,13 @@ class Input {
         ])
     ]
     
-    static var shortNumRow = Input([
-        "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+    static var keypadFunctions = Input([
+        "(", ")", "%", "/",
+        "^2", "^", "EXP", "*/",
+        "√", "n√", "π", "e",
+        "sin", "cos", "tan", "log",
+        "sin⁻¹", "cos⁻¹", "tan⁻¹", "ln"
     ])
-    static var shortScroll = Input([
-        "/", "^", "√",
-        "π", "e", "3√",
-        "log", "ln", "EXP"
-    ])
-    static var shortFormatRow = Input([
-        "+/-", "."
-    ])
-    
-    static var alphaLower = Input([
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-    ])
-    static var alphaUpper = Input([
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-    ])
-    static var greekLower = Input([
-        "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"
-    ])
-    static var greekUpper = Input([
-        "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"
-    ])
-    
-    static var units = Input(InputUnit.allCases.map { $0.name })
     
     static var funcPad = [
         Input([
@@ -197,5 +178,20 @@ class Input {
             "∏", "∫", "nPr", "nCr", "abs"
         ])
     ]
+    
+    static var alphaLower = Input([
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    ])
+    static var alphaUpper = Input([
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+    ])
+    static var greekLower = Input([
+        "α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω"
+    ])
+    static var greekUpper = Input([
+        "Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"
+    ])
+    
+    static var units = Input(InputUnit.allCases.map { $0.name })
 }
 

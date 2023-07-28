@@ -12,13 +12,6 @@ struct CalculatorOverlay: View {
     
     @ObservedObject var settings = Settings.settings
     
-    @State private var recentDisplayType: ListDisplayType = .all
-    @State private var savedDisplayType: ListDisplayType = .all
-    @State private var storedVarDisplayType: ListDisplayType = .all
-    
-    @State private var selectedDate: Date = Date()
-    @State private var selectedFolder: String? = nil
-    
     @State private var offset: CGFloat = 0
     @GestureState private var gestureOffset: CGFloat = 0
     
@@ -37,13 +30,13 @@ struct CalculatorOverlay: View {
                         .padding(.top, 5)
                     
                     if settings.calculatorOverlay == .calculations {
-                        PastCalcRecentView(displayType: $recentDisplayType, selectedDate: $selectedDate)
+                        PastCalcRecentView()
                     }
                     else if settings.calculatorOverlay == .saved {
-                        PastCalcSavedView(displayType: $savedDisplayType, selectedFolder: $selectedFolder)
+                        PastCalcSavedView()
                     }
                     else if settings.calculatorOverlay == .variables {
-                        StoredVarList(displayType: $storedVarDisplayType)
+                        StoredVarList()
                     }
                     
                     Spacer()

@@ -147,7 +147,7 @@ class TextFormatting {
                 element.color = themeColor
             
                 element.leftPad -= element.width * (prev != nil ? 0.8 : 0.5)
-                element.rightPad -= element.width * (next != nil && next?.text != "\\)" ? 0.8 : 0.5)
+                element.rightPad -= element.width * (next != nil && next?.text != "#)" && next?.text != "\\)" ? 0.8 : 0.5)
                 element.verticalOffset += element.size*0.078
             }
  
@@ -228,7 +228,7 @@ class TextFormatting {
                     e.midline += elements[lastV].height/2 - element.height/4
                 }
                 
-                elements[index+1].leftPad -= element.size*0.1
+                elements[index+1].leftPad -= element.size*0.125
                 elements[index1].rightPad += element.size*0.07
                 
                 element.size = 0
@@ -730,13 +730,18 @@ class TextFormatting {
                 
                 let integrandHeight = getTotalHeight(elements[index2+1...index3].map{$0})
                 
+                element.display = "∫"
+                element.aspectRatio *= max(1.4, (integrandHeight.top-integrandHeight.bottom)/element.size)
+                element.verticalOffset += element.size*0.078
+                element.midline += (integrandHeight.top+integrandHeight.bottom)/2
+                
                 for e in elements[index+1...index1] {
                     e.multiply(0.4)
-                    e.midline += integrandHeight.bottom
+                    e.midline += element.midline - element.size * (element.aspectRatio - 0.4)/2
                 }
                 for e in elements[index1+1...index2] {
                     e.multiply(0.4)
-                    e.midline += integrandHeight.top
+                    e.midline += element.midline + element.size * (element.aspectRatio - 0.4)/2
                 }
                 
                 let lowerWidth = getTotalWidth(elements[index+1...index1].map{$0})
@@ -750,14 +755,7 @@ class TextFormatting {
                 }
                 
                 elements[index3+1].leftPad -= element.size*0.1
-                elements[index3+1].rightPad -= element.size*0.15
-                
-                element.display = "∫"
-                element.aspectRatio *= 1.4
-                element.verticalOffset += element.size*0.078
-                element.leftPad -= element.size*0.1
-                element.aspectRatio *= (integrandHeight.top-integrandHeight.bottom)/element.size
-                element.midline += (integrandHeight.top+integrandHeight.bottom)/2
+                elements[index3+1].rightPad -= element.size*0.2
                 
                 index = index4+1
             }

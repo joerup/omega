@@ -238,7 +238,7 @@ struct CalculatorModel: View {
                                     Spacer()
                                 }
                                 .frame(width: min(200, safeSize.width*0.7), height: min(300, safeSize.height*0.6))
-                                .background(Color.init(white: 0.25).cornerRadius(10).shadow(radius: 10))
+                                .background(Color.init(white: 0.2).cornerRadius(10).shadow(radius: 10))
                             }
                         case .pastCalculations(let inputs, let outputs):
                             VStack {

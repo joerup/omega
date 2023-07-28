@@ -41,7 +41,7 @@ struct PopUpSheet<Content: View>: View {
                         withAnimation {
                             settings.popUp = nil
                         }
-                        SoundManager.play(sound: .click2, haptic: .light)
+                        SoundManager.play(haptic: .light)
                     }) {
                         Text("Cancel")
                             .font(Font.system(.title2, design: .rounded).weight(.bold))
@@ -50,7 +50,7 @@ struct PopUpSheet<Content: View>: View {
                             .minimumScaleFactor(0.5)
                             .padding(.vertical, 20)
                             .frame(width: 125)
-                            .background(Color.init(white: 0.5))
+                            .background(Color.init(white: 0.25))
                             .cornerRadius(20)
                     }
                 }
@@ -59,7 +59,7 @@ struct PopUpSheet<Content: View>: View {
                     withAnimation {
                         confirmAction()
                     }
-                    SoundManager.play(sound: .click3, haptic: .light)
+                    SoundManager.play(haptic: .light)
                 }) {
                     Text(LocalizedStringKey(confirmText))
                         .font(Font.system(.title2, design: .rounded).weight(.bold))

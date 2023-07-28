@@ -36,7 +36,7 @@ struct TableMenuView: View {
             
             VStack {
                 TableView(equation: equation, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis, lowerBound: $lowerBound, upperBound: $upperBound, centerValue: $centerValue, increment: $increment, fullTable: true, fontSize: fontSize)
-                    .padding(.top, 50)
+                    .padding(.top, 55)
                     .edgesIgnoringSafeArea(.bottom)
             }
             .overlay(
@@ -92,13 +92,20 @@ struct TableMenuView: View {
                         
                         Spacer(minLength: 10)
                         
-                        XButton {
-                            presentationMode.wrappedValue.dismiss()
+                        Button {
+                            withAnimation {
+                                presentationMode.wrappedValue.dismiss()
+                                SoundManager.play(haptic: .medium)
+                            }
+                        } label: {
+                            Text("Done")
+                                .foregroundColor(settings.theme.primaryTextColor)
+                                .font(.system(.body, design: .rounded).weight(.semibold))
+                                .padding(2)
                         }
-                        .frame(height: 30)
                     }
                     .padding(.horizontal, 10)
-                    .padding(.top, 2.5)
+                    .padding(.vertical, 2.5)
                     
                     Spacer()
                 }

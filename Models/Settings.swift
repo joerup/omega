@@ -23,14 +23,22 @@ class Settings: ObservableObject {
     
     @Published var popUp: AnyView? = nil
     @Published var warning: Warning? = nil
-    @Published var keypad: Keypad? = nil
     @Published var notification: Notification.NotificationType = .none
+    @Published var keypadInput: Queue? = nil
+    @Published var keypadUpdate: Bool = false
+    @Published var popUpTable: TableItem? = nil
     
     @Published var calculatorOverlay: CalculatorOverlayType = .none
     @Published var detailOverlay: DetailOverlayType = .none
     @Published var buttonDisplayMode: ButtonDisplayMode = .basic
     @Published var selectedAlphabet: Alphabet = .english
     @Published var buttonUppercase: Bool = false
+    
+    @Published var recentDisplayType: ListDisplayType = .all
+    @Published var savedDisplayType: ListDisplayType = .all
+    @Published var storedVarDisplayType: ListDisplayType = .all
+    @Published var selectedDate: Date = Date()
+    @Published var selectedFolder: String? = nil
     
     @Published var showProPopUp: Bool = false
     @Published var previewTheme1: Theme = ThemeData.allThemes[0]
@@ -223,101 +231,101 @@ class Settings: ObservableObject {
         }
     }
     
-}
-
-func defaultSettings() {
     
-    let userDefaults = UserDefaults.standard
-    let settings = Settings.settings
-    
-    // MARK: Set Up
-    
-    if userDefaults.object(forKey: "calculatorType") == nil {
-        settings.calculatorType = .calculator
-        settings.featureVersionIdentifier = 1
-    }
-    
-    // TRANSFER to new shrink setting, also allow old pro features to existing users! 2.2.0
-    if let shrink = userDefaults.object(forKey: "shrink") as? Double {
-        userDefaults.set(true, forKey: "oldProFeatures")
-        userDefaults.removeObject(forKey: "shrink")
-        settings.minimumTextSize = (shrink > 0.7 ? 2 : shrink > 0.3 ? 1 : 0)
-    }
-    
-    // MARK: Default Settings Values
-    
-    // Buttons
-    if userDefaults.object(forKey: "soundEffects") == nil {
-        settings.soundEffects = true
-    }
-    if userDefaults.object(forKey: "hapticFeedback") == nil {
-        settings.hapticFeedback = true
-    }
-    
-    // Text
-    if userDefaults.object(forKey: "textAnimations") == nil {
-        settings.textAnimations = false
-    }
-    if userDefaults.object(forKey: "minimumTextSize") == nil {
-        settings.minimumTextSize = 1
-    }
-    
-    // Display
-    if userDefaults.object(forKey: "roundPlaces") == nil {
-        settings.roundPlaces = 9
-    }
-    if userDefaults.object(forKey: "thousandsSeparators") == nil {
-        settings.thousandsSeparators = 1
-        if let commas = userDefaults.object(forKey: "commaSeparators") as? Bool, let spaces = userDefaults.object(forKey: "spaceSeparators") as? Bool {
-            settings.thousandsSeparators = commas ? 1 : spaces ? 2 : 0
-            userDefaults.removeObject(forKey: "commaSeparators")
-            userDefaults.removeObject(forKey: "spaceSeparators")
+    static func defaultSettings() {
+        
+        let userDefaults = UserDefaults.standard
+        
+        // MARK: Set Up
+        
+        if userDefaults.object(forKey: "calculatorType") == nil {
+            settings.calculatorType = .calculator
+            settings.featureVersionIdentifier = 1
         }
-    }
-    if userDefaults.object(forKey: "commaDecimal") == nil {
-        settings.commaDecimal = NumberFormatter().decimalSeparator == ","
-    }
-    if userDefaults.object(forKey: "displayX10") == nil {
-        settings.displayX10 = false
-    }
-    if userDefaults.object(forKey: "minimumTextSize") == nil {
-        settings.minimumTextSize = 1
-    }
-    
-    // Input
-    if userDefaults.object(forKey: "autoParFunction") == nil {
-        settings.autoParFunction = true
-    }
-    if userDefaults.object(forKey: "stayInGroups") == nil {
-        settings.stayInGroups = false
-    }
-    
-    // Evaluation
-    if userDefaults.object(forKey: "implicitMultFirst") == nil {
-        settings.implicitMultFirst = false
-    }
-    
-    // MARK: Other
-    
-    if userDefaults.object(forKey: "constantsRoundPlaces") == nil {
-        settings.constantsRoundPlaces = 4
-    }
-    if userDefaults.object(forKey: "recentConstants") == nil {
-        settings.recentConstants = [
-            [
-                ["2.99792458","E","8"],
-                ["5.9722","E","24"],
-                ["1.618033988749894848204586834365638"]
-            ],
-            [
-                ["“","m","/","s","‘"],
-                ["kg"],
-                []
+        
+        // MARK: Transfer Settings
+        
+        // Transfer to new shrink setting, 2.2.0 -- REMOVE LATE 2024
+        if let shrink = userDefaults.object(forKey: "shrink") as? Double {
+            userDefaults.removeObject(forKey: "shrink")
+            settings.minimumTextSize = (shrink > 0.7 ? 2 : shrink > 0.3 ? 1 : 0)
+        }
+        
+        // MARK: Default Settings Values
+        
+        // Buttons
+        if userDefaults.object(forKey: "soundEffects") == nil {
+            settings.soundEffects = true
+        }
+        if userDefaults.object(forKey: "hapticFeedback") == nil {
+            settings.hapticFeedback = true
+        }
+        
+        // Text
+        if userDefaults.object(forKey: "textAnimations") == nil {
+            settings.textAnimations = false
+        }
+        if userDefaults.object(forKey: "minimumTextSize") == nil {
+            settings.minimumTextSize = 1
+        }
+        
+        // Display
+        if userDefaults.object(forKey: "roundPlaces") == nil {
+            settings.roundPlaces = 9
+        }
+        if userDefaults.object(forKey: "thousandsSeparators") == nil {
+            settings.thousandsSeparators = 1
+            if let commas = userDefaults.object(forKey: "commaSeparators") as? Bool, let spaces = userDefaults.object(forKey: "spaceSeparators") as? Bool {
+                settings.thousandsSeparators = commas ? 1 : spaces ? 2 : 0
+                userDefaults.removeObject(forKey: "commaSeparators")
+                userDefaults.removeObject(forKey: "spaceSeparators")
+            }
+        }
+        if userDefaults.object(forKey: "commaDecimal") == nil {
+            settings.commaDecimal = NumberFormatter().decimalSeparator == ","
+        }
+        if userDefaults.object(forKey: "displayX10") == nil {
+            settings.displayX10 = false
+        }
+        if userDefaults.object(forKey: "minimumTextSize") == nil {
+            settings.minimumTextSize = 1
+        }
+        
+        // Input
+        if userDefaults.object(forKey: "autoParFunction") == nil {
+            settings.autoParFunction = true
+        }
+        if userDefaults.object(forKey: "stayInGroups") == nil {
+            settings.stayInGroups = false
+        }
+        
+        // Evaluation
+        if userDefaults.object(forKey: "implicitMultFirst") == nil {
+            settings.implicitMultFirst = false
+        }
+        
+        // MARK: Other
+        
+        if userDefaults.object(forKey: "constantsRoundPlaces") == nil {
+            settings.constantsRoundPlaces = 4
+        }
+        if userDefaults.object(forKey: "recentConstants") == nil {
+            settings.recentConstants = [
+                [
+                    ["2.99792458","E","8"],
+                    ["5.9722","E","24"],
+                    ["1.618033988749894848204586834365638"]
+                ],
+                [
+                    ["“","m","/","s","‘"],
+                    ["kg"],
+                    []
+                ]
             ]
-        ]
-    }
-    if userDefaults.object(forKey: "recentMathButtons") == nil {
-        settings.recentMathButtons = []
+        }
+        if userDefaults.object(forKey: "recentMathButtons") == nil {
+            settings.recentMathButtons = []
+        }
     }
 }
 

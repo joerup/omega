@@ -97,10 +97,13 @@ struct ButtonText: View {
     
     var offset: CGSize {
         if Operation.primary.contains(button.name) || ["enter","(",")","∑","∏"].contains(button.name) {
-            return CGSize(width: 0, height: fontSize*0.125)
+            return CGSize(width: 0, height: -fontSize*0.125)
+        }
+        if button.name.contains("√") {
+            return CGSize(width: -fontSize*0.025, height: fontSize*0.05)
         }
         if button.name == "*/" {
-            return CGSize(width: -fontSize*0.075, height: 0)
+            return CGSize(width: -fontSize*0.07, height: 0)
         }
         return .zero
     }
@@ -128,7 +131,7 @@ struct ButtonText: View {
         } else {
             Text(name)
                 .font(.system(size: fontSize*relativeSize, weight: .medium, design: .rounded))
-                .baselineOffset(offset.height)
+                .baselineOffset(-offset.height)
                 .offset(x: offset.width)
         }
     }

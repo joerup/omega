@@ -57,6 +57,7 @@ struct OmegaProSplash: View {
                     .edgesIgnoringSafeArea(.all)
             )
         }
+        .ignoresSafeArea(.keyboard)
         .sheet(isPresented: self.$settings.purchaseConfirmation) {
             PurchaseConfirmation()
         }

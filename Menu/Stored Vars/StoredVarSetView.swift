@@ -92,8 +92,8 @@ struct StoredVarSetView: View {
                         
                         if !letter.isEmpty {
                             HStack {
-                                TextDisplay(strings: ["»"+letter], size: 45)
-                                TextDisplay(strings: ["="], size: 36, colorContext: .secondary)
+                                TextDisplay(strings: ["»"+letter], size: 30, equals: true)
+                                Spacer(minLength: 0)
                             }
                             .transaction { $0.animation = nil }
                         }
@@ -108,7 +108,7 @@ struct StoredVarSetView: View {
                     }
                     .frame(height: 50)
                     .padding(10)
-                    .background(Color.init(white: 0.3))
+                    .background(Color.init(white: 0.2))
                     .cornerRadius(20)
                     .padding(.vertical, 10)
                     
@@ -125,16 +125,16 @@ struct StoredVarSetView: View {
                                 AlphabetButton(alphabet: $alphabet,
                                                uppercase: $uppercase,
                                                width: 50,
-                                               backgroundColor: Color.init(white: 0.3),
+                                               backgroundColor: Color.init(white: 0.2),
                                                smallerSmall: true
                                 )
                                 SmallIconButton(symbol: uppercase ? "capslock.fill" : "capslock",
-                                                color: Color.init(white: 0.3),
+                                                color: Color.init(white: 0.2),
                                                 textColor: .white,
-                                                smallerSmall: true,
-                                                sound: .click3
+                                                smallerSmall: true
                                 ) {
                                     uppercase.toggle()
+                                    SoundManager.play(sound: .click3, haptic: .medium)
                                 }
                             }
                             .padding(.horizontal, 5)

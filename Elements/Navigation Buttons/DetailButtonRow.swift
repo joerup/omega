@@ -11,6 +11,8 @@ import CoreData
 
 struct DetailButtonRow: View {
     
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     @ObservedObject var settings = Settings.settings
     
     var calculation = Calculation.current
@@ -26,9 +28,11 @@ struct DetailButtonRow: View {
             
         HStack(spacing: 0) {
             
+            let spacing: CGFloat = horizontalSizeClass == .compact ? 5 : 7.5
+            
             HStack(spacing: 0) {
                 
-                HStack {
+                HStack(spacing: spacing) {
                     
                     if orientation == .landscape || size == .large {
                         SmallTextButton(text: "MAT",
@@ -74,13 +78,13 @@ struct DetailButtonRow: View {
                 
                 if orientation == .landscape || size == .large {
                     if settings.buttonDisplayMode == .basic || settings.buttonDisplayMode == .funcs {
-                        HStack {
+                        HStack(spacing: spacing) {
                             matButtons
                         }
                         .padding(.leading, 20)
                     }
                     else if settings.buttonDisplayMode == .vars {
-                        HStack {
+                        HStack(spacing: spacing) {
                             varButtons
                         }
                         .padding(.leading, 20)
@@ -90,7 +94,7 @@ struct DetailButtonRow: View {
             
             Spacer(minLength: 0)
             
-            HStack {
+            HStack(spacing: spacing) {
                 if orientation == .portrait && size == .small {
                     if settings.buttonDisplayMode == .funcs {
                         matButtons
@@ -103,7 +107,7 @@ struct DetailButtonRow: View {
             
             if settings.buttonDisplayMode == .basic || size == .large || orientation == .landscape {
                 
-                HStack {
+                HStack(spacing: spacing) {
                     
                     if calculation.queue.editing {
                         
@@ -121,14 +125,14 @@ struct DetailButtonRow: View {
                     
                     if calculation.completed {
                         
-                        SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape) {
+                        SmallIconButton(symbol: "doc.on.clipboard\(pastCalculation?.copied ?? false ? ".fill" : "")", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, sound: .click3) {
                             pastCalculation?.copy()
                         }
-                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, locked: settings.featureVersionIdentifier > 0) {
+                        SmallIconButton(symbol: "folder\(pastCalculation?.saved ?? false ? ".fill" : "")", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, sound: .click3, locked: settings.featureVersionIdentifier > 0) {
                             guard proCheckNotice(.save, maxFreeVersion: 0) else { return }
                             pastCalculation?.save()
                         }
-                        SmallIconButton(symbol: "character.textbox", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, locked: true) {
+                        SmallIconButton(symbol: "character.textbox", textColor: settings.theme.primaryTextColor, smallerSmall: orientation == .landscape, sound: .click3, locked: true) {
                             guard proCheckNotice(.variables) else { return }
                             pastCalculation?.store()
                         }
@@ -136,7 +140,7 @@ struct DetailButtonRow: View {
                     
                     if calculation.completed {
                         
-                        SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape, locked: true) {
+                        SmallIconButton(symbol: "ellipsis", color: Color.init(white: settings.detailOverlay == .result ? 0.3 : 0.15), smallerSmall: orientation == .landscape, sound: .click3, locked: true) {
                             guard proCheckNotice(.misc) else { return }
                             settings.detailOverlay = settings.detailOverlay == .result ? .none : .result
                         }

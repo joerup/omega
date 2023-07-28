@@ -18,8 +18,6 @@ struct StoredVarList: View {
     
     @ObservedObject var settings = Settings.settings
     
-    @Binding var displayType: ListDisplayType
-    
     @State private var vars: [StoredVar] = []
     
     @State private var selectionMode = false
@@ -28,7 +26,7 @@ struct StoredVarList: View {
     @State private var selectedAll = false
     
     var size: Size {
-        return UIDevice.current.userInterfaceIdiom == .phone ? .small : .large
+        return verticalSizeClass == .compact || horizontalSizeClass == .compact ? .small : .large
     }
     
     var body: some View {
@@ -41,7 +39,7 @@ struct StoredVarList: View {
                     
                     if !selectionMode {
                         
-                        ListDisplayTypePicker(displayType: $displayType)
+                        ListDisplayTypePicker(displayType: $settings.storedVarDisplayType)
                         
                         HStack {
                             
@@ -258,16 +256,16 @@ struct StoredVarList: View {
                 .padding(.leading, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
             )
             .onAppear {
-                self.vars = StoredVar.getAllVariables(type: displayType)
+                self.vars = StoredVar.getAllVariables(type: settings.storedVarDisplayType)
             }
-            .onChange(of: self.displayType) { _ in
+            .onChange(of: settings.storedVarDisplayType) { _ in
                 withAnimation {
-                    self.vars = StoredVar.getAllVariables(type: displayType)
+                    self.vars = StoredVar.getAllVariables(type: settings.storedVarDisplayType)
                     self.resetSelected()
                 }
             }
             .onChange(of: StoredVar.refresh) { _ in
-                self.vars = StoredVar.getAllVariables(type: displayType)
+                self.vars = StoredVar.getAllVariables(type: settings.storedVarDisplayType)
                 self.selectedVars.removeAll()
                 self.selectedAll = false
             }

@@ -76,15 +76,7 @@ class Theme {
         let impactMed = UIImpactFeedbackGenerator(style: .light)
         impactMed.impactOccurred()
         
-        if UIApplication.shared.supportsAlternateIcons {
-            UIApplication.shared.setAlternateIconName(self.name) { error in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    print("App Icon changed to \(self.name)")
-                }
-            }
-        }
+        Theme.setAppIcon(theme: self)
     }
     
     func favorite() {
@@ -92,6 +84,19 @@ class Theme {
             Settings.settings.favoriteThemes.remove(at: index)
         } else {
             Settings.settings.favoriteThemes.append(self.id)
+        }
+    }
+    
+    static func setAppIcon(theme: Theme? = nil) {
+        let theme = theme ?? Settings.settings.theme
+        if UIApplication.shared.supportsAlternateIcons, theme.id != 0 || UIApplication.shared.alternateIconName != nil, UIApplication.shared.alternateIconName != theme.name {
+            UIApplication.shared.setAlternateIconName(theme.name) { error in
+                if let error = error {
+                    print(error.localizedDescription)
+                } else {
+                    print("Theme set to \(theme.name)")
+                }
+            }
         }
     }
 }

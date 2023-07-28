@@ -20,6 +20,8 @@ struct ButtonOverlay: View {
     var width: CGFloat
     var buttonHeight: CGFloat
     
+    var queue: Queue? = nil
+    
     var theme: Theme? = nil
     
     var active: Bool = true
@@ -31,16 +33,16 @@ struct ButtonOverlay: View {
             
             if (display ?? settings.buttonDisplayMode) == .funcs && orientation == .portrait && size == .small {
                 VStack(spacing: 0) {
-                    FuncPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, theme: theme, active: active, showText: showText)
+                    FuncPad(queue: queue, width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, theme: theme, active: active, showText: showText)
                 }
             }
             
             else if (display ?? settings.buttonDisplayMode) == .vars {
                 VStack(spacing: 0) {
                     if orientation == .landscape {
-                        VarPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active, showText: showText)
+                        VarPad(queue: queue, width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active, showText: showText)
                     } else {
-                        VarPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, theme: theme, active: active, showText: showText)
+                        VarPad(queue: queue, width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, theme: theme, active: active, showText: showText)
                     }
                 }
             }
@@ -48,9 +50,9 @@ struct ButtonOverlay: View {
             else if (display ?? settings.buttonDisplayMode) == .units {
                 VStack(spacing: 0) {
                     if orientation == .landscape {
-                        UnitPad(width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active, showText: showText)
+                        UnitPad(queue: queue, width: width, buttonHeight: buttonHeight, size: size, orientation: orientation, expanded: true, active: active, showText: showText)
                     } else {
-                        UnitPad(width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, theme: theme, active: active, showText: showText)
+                        UnitPad(queue: queue, width: width, buttonHeight: buttonHeight*(size == .large ? 1.0 : 5/6), size: size, orientation: orientation, theme: theme, active: active, showText: showText)
                     }
                 }
             }

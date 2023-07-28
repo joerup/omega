@@ -59,10 +59,14 @@ struct CalculatorInterface: View {
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .overlay(VStack{ if verticalSizeClass == .compact { CalculatorOverlay().padding(.top, standardSize+10) } else {}})
-            .contentOverlay()
+            .contentOverlay(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
+            .fullScreenCover(item: self.$settings.popUpTable) { table in
+                TableMenuView(equation: table.equation, horizontalAxis: table.horizontalAxis, verticalAxis: table.verticalAxis)
+                    .contentOverlay(size: size, orientation: orientation, width: geometry.size.width-4, buttonHeight: geometry.size.height*buttonHeight)
+            }
+            .ignoresSafeArea(.keyboard)
             .background(Color.init(white: 0.075).edgesIgnoringSafeArea(.all))
             .accentColor(settings.theme.primaryTextColor)
-            .ignoresSafeArea(.keyboard)
             .onChange(of: geometry.size) { _ in
                 Calculation.current.refresh()
             }

@@ -58,16 +58,15 @@ struct MainMenuView: View {
                             }
                         }
                         
-                        SettingsGroup {
-                            SettingsNavigationLink(title: "TEST SETTINGS", icon: "xmark", dismiss: dismiss) {
-                                TesterSettingsView()
-                            }
-                        }
+//                        SettingsGroup {
+//                            SettingsNavigationLink(title: "TEST SETTINGS", icon: "xmark", dismiss: dismiss) {
+//                                TesterSettingsView()
+//                            }
+//                        }
                         
                         SettingsGroup {
                             SettingsContentNavigationLink(title: "Themes", dismiss: dismiss) {
                                 ThemeView(storeManager: storeManager)
-                                    .contentOverlay()
                             } label: {
                                 ThemeDescription(theme: settings.theme)
                             }
@@ -145,8 +144,13 @@ struct MainMenuView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        XButton {
+                        Button {
                             dismiss()
+                            SoundManager.play(haptic: .medium)
+                        } label: {
+                            Text("Done")
+                                .foregroundColor(settings.theme.primaryTextColor)
+                                .font(.system(.body, design: .rounded).weight(.semibold))
                         }
                     }
                 }
@@ -161,7 +165,6 @@ struct MainMenuView: View {
                 ActivityViewController(activityItems: [URL(string: "https://apps.apple.com/us/app/omega-calculator/id1528068503")!])
             }
         }
-        .contentOverlay()
     }
 }
 

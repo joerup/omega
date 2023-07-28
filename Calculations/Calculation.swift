@@ -117,6 +117,7 @@ class Calculation: ObservableObject, Equatable {
         if completed {
             result.clear()
             queue.editing = true
+            self.id = UUID()
         }
         else if undo {
             queue.undo()

@@ -20,9 +20,6 @@ struct PastCalcSavedView: View {
 
     @ObservedObject var settings = Settings.settings
     @ObservedObject var current = Calculation.current
-
-    @Binding var displayType: ListDisplayType
-    @Binding var selectedFolder: String?
     
     @State private var calculations: [PastCalculation] = []
     @State private var count: Int = 50
@@ -54,24 +51,24 @@ struct PastCalcSavedView: View {
                         
                         if !selectionMode {
                             
-                            ListDisplayTypePicker(displayType: $displayType)
+                            ListDisplayTypePicker(displayType: $settings.savedDisplayType)
                                 
                             Button(action: {
                                 withAnimation {
                                     self.editFolder.toggle()
                                     self.newFolderText = ""
-                                    SoundManager.play(sound: .click3, haptic: .medium)
+                                    SoundManager.play(haptic: .medium)
                                 }
                             }) {
                                 HStack {
                                     
-                                    SmallIconButton(symbol: "folder\(selectedFolder != nil ? ".fill" : "")", color: Color.init(white: editFolder ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
+                                    SmallIconButton(symbol: "folder\(settings.selectedFolder != nil ? ".fill" : "")", color: Color.init(white: editFolder ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
                                         withAnimation {
                                             self.editFolder.toggle()
                                         }
                                     }
                                     
-                                    if let selectedFolder = selectedFolder {
+                                    if let selectedFolder = settings.selectedFolder {
                                         Text(selectedFolder)
                                             .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                             .foregroundColor(settings.theme.secondaryTextColor)
@@ -172,10 +169,10 @@ struct PastCalcSavedView: View {
 
                                 Button(action: {
                                     withAnimation {
-                                        self.selectedFolder = nil
+                                        self.settings.selectedFolder = nil
                                         self.editFolder = false
                                     }
-                                    SoundManager.play(sound: .click3, haptic: .medium)
+                                    SoundManager.play(haptic: .medium)
                                 }) {
                                     HStack {
                                         Text("All Saved")
@@ -185,7 +182,7 @@ struct PastCalcSavedView: View {
                                         Spacer()
                                     }
                                     .padding(10)
-                                    .background(Color.init(white: selectedFolder == nil ? 0.25 : 0.2))
+                                    .background(Color.init(white: settings.selectedFolder == nil ? 0.25 : 0.2))
                                     .cornerRadius(10)
                                 }
                                 .padding(.top, 10)
@@ -197,10 +194,10 @@ struct PastCalcSavedView: View {
                                         HStack {
                                             Button(action: {
                                                 withAnimation {
-                                                    self.selectedFolder = folder
+                                                    self.settings.selectedFolder = folder
                                                     self.editFolder = false
                                                 }
-                                                SoundManager.play(sound: .click3, haptic: .medium)
+                                                SoundManager.play(haptic: .medium)
                                             }) {
                                                 Text(folder)
                                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
@@ -217,8 +214,8 @@ struct PastCalcSavedView: View {
                                                         continueAction: {
                                                             self.settings.folders.removeAll(where: { $0 == folder })
                                                             PastCalculation.getCalculations(folder: folder).forEach{ $0.confirmSave(to: "") }
-                                                            if selectedFolder == folder {
-                                                                selectedFolder = nil
+                                                            if settings.selectedFolder == folder {
+                                                                settings.selectedFolder = nil
                                                             }
                                                         }
                                                     )
@@ -233,7 +230,7 @@ struct PastCalcSavedView: View {
                                             }
                                         }
                                         .padding(10)
-                                        .background(Color.init(white: selectedFolder == folder ? 0.25 : 0.2))
+                                        .background(Color.init(white: settings.selectedFolder == folder ? 0.25 : 0.2))
                                         .cornerRadius(10)
                                     }
                                     
@@ -246,7 +243,7 @@ struct PastCalcSavedView: View {
                                                 self.newFolderText.removeFirst()
                                             }
                                             if !self.newFolderText.isEmpty && !settings.folders.contains(newFolderText) {
-                                                self.selectedFolder = newFolderText
+                                                self.settings.selectedFolder = newFolderText
                                                 self.settings.folders.insert(newFolderText, at: 0)
                                             }
                                             self.newFolderText = ""
@@ -301,7 +298,7 @@ struct PastCalcSavedView: View {
                             .multilineTextAlignment(.center)
                             .padding(.bottom, 20)
 
-                        if selectedFolder != nil {
+                        if settings.selectedFolder != nil {
                             Text("This folder is empty.")
                                 .font(Font.system(.body, design: .rounded))
                                 .multilineTextAlignment(.center)
@@ -465,7 +462,7 @@ struct PastCalcSavedView: View {
                         }
                     }
                 }
-                .id(self.selectedFolder)
+                .id(settings.selectedFolder)
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
@@ -508,7 +505,7 @@ struct PastCalcSavedView: View {
                 self.calculations = []
                 self.calculations = getAllCalculations()
             }
-            .onChange(of: displayType) { _ in
+            .onChange(of: settings.savedDisplayType) { _ in
                 withAnimation {
                     self.count = 50
                     self.calculations = []
@@ -516,7 +513,7 @@ struct PastCalcSavedView: View {
                     self.resetSelected()
                 }
             }
-            .onChange(of: selectedFolder) { _ in
+            .onChange(of: settings.selectedFolder) { _ in
                 withAnimation {
                     self.count = 50
                     self.calculations = []
@@ -551,7 +548,7 @@ struct PastCalcSavedView: View {
         }
 
         // Limit the folder
-        if let selectedFolder = selectedFolder {
+        if let selectedFolder = settings.selectedFolder {
             fetchRequest.predicate = NSPredicate(format: "folder == %@", selectedFolder)
         } else {
             fetchRequest.predicate = NSPredicate(format: "folder != NULL")
@@ -566,8 +563,8 @@ struct PastCalcSavedView: View {
         }
         
         // Filter the type
-        if displayType != .all {
-            calculations = calculations.filter { $0.listType == displayType }
+        if settings.savedDisplayType != .all {
+            calculations = calculations.filter { $0.listType == settings.savedDisplayType }
         }
 
         return calculations

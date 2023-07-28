@@ -10,49 +10,54 @@ import SwiftUI
 
 struct ContentOverlay: ViewModifier {
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     @ObservedObject var settings = Settings.settings
     
-    let size = UIScreen.main.bounds.height
+    var size: Size
+    var orientation: Orientation
+    var width: CGFloat
+    var buttonHeight: CGFloat
     
     func body(content: Content) -> some View {
         
         content
-            .overlay(ZStack {
-                
-                PopUpView()
-                
-                if let keypad = settings.keypad {
+            .overlay {
+                ZStack {
+                    PopUpView()
                     
-                    ZStack {
-                        
+                    if let queue = settings.keypadInput {
                         Rectangle()
                             .opacity(1e-10)
                             .frame(maxWidth: .infinity)
                             .edgesIgnoringSafeArea(.all)
-                            .onTapGesture {
-                                withAnimation {
-                                    keypad.onDismiss(keypad.queue)
-                                    settings.keypad = nil
-                                    SoundManager.play(haptic: .light)
-                                }
-                            }
-                        
-                        VStack(spacing: 0) {
+                            .onTapGesture(perform: closeKeypad)
+                        VStack {
                             Spacer()
-                            keypad
-                                .frame(maxHeight: min(max(size*0.3, min(size*0.5, 300)), 400))
-                                .padding(5)
-                                .frame(maxWidth: .infinity)
-                                .background(Color.init(white: 0.15)
-                                    .cornerRadius(20)
-                                    .shadow(radius: 5)
-                                    .edgesIgnoringSafeArea(.bottom)
-                                )
+                            let buttonHeight = verticalSizeClass == .regular ? (horizontalSizeClass == .regular ? max(buttonHeight*0.5, 55) : buttonHeight*0.5) : buttonHeight*0.75
+                            Keypad(queue: queue, size: size, orientation: orientation, width: width, buttonHeight: buttonHeight) { queue in
+                                settings.keypadInput = queue
+                                settings.keypadUpdate.toggle()
+                            } onDismiss: {
+                                closeKeypad()
+                            }
+                            .padding([.horizontal, .top], 5)
+                            .frame(width: width)
+                            .background(Color.clear.overlay(.thinMaterial).cornerRadius(20).edgesIgnoringSafeArea(.all).shadow(radius: 10))
                         }
                     }
-                    .transition(.move(edge: .bottom))
                 }
-            })
+                .transition(.move(edge: .bottom))
+            }
+    }
+    
+    private func closeKeypad() {
+        withAnimation {
+            settings.keypadInput = nil
+            settings.keypadUpdate.toggle()
+            SoundManager.play(haptic: .light)
+        }
     }
 }
 
@@ -63,17 +68,15 @@ struct KeypadShift: ViewModifier {
     let size = UIScreen.main.bounds.height
     
     func body(content: Content) -> some View {
-        
         content
-            .animation(.default, value: settings.keypad != nil)
-            .offset(y: settings.keypad != nil && settings.popUp == nil ? -size*0.22 : 0)
-        
+            .animation(.default, value: settings.keypadInput != nil)
+            .offset(y: settings.keypadInput != nil && settings.popUp == nil ? -size*0.2 : 0)
     }
 }
 
 extension View {
-    func contentOverlay() -> some View {
-        modifier(ContentOverlay())
+    func contentOverlay(size: Size, orientation: Orientation, width: CGFloat, buttonHeight: CGFloat) -> some View {
+        modifier(ContentOverlay(size: size, orientation: orientation, width: width, buttonHeight: buttonHeight))
     }
 }
 

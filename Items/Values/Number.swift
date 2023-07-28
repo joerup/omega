@@ -140,10 +140,16 @@ class Number: Value {
         if editedString.last == "%" {
             self.per = 100
             editedString.removeLast()
+            if editedString.isEmpty {
+                editedString = "0"
+            }
         }
         else if editedString.last == "‰" {
             self.per = 1000
             editedString.removeLast()
+            if editedString.isEmpty {
+                editedString = "0"
+            }
         }
         
         // Set repeating

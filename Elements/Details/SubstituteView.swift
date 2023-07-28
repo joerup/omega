@@ -20,6 +20,8 @@ struct SubstituteView: View {
     
     @State private var values: [String:Queue] = [:]
     
+    @State private var updateValues: Bool = false
+    
     var onChange: (Queue) -> Void
     
     var size: Size {
@@ -41,7 +43,7 @@ struct SubstituteView: View {
                     
                     HStack {
                         
-                        Text(NSLocalizedString(variable.typeString, comment: "").uppercased())
+                        Text(string(for: variable).uppercased())
                             .font(Font.system(.caption, design: .rounded))
                             .foregroundColor(Color.init(white: 0.6))
                             .lineLimit(0)
@@ -52,7 +54,7 @@ struct SubstituteView: View {
                         Spacer()
                         
                         if variable.type == .constant {
-                            TextDisplay(strings: variable.value!.strings, size: size == .small ? 20 : 25, colorContext: variable.value!.variables.isEmpty && variable.value!.bounds.isEmpty ? .primary : .secondary, scrollable: true)
+                            TextDisplay(strings: variable.value!.strings, size: size == .small ? 20 : 25, colorContext: .secondary, scrollable: true)
                         }
                         else if variable.type == .bound || variable.type == .dummy {
                             TextDisplay(strings: [], size: size == .small ? 20 : 25, colorContext: .secondary, scrollable: true)
@@ -60,28 +62,38 @@ struct SubstituteView: View {
                         else if variable.storedValue {
                             TextInput(queue: variable.value!, placeholder: [variable.text], defaultValue: variable.value!, size: size == .small ? 20 : 25, scrollable: true, onChange: { value in
                                 self.values[variable.name] = value
+                                self.updateValues.toggle()
                             })
                         } else {
                             TextInput(queue: values[variable.name], placeholder: [variable.text], size: size == .small ? 20 : 25, scrollable: true, onChange: { value in
                                 self.values[variable.name] = value
+                                self.updateValues.toggle()
                             })
                         }
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: size == .small ? 24 : 35)
                     .padding(10)
-                    .background(Color.init(white: variable.type == .variable ? 0.27 : 0.23).cornerRadius(20))
+                    .background(Color.init(white: 0.23).cornerRadius(20))
                 }
                 .frame(height: 20+(size == .small ? 28 : 35))
             }
         }
         .padding(10)
-        .onChange(of: values) { values in
+        .onChange(of: updateValues) { _ in
             onChange(substituteValues(values))
         }
     }
     
-    func substituteValues(_ values: [String:Queue]) -> Queue {
+    private func string(for variable: Letter) -> String {
+        let string = variable.typeString
+        if string == "Unknown" {
+            return values[variable.name] != nil && !values[variable.name]!.empty ? "Plug-In" : "Unknown"
+        }
+        return string
+    }
+    
+    private func substituteValues(_ values: [String:Queue]) -> Queue {
         
         var queue = self.queue
         

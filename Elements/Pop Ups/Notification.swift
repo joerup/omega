@@ -51,7 +51,7 @@ struct Notification: View {
         }
         .frame(height: 50)
         .padding(10)
-        .background(Color.init(white: 0.2))
+        .background(.ultraThinMaterial)
         .cornerRadius(30)
         .dynamicTypeSize(..<DynamicTypeSize.accessibility1)
         .shadow(radius: 10)

@@ -48,7 +48,7 @@ struct ThemeView: View {
                                 VStack(alignment: .leading, spacing: 0) {
                                     
                                     HStack {
-                                        Text("Favorite Colors")
+                                        Text("Favorites")
                                             .font(Font.system(.body, design: .rounded).weight(.bold))
                                         Spacer()
                                     }
@@ -56,7 +56,7 @@ struct ThemeView: View {
                                     .padding(.horizontal, 5)
                                     
                                     if favorites.isEmpty {
-                                        Text("No favorite colors. Press and hold on an icon to favorite it.")
+                                        Text("Press and hold on a theme to favorite it.")
                                             .font(.caption)
                                             .foregroundColor(Color.init(white: 0.6))
                                             .multilineTextAlignment(.center)
@@ -85,8 +85,9 @@ struct ThemeView: View {
                                         
                                         AStack {
                                             
-                                            Text("\(category.name) Series")
+                                            Text("\(category.name)")
                                                 .font(Font.system(.body, design: .rounded).weight(.bold))
+                                                .lineLimit(0)
                                             
                                             Spacer()
                                             

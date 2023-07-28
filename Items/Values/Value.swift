@@ -256,5 +256,16 @@ class Value: Item {
         
         return false
     }
+    
+    // Determine if the value has only a single value
+    var isSingleValue: Bool {
+        
+        // Determine if the value is an expression
+        if let expression = self as? Expression, expression.value.count > 1 || expression.grouping == .parentheses || expression.pattern != .none {
+            return false
+        }
+        
+        return true
+    }
 }
 

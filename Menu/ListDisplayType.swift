@@ -27,8 +27,11 @@ struct ListDisplayTypePicker: View {
             SmallIconButton(symbol: displayType.icon, color: Color.init(white: displayType == .all ? 0.15 : 0.25), textColor: settings.theme.secondaryTextColor, smallerLarge: true, action: {})
         }
         .simultaneousGesture(TapGesture().onEnded {
-            SoundManager.play(sound: .click3, haptic: .light)
+            SoundManager.play(haptic: .light)
         })
+        .onChange(of: displayType) { _ in
+            SoundManager.play(haptic: .light)
+        }
     }
 }
 

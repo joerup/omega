@@ -34,7 +34,9 @@ struct PopUpView: View {
                         
                         popUp
                             .padding(10)
-                            .background(Color.init(white: 0.25).cornerRadius(20).shadow(radius: 10))
+                            .background(.thickMaterial)
+                            .cornerRadius(20)
+                            .shadow(radius: 10)
                             .padding(.horizontal, 20)
                     }
                 }
@@ -73,7 +75,7 @@ struct PopUpView: View {
                                     settings.warning = nil
                                     warning.cancelAction()
                                 }
-                                SoundManager.play(sound: .click2, haptic: .light)
+                                SoundManager.play(haptic: .light)
                             }) {
                                 Text(LocalizedStringKey(warning.cancelString))
                                     .font(Font.system(.title2, design: .rounded).weight(.bold))
@@ -82,7 +84,7 @@ struct PopUpView: View {
                                     .minimumScaleFactor(0.5)
                                     .padding(.vertical, 20)
                                     .frame(width: 125)
-                                    .background(Color.init(white: 0.5))
+                                    .background(Color.init(white: 0.25))
                                     .cornerRadius(20)
                             }
                             
@@ -91,7 +93,7 @@ struct PopUpView: View {
                                     settings.warning = nil
                                     warning.continueAction()
                                 }
-                                SoundManager.play(sound: .click3, haptic: .light)
+                                SoundManager.play(haptic: .light)
                             }) {
                                 Text(LocalizedStringKey(warning.continueString))
                                     .font(Font.system(.title2, design: .rounded).weight(.bold))
@@ -106,7 +108,9 @@ struct PopUpView: View {
                         }
                     }
                     .padding(20)
-                    .background(Color.init(white: 0.25).cornerRadius(20).shadow(radius: 10))
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(20)
+                    .shadow(radius: 10)
                     .padding(.horizontal, 20)
                 }
                 

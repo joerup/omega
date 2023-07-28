@@ -35,9 +35,10 @@ struct ResultOverlay: View {
                     
                     if primary {
                         HStack(spacing: 10) {
-                            CalculationVisuals(width: geometry.size.width-8, height: geometry.size.height, ignoreIfEmpty: false)
+                            CalculationVisuals(width: geometry.size.width-8, height: geometry.size.height-3, ignoreIfEmpty: false)
                         }
                         .padding(.trailing, 3)
+                        .padding(.bottom, 3)
                     } else {
                         ZStack {
                             RoundedRectangle(cornerRadius: 20)

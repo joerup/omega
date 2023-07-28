@@ -29,8 +29,6 @@ struct TableView: View {
     var popUpTable: Bool = false
     var lightBackground: Bool = false
     
-    @State var showPopUpTable: Bool = false
-    
     var fontSize: CGFloat
     var overlayColor: Color
     
@@ -162,7 +160,7 @@ struct TableView: View {
                                 .opacity(lightBackground ? 0.1 : 1e-6)
                                 .onTapGesture {
                                     SoundManager.play(haptic: .medium)
-                                    self.showPopUpTable.toggle()
+                                    settings.popUpTable = TableItem(equation: equation, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis)
                                 }
                         }
                     }
@@ -170,10 +168,6 @@ struct TableView: View {
             }
             .background(Color.init(white: 0.1).opacity(fullTable ? 1 : 0))
             .cornerRadius(20)
-            .fullScreenCover(isPresented: self.$showPopUpTable) {
-                TableMenuView(equation: equation, horizontalAxis: horizontalAxis, verticalAxis: verticalAxis)
-                    .contentOverlay()
-            }
         }
     }
     
@@ -189,4 +183,12 @@ struct TableView: View {
     private func value(input: Double) -> Value {
         return Expression(equation.items).plugIn(Number(input), to: horizontalAxis, using: equation.modes)
     }
+}
+
+
+struct TableItem: Identifiable {
+    var id = UUID()
+    var equation: Queue
+    var horizontalAxis: Letter
+    var verticalAxis: Letter
 }

@@ -20,9 +20,6 @@ struct PastCalcRecentView: View {
 
     @ObservedObject var settings = Settings.settings
     @ObservedObject var current = Calculation.current
-
-    @Binding var displayType: ListDisplayType
-    @Binding var selectedDate: Date
     
     @State private var calculations: [PastCalculation] = []
     @State private var count: Int = 50
@@ -35,10 +32,10 @@ struct PastCalcRecentView: View {
     @State private var editCalendar = false
     
     var prevDate: Date {
-        return selectedDate.advanced(by: -86400)
+        return settings.selectedDate.advanced(by: -86400)
     }
     var nextDate: Date {
-        return selectedDate.advanced(by: 86400)
+        return settings.selectedDate.advanced(by: 86400)
     }
     var minDate: Date {
         return Date().advanced(by: -PastCalculation.expirationLength)
@@ -60,7 +57,7 @@ struct PastCalcRecentView: View {
                         
                         if !selectionMode {
                             
-                            ListDisplayTypePicker(displayType: $displayType)
+                            ListDisplayTypePicker(displayType: $settings.recentDisplayType)
                             
                             HStack {
                                     
@@ -75,9 +72,9 @@ struct PastCalcRecentView: View {
                                 Button(action: {
                                     if prevDate >= minDate {
                                         withAnimation {
-                                            self.selectedDate = prevDate
+                                            settings.selectedDate = prevDate
                                         }
-                                        SoundManager.play(sound: .click2, haptic: .light)
+                                        SoundManager.play(haptic: .light)
                                     }
                                 }) {
                                     Image(systemName: "chevron.backward")
@@ -87,7 +84,7 @@ struct PastCalcRecentView: View {
                                         .padding(.horizontal, 5)
                                 }
                                 
-                                Text(dateString(selectedDate))
+                                Text(dateString(settings.selectedDate))
                                     .font(Font.system(.headline, design: .rounded).weight(.semibold))
                                     .foregroundColor(.white)
                                     .dynamicTypeSize(..<DynamicTypeSize.xxLarge)
@@ -98,9 +95,9 @@ struct PastCalcRecentView: View {
                                 Button(action: {
                                     if nextDate <= Date() {
                                         withAnimation {
-                                            self.selectedDate = nextDate
+                                            settings.selectedDate = nextDate
                                         }
-                                        SoundManager.play(sound: .click3, haptic: .light)
+                                        SoundManager.play(haptic: .light)
                                     }
                                 }) {
                                     Image(systemName: "chevron.forward")
@@ -112,9 +109,9 @@ struct PastCalcRecentView: View {
                                 
                                 Spacer()
                                 
-                                SmallIconButton(symbol: "house", color: Color.init(white: Calendar.current.isDate(selectedDate, inSameDayAs: Date()) ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
+                                SmallIconButton(symbol: "house", color: Color.init(white: Calendar.current.isDate(settings.selectedDate, inSameDayAs: Date()) ? 0.3 : 0.2), textColor: settings.theme.secondaryTextColor, smallerLarge: true) {
                                     withAnimation {
-                                        self.selectedDate = Date()
+                                        settings.selectedDate = .now
                                     }
                                 }
                             }
@@ -179,20 +176,20 @@ struct PastCalcRecentView: View {
                             }
                         }
                     }
-                    .animation(.default, value: selectedDate)
+                    .animation(.default, value: settings.selectedDate)
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 5)
                 
                 if editCalendar {
                     
-                    DatePicker("Date", selection: self.$selectedDate, in: Date().addingTimeInterval(-PastCalculation.expirationLength)...Date(), displayedComponents: .date)
+                    DatePicker("Date", selection: self.$settings.selectedDate, in: Date().addingTimeInterval(-PastCalculation.expirationLength)...Date(), displayedComponents: .date)
                         .datePickerStyle(GraphicalDatePickerStyle())
-                        .onChange(of: self.selectedDate) { _ in
+                        .onChange(of: settings.selectedDate) { _ in
                             withAnimation {
                                 self.editCalendar = false
                             }
-                            SoundManager.play(sound: .click3, haptic: .medium)
+                            SoundManager.play(haptic: .medium)
                         }
                         .padding(.horizontal, 10)
                         .padding(.top, 3)
@@ -203,7 +200,7 @@ struct PastCalcRecentView: View {
                         .padding(.horizontal, 10)
                         .padding(.top, 3)
                         .padding(.bottom, 5)
-                        .animation(.default, value: selectedDate)
+                        .animation(.default, value: settings.selectedDate)
                 }
 
                 if self.calculations.isEmpty && !self.editCalendar {
@@ -367,7 +364,7 @@ struct PastCalcRecentView: View {
                         }
                     }
                 }
-                .id(self.selectedDate)
+                .id(settings.selectedDate)
             }
             .frame(width: geometry.size.width > 650 ? geometry.size.width*0.5 : geometry.size.width)
             .padding(.trailing, geometry.size.width > 650 ? geometry.size.width*0.5 : 0)
@@ -411,7 +408,7 @@ struct PastCalcRecentView: View {
                 self.calculations = []
                 self.calculations = getAllCalculations()
             }
-            .onChange(of: displayType) { _ in
+            .onChange(of: settings.recentDisplayType) { _ in
                 withAnimation {
                     self.count = 50
                     self.calculations = []
@@ -419,7 +416,7 @@ struct PastCalcRecentView: View {
                     self.resetSelected()
                 }
             }
-            .onChange(of: selectedDate) { _ in
+            .onChange(of: settings.selectedDate) { _ in
                 withAnimation {
                     self.count = 50
                     self.calculations = []
@@ -455,7 +452,7 @@ struct PastCalcRecentView: View {
 
         // Limit the date
         let calendar = Calendar.current
-        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: selectedDate)
+        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: settings.selectedDate)
         components.hour = 00
         components.minute = 00
         components.second = 00
@@ -475,8 +472,8 @@ struct PastCalcRecentView: View {
         }
         
         // Filter the type
-        if displayType != .all {
-            calculations = calculations.filter { $0.listType == displayType }
+        if settings.recentDisplayType != .all {
+            calculations = calculations.filter { $0.listType == settings.recentDisplayType }
         }
 
         return calculations

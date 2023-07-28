@@ -54,25 +54,24 @@ struct TextInput: View {
                     .opacity(0.00001)
             }
         )
+        .onChange(of: settings.keypadUpdate) { _ in
+            if editing, let queue = settings.keypadInput {
+                self.queue = queue
+                self.strings = queue.strings
+                self.onChange(queue.combined())
+            } else {
+                self.editing = false
+                self.onDismiss(queue.combined())
+            }
+        }
     }
     
     func edit() {
         self.editing = true
-        var oldQueue = queue
         self.queue = Queue()
-        SoundManager.play(haptic: .heavy)
         withAnimation {
-            settings.keypad = Keypad(queue: queue, type: .numbers, onChange: { queue in
-                self.queue = queue
-                self.strings = queue.strings
-                oldQueue = queue
-                onChange(queue.combined())
-            }, onDismiss: { queue in
-                self.editing = false
-                queue.combineQueues(all: true)
-                if queue.empty { self.queue = oldQueue; self.strings = oldQueue.strings }
-                onDismiss(queue.combined())
-            })
+            self.settings.keypadInput = queue
         }
+        SoundManager.play(haptic: .heavy)
     }
 }

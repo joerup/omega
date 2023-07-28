@@ -77,8 +77,10 @@ struct ExportView: View {
         PopUpSheet(title: "Export", fullScreen: fullScreen, showCancel: !fullScreen, confirmText: "Export", confirmAction: {
             guard proCheckNotice(.save) else { return }
             if fileType == .commaSeparatedText {
-                self.csvFile = createCSVFile()
-                self.exportCSV = true
+                Task {
+                    self.csvFile = await createCSVFile()
+                    self.exportCSV = true
+                }
             }
             else if fileType == .pdf {
                 self.exportPDF = true
@@ -90,29 +92,21 @@ struct ExportView: View {
                 ScrollView {
                     
                     VStack(spacing: 20) {
-                            
-                        Text(calculations.count == 1 ? "1 calculation selected" : "\(calculations.count) calculations selected")
-                            .font(Font.system(.subheadline, design: .rounded).weight(.semibold))
-                            .foregroundColor(Color.init(white: 0.8))
-                            .padding(.top, fullScreen ? 15 : 0)
                         
-                        SettingsGroup(light: fullScreen ? 0.15 : 0.3) {
-                           
-                            if !calculationsPreset {
-                                
-                                SettingsRow {
-                                    HStack {
-                                        SettingsText(title: "Calculations Selected")
-                                        Spacer()
-                                        Picker("", selection: self.$selectType) {
-                                            Text("All").tag(CalculationSelectType.all)
-                                            Text("Select").tag(CalculationSelectType.range)
-                                        }
-                                        .pickerStyle(SegmentedPickerStyle())
-                                    }
+                        if !calculationsPreset {
+                            
+                            HStack {
+                                Picker("", selection: self.$selectType) {
+                                    Text("All Calculations").tag(CalculationSelectType.all)
+                                    Text("Select Calculations").tag(CalculationSelectType.range)
                                 }
-                                
-                                if selectType == .range {
+                                .pickerStyle(SegmentedPickerStyle())
+                                .padding(.horizontal)
+                                .padding(.top, 10)
+                            }
+                            
+                            if selectType == .range {
+                                SettingsGroup(light: fullScreen ? 0.15 : 0.2) {
                                     SettingsRow {
                                         HStack(spacing: 0) {
                                             SettingsText(title: "Selection")
@@ -133,17 +127,12 @@ struct ExportView: View {
                                 }
                             }
                         }
-                        .onChange(of: selectType) { _ in
-                            self.calculations = getCalculations()
-                        }
-                        .onChange(of: pastRangeValue) { _ in
-                            self.calculations = getCalculations()
-                        }
-                        .onChange(of: pastRangeComponent) { _ in
-                            self.calculations = getCalculations()
-                        }
                         
-                        SettingsGroup(light: fullScreen ? 0.15 : 0.3) {
+                        Text(calculations.count == 1 ? "1 calculation selected" : "\(calculations.count) calculations selected")
+                            .font(Font.system(.subheadline, design: .rounded).weight(.semibold))
+                            .foregroundColor(Color.init(white: 0.8))
+                        
+                        SettingsGroup(light: fullScreen ? 0.15 : 0.2) {
                             SettingsRow {
                                 HStack {
                                     SettingsText(title: "File Type")
@@ -155,7 +144,7 @@ struct ExportView: View {
                             }
                         }
                         
-                        SettingsGroup("Columns", light: fullScreen ? 0.15 : 0.3) {
+                        SettingsGroup(light: fullScreen ? 0.15 : 0.2) {
                             
                             SettingsToggle(toggle: self.$includeDate, title: "Date")
                             SettingsToggle(toggle: self.$includeTime, title: "Time")
@@ -167,16 +156,19 @@ struct ExportView: View {
                             SettingsToggle(toggle: self.$includeName, title: "Name")
                             SettingsToggle(toggle: self.$includeFolder, title: "Folder")
                         }
-                        
-                        Text("Note: The exported file may take a few moments to generate.")
-                            .font(.footnote)
-                            .foregroundColor(Color.init(white: 0.6))
-                            .multilineTextAlignment(.center)
-                            .padding(15)
-                            .padding(.bottom, 10)
+                        .padding(.bottom, 10)
                     }
                 }
             }
+        }
+        .onChange(of: selectType) { _ in
+            self.calculations = getCalculations()
+        }
+        .onChange(of: pastRangeValue) { _ in
+            self.calculations = getCalculations()
+        }
+        .onChange(of: pastRangeComponent) { _ in
+            self.calculations = getCalculations()
         }
         .accentColor(settings.theme.primaryTextColor)
         .fileExporter(isPresented: self.$exportCSV, document: csvFile, contentType: fileType, defaultFilename: fileName, onCompletion: { result in
@@ -197,11 +189,11 @@ struct ExportView: View {
         }
     }
     
-    func createCSVFile() -> CSVFile {
+    func createCSVFile() async -> CSVFile {
         return CSVFile(initialText: string())
     }
     
-    func createPDFFile() -> PDFFile {
+    func createPDFFile() async -> PDFFile {
         return PDFFile(initialText: string())
     }
     

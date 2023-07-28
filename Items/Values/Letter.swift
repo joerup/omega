@@ -21,13 +21,13 @@ class Letter: Value {
     var typeString: String {
         switch type {
         case .variable:
-            return "Unknown Variable"
+            return "Unknown"
         case .constant:
-            return (value != nil && !(value!.allVariables.isEmpty && value!.allBounds.isEmpty && value!.allDummies.isEmpty)) ? "Function Variable" : "Constant Variable"
+            return (value != nil && !(value!.allVariables.isEmpty && value!.allBounds.isEmpty && value!.allDummies.isEmpty)) ? "Function" : "Constant"
         case .bound:
-            return "Bound Variable"
+            return "Bound"
         case .dummy:
-            return "Dummy Variable"
+            return "Dummy"
         }
     }
     

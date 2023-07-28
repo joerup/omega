@@ -663,7 +663,7 @@ extension Queue {
             }
             
             // Mixed Numbers
-            if operation == .con, !((queue[index-1] as? Expression)?.parentheses ?? false), index+3 < queue.count, (queue[index+2] as? Operation)?.operation ?? .con == .fra, queue[index+3] is Value {
+            if operation == .con, index+3 < queue.count, (queue[index+2] as? Operation)?.operation ?? .con == .fra, queue[index+3] is Value {
                 
                 // Set the values
                 let value1 = queue[index-1] as! Value
@@ -974,6 +974,14 @@ extension Calculation {
                 let denominator = Number(Double(i))
                 if let numerator = (result * denominator) as? Number, numerator.guaranteedInteger {
                     results += [Queue([Expression(numerator, grouping: .hidden, pattern: .stuckRight), Operation(.fra), Expression(denominator, grouping: .hidden, pattern: .stuckLeft)])]
+                    // mixed number
+                    if numerator.double > denominator.double {
+                        let mixedCoefficient = Number(Double(Int(numerator.value / denominator.value)))
+                        let mixedNumerator = Number(abs(numerator.value.truncatingRemainder(dividingBy: denominator.value)))
+                        if mixedCoefficient.guaranteedInteger, mixedNumerator.guaranteedInteger {
+                            results += [Queue([mixedCoefficient, Operation(.con), Expression(mixedNumerator, grouping: .hidden, pattern: .stuckRight), Operation(.fra), Expression(denominator, grouping: .hidden, pattern: .stuckLeft)])]
+                        }
+                    }
                     break
                 }
             }

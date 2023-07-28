@@ -54,7 +54,7 @@ struct FileFolderView: View {
                             }
                             .frame(width: 250)
                             .padding(10)
-                            .background(selectedFolder == "" ? settings.theme.primaryColor : Color.init(white: 0.3))
+                            .background(selectedFolder == "" ? settings.theme.primaryColor : Color.init(white: 0.2))
                             .cornerRadius(10)
                         }
                         
@@ -77,7 +77,7 @@ struct FileFolderView: View {
                                     }
                                     .frame(width: 250)
                                     .padding(10)
-                                    .background(selectedFolder == folder ? settings.theme.primaryColor : Color.init(white: 0.3))
+                                    .background(selectedFolder == folder ? settings.theme.primaryColor : Color.init(white: 0.2))
                                     .cornerRadius(10)
                                 }
                             }
@@ -106,7 +106,7 @@ struct FileFolderView: View {
                             }
                             .frame(width: 250)
                             .padding(10)
-                            .background(Color.init(white: 0.3))
+                            .background(Color.init(white: 0.2))
                             .cornerRadius(10)
                             
                         } else {
@@ -123,7 +123,7 @@ struct FileFolderView: View {
                                 }
                                 .frame(width: 250)
                                 .padding(10)
-                                .background(Color.init(white: 0.3))
+                                .background(Color.init(white: 0.2))
                                 .cornerRadius(10)
                             }
                         }

@@ -24,7 +24,7 @@ struct ExtraResultView: View {
                 
                 HStack {
                     
-                    SmallIconButton(symbol: "arrowshape.turn.up.forward", color: Color.init(white: 0.25), smallerLarge: true, sound: .click3) {
+                    SmallIconButton(symbol: "arrowshape.turn.up.forward", color: Color.init(white: 0.25), smallerLarge: true) {
                         calculation.replaceResult(with: result)
                         Calculation.get(calculation.uuid).refresh(result: result)
                     }

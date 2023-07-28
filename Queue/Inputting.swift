@@ -147,10 +147,6 @@ extension Queue {
             self.current = lastState.current
             self.num = lastState.num
             
-            // Activate placeholder
-            if let placeholder = queue1.last as? Placeholder {
-                placeholder.activate()
-            }
         }
         
         else {
@@ -301,6 +297,12 @@ extension Queue {
         // Backspaced queue identical to last calculation result
         if let last = Calculation.last, self.final.raw == last.result.raw {
             Calculation.calculations.removeLast()
+        }
+        
+        // Remove extra active placeholders
+        let placeholders = items.filter({ $0 is Placeholder && ($0 as! Placeholder).active }).map({ $0 as! Placeholder })
+        if placeholders.count > 1 {
+            placeholders[1...].forEach { $0.deactivate() }
         }
         
         // Finish queueing
@@ -865,11 +867,8 @@ extension Queue {
         
         if let queue = queue {
             
-            // Set up the input
-            Calculation.current.setUpInput()
-            
             // Insert the queue
-            Calculation.current.queue.insertToQueue(queue, addCoefficient: true)
+            insertToQueue(queue, addCoefficient: true)
             
             // Play the sound
             SoundManager.play(sound: .click3, haptic: .medium)

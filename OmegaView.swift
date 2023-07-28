@@ -30,7 +30,7 @@ struct OmegaView: View {
     
     var buttonHeight: CGFloat {
         if size == .large {
-            return orientation == .portrait ? 1/11.5 : 1/9
+            return orientation == .portrait ? 1/11.5 : 1/8.5
         } else {
             return orientation == .portrait ? 1/8.9 : 1/8
         }
@@ -44,8 +44,6 @@ struct OmegaView: View {
     var verticalPadding: CGFloat {
         return size == .small ? 5 : 10
     }
-    
-    @State private var newsUpdate = false
     
     @ViewBuilder var body: some View {
         
@@ -67,49 +65,13 @@ struct OmegaView: View {
             Calculation.current.clear()
             Calculation.current.refresh()
         }
-        .onAppear {
-            open()
-        }
         .sheet(isPresented: self.$settings.showMenu) {
             MainMenuView(storeManager: storeManager)
         }
         .sheet(isPresented: self.$settings.showProPopUp) {
             OmegaProSplash(storeManager: storeManager)
         }
-    }                                                 
-    
-    func open() {
-        
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-        let storedVersion = UserDefaults.standard.string(forKey: "version")
-
-        // Welcome
-        if !UserDefaults.standard.bool(forKey: "welcome") {
-            UserDefaults.standard.set(true, forKey: "welcome")
-            UserDefaults.standard.set(version, forKey: "version")
-        }
-        // Omega Pro Ad
-        else if !UserDefaults.standard.bool(forKey: "seenProAd") && !settings.pro {
-            UserDefaults.standard.set(true, forKey: "seenProAd")
-            settings.popUp()
-        }
-        // News Update
-        else if storedVersion != version {
-            if storedVersion?.prefix(3) != version.prefix(3) {
-                self.newsUpdate.toggle()
-            }
-            UserDefaults.standard.set(version, forKey: "version")
-        }
-        // Random Pop Up
-        else {
-            // Omega Pro Pop Up
-            if Int.random(in: 0...7) == 7 && !settings.pro {
-                settings.popUp()
-            }
-        }
-        
-        print("Hello. Running Omega Calculator v\(version)")
-    }
+    }    
 }
 
 enum CalculatorType: String {

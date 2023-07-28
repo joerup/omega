@@ -40,20 +40,16 @@ struct PastCalcInsertView: View {
                 TextDisplay(strings: calculation.result.strings, size: 30, scrollable: true)
                     .frame(height: 50)
                     .padding(10)
-                    .background(Color.init(white: 0.3))
+                    .background(Color.init(white: 0.2))
                     .cornerRadius(20)
                     .padding(.top, 10)
-                
-                Text("Substitute")
-                    .font(Font.system(.body, design: .rounded).weight(.semibold))
-                    .padding(10)
             
                 ScrollView {
                     
                     SubstituteView(queue: calculation.result) { queue in
                         self.substituted = queue
                     }
-                    .background(Color.init(white: 0.3))
+                    .background(Color.init(white: 0.2))
                     .cornerRadius(20)
                     
                     Spacer()

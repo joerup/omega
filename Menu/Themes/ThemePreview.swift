@@ -68,9 +68,15 @@ struct ThemePreview: View {
                     
                     Spacer()
                     
-                    XButton {
-                        self.presentationMode.wrappedValue.dismiss()
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                        SoundManager.play(haptic: .medium)
+                    } label: {
+                        Text("Done")
+                            .foregroundColor(theme.primaryTextColor)
+                            .font(.system(.body, design: .rounded).weight(.semibold))
                     }
+                    .padding(.horizontal)
                 }
                 .frame(height: size.smallerLargeSize+15)
                 .padding(.horizontal, 7.5)

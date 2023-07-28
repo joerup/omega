@@ -71,7 +71,7 @@ class Queue: ObservableObject, Equatable {
         return queue
     }
     static func == (a: Queue, b: Queue) -> Bool {
-        return a.id == b.id
+        return a.id == b.id && a.items == b.items
     }
     
     // -------------------- //

@@ -58,7 +58,7 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
         case .variables:
             return "Variables: store or plug in."
         case .calculus:
-            return "Advanced functions made simple."
+            return "Advanced operations made simple."
         case .save:
             return "Save and export calculations."
         case .misc:
@@ -172,9 +172,9 @@ enum ProFeatureDisplay: String, Identifiable, CaseIterable {
     
     private static let expression1 = Queue([Number(1),Operation(.fra),Number(2),Operation(.con),Letter("x"),Operation(.pow),Number(4),Operation(.sub),Number(2),Operation(.con),Letter("x"),Operation(.pow),Number(3)])
     private static let expression2 = Queue([Letter("a"),Operation(.add),Letter("b"),Operation(.add),Letter("c"),Operation(.add),Pointer()])
-    private static let expression3 = Queue([Function(.definteg),Number(0),Expression([Number(3),Operation(.con),Number("π")], grouping: .hidden),Expression([Number(7),Operation(.con),Function(.sin),Expression([Number(1),Operation(.fra),Number(3),Operation(.con),Letter("x")])], grouping: .hidden),Letter("x")])
-    private static var function3: Queue { Queue((expression3.queue1[3] as! Expression).queue.items, modes: .init(angleUnit: .rad)) }
-    private static let expression4 = Queue([Function(.valDeriv),Number("#1"),Letter("z"),Expression([Function(.log),Number("#e"),Letter("z")]),Number("e")])
+    private static let expression3 = Queue([Function(.definteg),Number(0),Number("π"),Expression([Function(.sin),Letter("x")], grouping: .hidden),Letter("x")])
+    private static let function3 = Queue([Expression([Number(7),Operation(.con),Function(.sin),Expression([Number(1),Operation(.fra),Number(3),Operation(.con),Letter("x")])])], modes: .init(angleUnit: .rad))
+    private static let expression4 = Queue([Function(.valDeriv),Number("#1"),Letter("z"),Expression([Number(4),Operation(.fra),Number(3),Operation(.con),Letter("z"),Operation(.pow),Number(3),Operation(.add),Letter("z")]),Number("e")])
     private static let expression5 = Queue([Function(.sinh),Letter("x")])
     
     private static let animatedExpressions = [Queue([Pointer()]),Queue([Number(2),Pointer()]),Queue([Number(2),Operation(.add),Pointer()]),Queue([Number(2),Operation(.add),Number("3", format: false),Pointer()]),Queue([Number(2),Operation(.add),Number("3.", format: false),Pointer()]),Queue([Number(2),Operation(.add),Number("3.0", format: false),Pointer()]),Queue([Number(2),Operation(.add),Number(3.01),Pointer()]),Queue([Number(2),Operation(.add),Number("3.0", format: false),Pointer(),Number("1", format: false)]),Queue([Number(2),Operation(.add),Number("3.", format: false),Pointer(),Number("01", format: false)]),Queue([Number(2),Operation(.add),Number("3", format: false),Pointer(),Number(".01", format: false)]),Queue([Number(2),Operation(.add),Pointer(),Number(3.01)]),Queue([Number(2),Pointer(),Operation(.add),Number(3.01)]),Queue([Number(2),Operation(.mlt),Pointer(),Operation(.add),Number(3.01)]),Queue([Number(2),Operation(.mlt),Number(6),Pointer(),Operation(.add),Number(3.01)])

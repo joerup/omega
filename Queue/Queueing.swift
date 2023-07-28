@@ -1953,6 +1953,19 @@ extension Queue {
                 queue.insert(Operation(.mlt), at: index+1)
             }
             
+            // Add multiplication for unintended mixed number
+            let next1 = index+1 < queue.count ? queue[index+1] : nil
+            let next2 = index+2 < queue.count ? queue[index+2] : nil
+            let next3 = index+3 < queue.count ? queue[index+3] : nil
+            if let next1, let next2, let next3, item is Value && !(item as! Value).isSingleValue && next1 is Operation && (next1 as! Operation).operation == .con && next2 is Value && next3 is Operation && (next3 as! Operation).operation == .fra {
+                queue[index+1] = Operation(.mlt)
+            }
+            
+            // Change connector to multiplication
+            if let next1, let next2, item is Number && next2 is Number && next1 is Operation && (next1 as! Operation).operation == .con {
+                queue[index+1] = Operation(.mlt)
+            }
+            
             index += 1
         }
         
