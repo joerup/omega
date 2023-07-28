@@ -17,7 +17,7 @@ struct OmegaProSplash: View {
     
     @StateObject var storeManager: StoreManager
     
-    var array: [ProFeatureDisplay] = ProFeatureDisplay.randomArray(startingWith: Settings.settings.proPopUpType)
+    @State private var array: [ProFeatureDisplay] = []
     
     @State private var scale: Double = 0.95
     @State private var spotlight: Double = 0.95
@@ -65,6 +65,7 @@ struct OmegaProSplash: View {
             PurchaseConfirmation(restore: true)
         }
         .onAppear {
+            array = ProFeatureDisplay.randomArray(startingWith: Settings.settings.proPopUpType)
             withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
                 scale = 1.0
             }

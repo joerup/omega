@@ -248,7 +248,7 @@ class Settings: ObservableObject {
         // Transfer to new shrink setting, 2.2.0 -- REMOVE LATE 2024
         if let shrink = userDefaults.object(forKey: "shrink") as? Double {
             userDefaults.removeObject(forKey: "shrink")
-            settings.minimumTextSize = (shrink > 0.7 ? 2 : shrink > 0.3 ? 1 : 0)
+            settings.minimumTextSize = (shrink > 0.7 ? 0 : shrink > 0.3 ? 1 : 2)
         }
         
         // MARK: Default Settings Values
