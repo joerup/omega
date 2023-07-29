@@ -40,12 +40,17 @@ struct OmegaProSplash: View {
                     .shadow(color: .init(white: 0.05).opacity(0.5), radius: 15)
                     .padding(.top, verticalSizeClass == .compact ? 10 : 30)
                 
-                TabView {
-                    ForEach(array, id: \.self) { display in
-                        page(displayType: display, size: geometry.size)
+                if array.count == ProFeatureDisplay.allCases.count {
+                    TabView {
+                        ForEach(array) { display in
+                            page(displayType: display, size: geometry.size)
+                        }
                     }
+                    .tabViewStyle(.page)
                 }
-                .tabViewStyle(.page)
+                else {
+                    Spacer()
+                }
                 
                 purchaseButtons(size: geometry.size)
                 
