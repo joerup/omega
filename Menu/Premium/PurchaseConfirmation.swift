@@ -72,10 +72,6 @@ struct PurchaseConfirmation: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(
-            LinearGradient(colors: [.init(white: 0.3), .init(white: 0.2)], startPoint: .top, endPoint: .bottom)
-                .overlay(settings.previewTheme1.primaryColor.opacity(0.6))
-                .edgesIgnoringSafeArea(.all)
-        )
+        .background(Color.init(white: 0.22).edgesIgnoringSafeArea(.all))
     }
 }
