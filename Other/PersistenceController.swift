@@ -112,6 +112,7 @@ struct PersistenceController {
                 currentFolders.append(folder)
             }
         }
+        currentFolders.removeAll(where: { $0.isEmpty })
         Settings.settings.folders = currentFolders
     }
     
