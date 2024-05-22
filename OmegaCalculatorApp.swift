@@ -65,6 +65,9 @@ struct OmegaCalculatorApp: App {
         // Remove expired calculations
         PersistenceController.shared.removeExpiredCalculations()
         
+        // Add calculation folders
+        PersistenceController.shared.addCalculationFolders()
+        
         // Set up the queue
         Calculation.current.refresh()
         

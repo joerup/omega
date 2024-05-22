@@ -84,6 +84,38 @@ struct PersistenceController {
     }
     
     
+    // MARK: Add Calculation Folders
+    
+    // If calculation was done on a different device, stored folders may not reflect that
+    // Add folders for all calculations if they do not exist
+    
+    func addCalculationFolders() {
+    
+        // Fetch all calculations
+        var allCalculations: [PastCalculation] = []
+        let fetchRequest: NSFetchRequest<PastCalculation> = PastCalculation.fetchRequest()
+        do {
+            let items = try PersistenceController.shared.container.viewContext.fetch(fetchRequest)
+            allCalculations = items
+        }
+        catch let error as NSError {
+            print("Error getting calculations: \(error.localizedDescription), \(error.userInfo)")
+        }
+        
+        // Find all folders of all calculations
+        let folders = allCalculations.compactMap(\.folder)
+        
+        // Add folders that are not yet stored locally
+        var currentFolders = Settings.settings.folders
+        for folder in folders {
+            if !currentFolders.contains(folder) {
+                currentFolders.append(folder)
+            }
+        }
+        Settings.settings.folders = currentFolders
+    }
+    
+    
     // MARK: Convert Old Calculations
     
     // The structure of the queue was completely changed in version 2.0.0, meaning past calculations' queues must be adapted
