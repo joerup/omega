@@ -14,12 +14,12 @@ struct PersistenceController {
     static let shared = PersistenceController()
 
     // Storage for Core Data
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
 
     // An initializer to load Core Data
     init(inMemory: Bool = false) {
         
-        container = NSPersistentContainer(name: "Model")
+        container = NSPersistentCloudKitContainer(name: "Model")
         
         // Model 1 - 1.6.0 Original PastCalculation
         // Model 2 - 2.0.0 Transitional to rename old PastCalculation

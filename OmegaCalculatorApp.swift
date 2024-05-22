@@ -106,10 +106,26 @@ struct OmegaCalculatorApp: App {
     }
     
     func runProAd() {
-        guard !settings.pro, !settings.showProPopUp else { return }
+        guard !settings.pro, !settings.showProPopUp, UserDefaults.standard.integer(forKey: "lastShownProAd") != Date.now.dateNumber else { return }
         if Int.random(in: 0...5) == 5 {
             settings.popUp()
+            UserDefaults.standard.setValue(Date.now.dateNumber, forKey: "lastShownProAd")
         }
     }
 }
 
+extension Date {
+    
+    var dateNumber: Int {
+        // Define the reference date as January 1, 1970
+        let referenceDate = Calendar.current.startOfDay(for: Date(timeIntervalSince1970: 0))
+        
+        // Get the current date's start of day
+        let currentDate = Calendar.current.startOfDay(for: self)
+        
+        // Calculate the number of days between the reference date and the current date
+        let days = Calendar.current.dateComponents([.day], from: referenceDate, to: currentDate).day!
+        
+        return days
+    }
+}

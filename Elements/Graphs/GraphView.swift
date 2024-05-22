@@ -6,6 +6,7 @@
 //  Copyright © 2021 Rupertus. All rights reserved.
 //
 
+import Foundation
 import SwiftUI
 import MapKit
 
@@ -268,15 +269,7 @@ struct GraphView: View {
             let angleSize: Double = scaledSize > 30 ? 30 : scaledSize
 
             Path { path in
-                
-                path.move(to: CGPoint(x: center.x + angleSize*cos(angle.start.radians), y: center.y - angleSize*sin(angle.start.radians)))
-                
-                if abs(Int(angle.end.degrees) % 360 - Int(angle.start.degrees) % 360) % 180 == 90 {
-                    path.addLine(to: CGPoint(x: center.x + angleSize*cos(angle.start.radians) + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.start.radians) - angleSize*sin(angle.end.radians)))
-                    path.addLine(to: CGPoint(x: center.x + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.end.radians)))
-                } else {
-                    path.addArc(center: point(angle.center.x, angle.center.y, size: size), radius: angleSize, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
-                }
+                graphAnglesPath(path: &path, size: size, angle: angle, center: center, angleSize: angleSize)
             }
             .stroke(angle.color, lineWidth: 1)
             
@@ -285,6 +278,25 @@ struct GraphView: View {
                     .font(.system(size: angleSize/2, design: .rounded).weight(.bold))
                     .position(x: center.x + angleSize*cos(angle.start.radians) + angleSize*cos(angle.end.radians), y: center.y - angleSize*sin(angle.start.radians) - angleSize*sin(angle.end.radians))
             }
+        }
+    }
+    private func graphAnglesPath(path: inout Path, size: CGSize, angle: GraphAngle, center: CGPoint, angleSize: Double) {
+        path.move(to: CGPoint(
+            x: CGFloat(center.x + angleSize*cos(angle.start.radians)),
+            y: CGFloat(center.y - angleSize*sin(angle.start.radians))
+        ))
+        
+        if abs(Int(angle.end.degrees) % 360 - Int(angle.start.degrees) % 360) % 180 == 90 {
+            path.addLine(to: CGPoint(
+                x: center.x + angleSize*cos(angle.start.radians) + angleSize*cos(angle.end.radians),
+                y: center.y - angleSize*sin(angle.start.radians) - angleSize*sin(angle.end.radians)
+            ))
+            path.addLine(to: CGPoint(
+                x: center.x + angleSize*cos(angle.end.radians),
+                y: center.y - angleSize*sin(angle.end.radians)
+            ))
+        } else {
+            path.addArc(center: point(angle.center.x, angle.center.y, size: size), radius: angleSize, startAngle: angle.start, endAngle: -angle.end, clockwise: angle.endAngle > angle.startAngle)
         }
     }
     
